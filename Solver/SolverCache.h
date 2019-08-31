@@ -15,6 +15,7 @@ public:
    SolverCache();
 
    void  Clear(void);
+   void  Disable(void) { disabled = true; }
    bool  TestAndSet(const SolverHashCode &hashCode);
    
 private:
@@ -24,6 +25,7 @@ private:
    std::vector<int16_t>  blockIndexes;
    std::vector<Block> blocks;
    int16_t nextBlockIndex;
+   bool disabled = false;
 };
 
 #endif	/* SOLVERCACHE_H */

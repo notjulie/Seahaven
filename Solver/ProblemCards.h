@@ -27,7 +27,7 @@ public:
 
     ProblemCard   GetCard(uint8_t index) const;
     uint8_t       GetCount(void) const {
-       return cards.size();
+       return (uint8_t)cards.size();
     }
     
 private:

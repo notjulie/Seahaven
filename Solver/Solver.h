@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Solver.h
  * Author: Randy
  *
@@ -17,19 +17,20 @@ class SeahavenProblem;
 
 class Solver {
 public:
-    Solver(void);
-    
-    uint32_t GetTotalSteps(void) const { return totalSteps; }
-    Solution Solve(const SeahavenProblem &problem);
-    
+   Solver(void);
+
+   void DisableCacheing(void) { cache.Disable(); }
+   uint32_t GetTotalSteps(void) const { return totalSteps; }
+   Solution Solve(const SeahavenProblem& problem);
+
 private:
-    void  SolverStep(int currentStateIndex);
-    
+   void  SolverStep(int currentStateIndex);
+
 private:
-    std::vector<SolverState>   stateStack;
-    std::vector<SolverState>   resultStack;
-    uint32_t   totalSteps;
-    SolverCache cache;
+   std::vector<SolverState>   stateStack;
+   std::vector<SolverState>   resultStack;
+   uint32_t   totalSteps;
+   SolverCache cache;
 };
 
 #endif	/* SOLVER_H */

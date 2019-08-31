@@ -7,8 +7,12 @@
 int main()
 {
    TestSolver tester;
+
+   tester.TestCache();
    tester.testSingleColumnToColumnProblem();
    tester.testSingleColumnToTowerProblem();
    tester.testZeroMoveProblem();
+
+   tester.TestScottsProblem();
 }
 

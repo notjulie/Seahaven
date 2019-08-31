@@ -16,9 +16,11 @@ public:
    virtual ~TestSolver();
 
 public:
-   void testZeroMoveProblem() { doSolverTestCase(zeroMoveProblem, zeroMoveSolution); }
+   void TestCache(void);
    void testSingleColumnToColumnProblem() { doSolverTestCase(singleColumnToColumnProblem, singleColumnToColumnSolution); }
    void testSingleColumnToTowerProblem() { doSolverTestCase(singleColumnToTowerProblem, singleColumnToTowerSolution); }
+   void TestScottsProblem(void) { doSolverTestCase(scottsProblem, Solution::Fail()); }
+   void testZeroMoveProblem() { doSolverTestCase(zeroMoveProblem, zeroMoveSolution); }
 
 private:
    void doSolverTestCase(const SeahavenProblem &problem, const Solution &expectedResult);

@@ -41,6 +41,9 @@ void SolverCache::Clear(void)
 
 bool SolverCache::TestAndSet(const SolverHashCode &hashCode)
 {
+   if (disabled)
+      return false;
+
    // the major part is the index of the block index
    int   blockIndex = blockIndexes[hashCode.GetBlockNumber()];
    

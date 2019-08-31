@@ -29,3 +29,25 @@ void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution
 }
 
 
+void TestSolver::TestCache(void)
+{
+   // run once normally
+   Solver solverWithCacheing;
+   Solution solutionWithCacheing = solverWithCacheing.Solve(cacheTestProblem);
+
+   // run once witch cacheing disabled
+   Solver solverWithoutCacheing;
+   solverWithoutCacheing.DisableCacheing();
+   Solution solutionWithoutCacheing = solverWithoutCacheing.Solve(cacheTestProblem);
+
+   // we should get the same result
+   if (solutionWithCacheing != solutionWithoutCacheing)
+      throw SolverException("TestSolver::TestCache: results do not match");
+
+   // but faster
+   int stepsWithCacheing = solverWithCacheing.GetTotalSteps();
+   int stepsWithoutCacheing = solverWithoutCacheing.GetTotalSteps();
+   if (stepsWithoutCacheing <= stepsWithCacheing)
+      throw SolverException("TestSolver::TestCache: cacheing didn't help");
+}
+
