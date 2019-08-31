@@ -51,3 +51,9 @@ void TestSolver::TestCache(void)
       throw SolverException("TestSolver::TestCache: cacheing didn't help");
 }
 
+void TestSolver::TestRandomCase(void)
+{
+   Solver solver;
+   SeahavenProblem problem = SeahavenProblem::CreateRandom();
+   solver.Solve(problem);
+}

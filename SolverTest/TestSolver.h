@@ -17,6 +17,7 @@ public:
 
 public:
    void TestCache(void);
+   void TestRandomCase(void);
    void testSingleColumnToColumnProblem() { doSolverTestCase(singleColumnToColumnProblem, singleColumnToColumnSolution); }
    void testSingleColumnToTowerProblem() { doSolverTestCase(singleColumnToTowerProblem, singleColumnToTowerSolution); }
    void TestScottsProblem(void) { doSolverTestCase(scottsProblem, Solution::Fail()); }

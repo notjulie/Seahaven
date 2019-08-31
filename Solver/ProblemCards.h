@@ -25,6 +25,7 @@ public:
             const ProblemCard &card8 = ProblemCard()
             );
 
+    void Append(const ProblemCard& card) { cards.push_back(card); }
     ProblemCard   GetCard(uint8_t index) const;
     uint8_t       GetCount(void) const {
        return (uint8_t)cards.size();

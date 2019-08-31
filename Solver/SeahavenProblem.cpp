@@ -46,6 +46,38 @@ SeahavenProblem::~SeahavenProblem() {
 }
 
 
+SeahavenProblem SeahavenProblem::CreateRandom(void)
+{
+   SeahavenProblem result;
+
+   // create a deck
+   std::vector<ProblemCard>  deck;
+   for (int suit = 0; suit < 4; ++suit)
+   {
+      for (int rank = 1; rank <= 13; ++rank)
+         deck.push_back(ProblemCard((Suit)suit, rank));
+   }
+
+   // push random cards into the result
+   result.columns.resize(10);
+   for (int column = 0; column < 10; ++column)
+   {
+      for (int row = 0; row < 5; ++row)
+      {
+         int i = rand() % deck.size();
+         result.columns[column].Append(deck[i]);
+         deck[i] = deck[deck.size() - 1];
+         deck.resize(deck.size() - 1);
+      }
+   }
+
+   result.towers.Append(deck[0]);
+   result.towers.Append(deck[1]);
+
+   return result;
+}
+
+
 /// <summary>
 /// Takes the cards in a column and compacts it so that consecutive cards of
 /// the same suit are merged into a single card with a size >1
