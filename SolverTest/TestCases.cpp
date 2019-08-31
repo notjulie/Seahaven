@@ -102,4 +102,22 @@ const SeahavenProblem cacheTestProblem(
         ProblemCards()
         );
 
+/// <summary>
+/// a test case that takes longer than some
+/// </summary>
+const SeahavenProblem slowTestProblem(
+   ProblemCards("2S", "TD", "JH", "5D", "9H"),
+   ProblemCards("AS", "8S", "7C", "2D", "7S"),
+   ProblemCards("TC", "3C", "QH", "AD", "6S"),
+   ProblemCards("QS", "JC", "5C", "KH", "QD"),
+   ProblemCards("9C", "4H", "3H", "KC", "2C"),
+   ProblemCards("AC", "2H", "3S", "JD", "7D"),
+   ProblemCards("4D", "3D", "TS", "5S", "KD"),
+   ProblemCards("8C", "AH", "6C", "TH", "8H"),
+   ProblemCards("KS", "5H", "JS", "8D", "9D"),
+   ProblemCards("7H", "4C", "9S", "QC", "6H"),
+
+   ProblemCards("6D", "4S")
+);
+
 

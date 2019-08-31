@@ -46,6 +46,13 @@ SeahavenProblem::~SeahavenProblem() {
 }
 
 
+void SeahavenProblem::Dump(void)
+{
+   for (int i = 0; i < columns.size(); ++i)
+      columns[i].Dump();
+   towers.Dump();
+}
+
 SeahavenProblem SeahavenProblem::CreateRandom(void)
 {
    SeahavenProblem result;

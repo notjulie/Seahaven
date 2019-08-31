@@ -33,6 +33,7 @@ public:
             );
     virtual ~SeahavenProblem();
 
+    void Dump(void);
     std::vector<CompactedColumnCard> GetCompactedColumn(uint8_t columnIndex) const;
     ProblemCard GetTower(uint8_t index) const { return towers.GetCard(index); }
 

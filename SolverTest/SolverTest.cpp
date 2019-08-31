@@ -16,6 +16,10 @@ int main()
 
    tester.TestScottsProblem();
 
+   std::cout << "Starting slow problem... ";
+   tester.TestSlowProblem();
+   std::cout << "done" << std::endl;
+
    for (int i = 0; i < 1000; ++i)
    {
       std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();

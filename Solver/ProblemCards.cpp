@@ -6,6 +6,7 @@
  */
 
 #include "SolverIncludes.h"
+#include <iostream>
 
 #include "SolverException.h"
 
@@ -50,3 +51,11 @@ ProblemCard ProblemCards::GetCard(uint8_t index) const
    else
       return cards[index];
 }
+
+void ProblemCards::Dump(void)
+{
+   for (int i = 0; i < cards.size(); ++i)
+      cards[i].DumpToConsole();
+   std::cout << std::endl;
+}
+
