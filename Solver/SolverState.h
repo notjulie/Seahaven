@@ -9,6 +9,7 @@
 #define	SOLVERSTATE_H
 
 #include "LinkedCards.h"
+#include "SolverMove.h"
 #include "Suit.h"
 #include "ThroneArbitor.h"
 
@@ -29,7 +30,7 @@ public:
    void  MoveColumnToColumnOrThrone(int columnIndex);
    void  MoveColumnToTower(int columnIndex);
    ProblemCard GetBottomColumnCardDetails(int column) const;
-   int   GetColumnThatWasMoved(void) const { return columnThatWasMoved; }
+   SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;
    
 private:
@@ -42,8 +43,8 @@ private:
 private:
    LinkedCards    cards;
    ThroneArbitor  throneArbitor;
-   uint8_t     columnCounts[10];
-   uint8_t     columnThatWasMoved;
+   uint8_t        columnCounts[10];
+   SolverMove     movePerformed;
 };
 
 #endif	/* SOLVERSTATE_H */

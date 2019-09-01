@@ -134,7 +134,8 @@ void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
    cards.MoveColumnCardToHigher(link);
    
    // note the move
-   columnThatWasMoved = columnIndex;
+   movePerformed.type = SolverMove::MoveFromColumn;
+   movePerformed.column = columnIndex;
 }
 
 
@@ -145,7 +146,8 @@ void SolverState::MoveColumnToTower(int columnIndex)
    cards.MoveToOpenTower(link);
    
    // note the move
-   columnThatWasMoved = columnIndex;
+   movePerformed.type = SolverMove::MoveFromColumn;
+   movePerformed.column = columnIndex;
 }
 
 

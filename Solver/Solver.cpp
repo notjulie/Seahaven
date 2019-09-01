@@ -38,7 +38,16 @@ Solution Solver::Solve(const SeahavenProblem &problem)
     Solution solution;
     for (int i=1; i<resultStack.size(); ++i)
     {
-       solution.AddStep(resultStack[i-1].GetBottomColumnCardDetails(resultStack[i].GetColumnThatWasMoved()));
+       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
+       switch (move.type)
+       {
+       case SolverMove::MoveFromColumn:
+          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
+          break;
+
+       default:
+          throw SolverException("Solver::Solve: unrecognized move type");
+       }
     }
     return solution;
 }
