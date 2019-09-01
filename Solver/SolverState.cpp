@@ -121,21 +121,30 @@ bool SolverState::CanMoveColumnToTower(int columnIndex) const
 }
 
 
+void SolverState::PerformMove(SolverMove move)
+{
+   switch (move.type)
+   {
+   case SolverMove::MoveFromColumn:
+      if (CanMoveColumnToColumnOrThrone(move.column))
+         MoveColumnToColumnOrThrone(move.column);
+      else
+         MoveColumnToTower(move.column);
+      break;
+
+   default:
+      throw SolverException("SolverState:PerformMove: unrecognized move type");
+   }
+
+   movePerformed = move;
+}
+
+
 void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
 {
-   // in the game it is allowed to move a card of size greater
-   // than one without using the towers as long as tower space
-   // exists... we need to track the tower space used, so if the
-   // card size is greater than one we do this as a combination
-   // of a move-to-column and a move-to-tower
-   
    // move it and decrement the column count
    LinkID   link = cards.GetColumnLinkID(columnIndex, --columnCounts[columnIndex]);
    cards.MoveColumnCardToHigher(link);
-   
-   // note the move
-   movePerformed.type = SolverMove::MoveFromColumn;
-   movePerformed.column = columnIndex;
 }
 
 
@@ -144,10 +153,6 @@ void SolverState::MoveColumnToTower(int columnIndex)
    // move it and decrement the column count
    LinkID   link = cards.GetColumnLinkID(columnIndex, --columnCounts[columnIndex]);
    cards.MoveToOpenTower(link);
-   
-   // note the move
-   movePerformed.type = SolverMove::MoveFromColumn;
-   movePerformed.column = columnIndex;
 }
 
 

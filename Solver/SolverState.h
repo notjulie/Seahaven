@@ -27,15 +27,16 @@ public:
    bool  IsBottomColumnCard(LinkID link) const;
    bool  IsOnlyCardOnColumn(LinkID link) const;
    bool  IsVictory(void) const;
-   void  MoveColumnToColumnOrThrone(int columnIndex);
-   void  MoveColumnToTower(int columnIndex);
    ProblemCard GetBottomColumnCardDetails(int column) const;
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;
+   void PerformMove(SolverMove move);
    
 private:
    void ArbitrateThrones(void);
    void Clear(void);
+   void  MoveColumnToColumnOrThrone(int columnIndex);
+   void  MoveColumnToTower(int columnIndex);
 
 private:
    static LinkID GetLinkID(const SeahavenProblem &problem, Suit suit, uint8_t rank);

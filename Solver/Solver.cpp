@@ -92,7 +92,10 @@ void Solver::SolverStep(int currentStateIndex)
    {
       if (state->CanMoveColumnToColumnOrThrone(i)) {
          *nextState = *state;
-         nextState->MoveColumnToColumnOrThrone(i);
+         SolverMove move;
+         move.type = SolverMove::MoveFromColumn;
+         move.column = i;
+         nextState->PerformMove(move);
          columnsMoved[i] = true;
          switch (DoFreeMoves(currentStateIndex + 1))
          {
@@ -119,7 +122,10 @@ void Solver::SolverStep(int currentStateIndex)
 
       if (state->CanMoveColumnToTower(i)) {
          *nextState = *state;
-         nextState->MoveColumnToTower(i);
+         SolverMove move;
+         move.type = SolverMove::MoveFromColumn;
+         move.column = i;
+         nextState->PerformMove(move);
          columnsMoved[i] = true;
          switch (DoFreeMoves(currentStateIndex + 1))
          {
