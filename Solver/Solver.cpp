@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Solver.cpp
  * Author: Randy
- * 
+ *
  * Created on April 2, 2014, 2:18 PM
  */
 
@@ -16,40 +16,54 @@
 Solver::Solver() {
    // clear
    totalSteps = 0;
-   
+
    // allocate the stack
    stateStack.resize(100);
 }
 
-Solution Solver::Solve(const SeahavenProblem &problem)
+Solution Solver::Solve(const SeahavenProblem& problem)
 {
-    // create the initial state
-    stateStack[0] = SolverState(problem);
-    
-    // start the process of recursively solving
-    totalSteps = 0;
-    SolverStep(0);
-    
-    // if no solution was found...
-    if (resultStack.empty())
-       return Solution::Fail();
-    
-    // else put together a solution from the changing states
-    Solution solution;
-    for (int i=1; i<resultStack.size(); ++i)
-    {
-       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
-       switch (move.type)
-       {
-       case SolverMove::MoveFromColumn:
-          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
-          break;
+   // clear
+   totalSteps = 0;
 
-       default:
-          throw SolverException("Solver::Solve: unrecognized move type");
-       }
-    }
-    return solution;
+   // create the initial state
+   stateStack[0] = SolverState(problem);
+
+   // and make sure that it's a clean state with no free moves waiting to be
+   // done
+   switch (DoFreeMoves(0))
+   {
+   case Victory:
+      return Solution();
+   case Normal:
+      break;
+   default:
+      throw SolverException("Solver::Solve: unexpected result from DoFreeMoves");
+   }
+
+   // start the process of recursively solving
+   SolverStep(0);
+
+   // if no solution was found...
+   if (resultStack.empty())
+      return Solution::Fail();
+
+   // else put together a solution from the changing states
+   Solution solution;
+   for (int i = 1; i < resultStack.size(); ++i)
+   {
+      SolverMove move = resultStack[i].GetMoveThatWasPerformed();
+      switch (move.type)
+      {
+      case SolverMove::MoveFromColumn:
+         solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
+         break;
+
+      default:
+         throw SolverException("Solver::Solve: unrecognized move type");
+      }
+   }
+   return solution;
 }
 
 
@@ -58,7 +72,7 @@ void Solver::SolverStep(int currentStateIndex)
 {
    // if we have a solution that is only one longer than the current state
    // then we know we can't do better; this macro is what checks that
-   #define RETURN_IF_TOO_MANY_MOVES \
+#define RETURN_IF_TOO_MANY_MOVES \
    if (!resultStack.empty()) \
    { \
       if (currentStateIndex + 2 >= resultStack.size()) \
@@ -68,33 +82,29 @@ void Solver::SolverStep(int currentStateIndex)
    // increment our number of steps
    ++totalSteps;
 
-   // on entry, currentStateIndex points to our starting point; however,
-   // it is not expected necessarily to be clean; so we need to clean it
-   // first before we decide what the next step might be
-   switch (DoFreeMoves(currentStateIndex))
-   {
-   case Normal:
-      break;
-   case Victory:
-   case DeadEnd:
-      return;
+   SolverState* state = &stateStack[currentStateIndex];
+   SolverState* nextState = &stateStack[currentStateIndex + 1];
 
-   default:
-      throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
-   }
+   bool columnsMoved[10] = { false, false, false, false, false, false, false, false, false, false };
 
-   SolverState *state = &stateStack[currentStateIndex];   
-   SolverState *nextState = &stateStack[currentStateIndex + 1];
-
-   bool columnsMoved[10] = {false, false, false, false, false, false, false, false, false, false};
-   
    // try all the column-to-column moves
-   for (int i=0; i<10; ++i)
+   for (int i = 0; i < 10; ++i)
    {
       if (state->CanMoveColumnToColumnOrThrone(i)) {
          *nextState = *state;
          nextState->MoveColumnToColumnOrThrone(i);
          columnsMoved[i] = true;
+         switch (DoFreeMoves(currentStateIndex + 1))
+         {
+         case Normal:
+            break;
+         case Victory:
+            return;
+         case DeadEnd:
+            continue;
+         default:
+            throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
+         }
 
          SolverStep(currentStateIndex + 1);
          RETURN_IF_TOO_MANY_MOVES;
@@ -102,21 +112,32 @@ void Solver::SolverStep(int currentStateIndex)
    }
 
    // try all the column-to-tower moves
-   for (int i=0; i<10; ++i)
+   for (int i = 0; i < 10; ++i)
    {
       if (columnsMoved[i])
          continue;
-      
+
       if (state->CanMoveColumnToTower(i)) {
          *nextState = *state;
          nextState->MoveColumnToTower(i);
          columnsMoved[i] = true;
+         switch (DoFreeMoves(currentStateIndex + 1))
+         {
+         case Normal:
+            break;
+         case Victory:
+            return;
+         case DeadEnd:
+            continue;
+         default:
+            throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
+         }
 
          SolverStep(currentStateIndex + 1);
          RETURN_IF_TOO_MANY_MOVES;
       }
    }
-   
+
    // all we do is exit... if we found a solution it will have been saved,
    // and we will continue on looking to see if there's a shorter one; if
    // not we'll just keep looking to find one at all

@@ -21,7 +21,7 @@ public:
    void testSingleColumnToColumnProblem() { doSolverTestCase(singleColumnToColumnProblem, singleColumnToColumnSolution); }
    void testSingleColumnToTowerProblem() { doSolverTestCase(singleColumnToTowerProblem, singleColumnToTowerSolution); }
    void TestScottsProblem(void) { doSolverTestCase(scottsProblem, Solution::Fail()); }
-   void TestSlowProblem(void) { doSolverTestCase(slowTestProblem, Solution::Fail()); }
+   void TestSlowProblem(void);
    void testZeroMoveProblem() { doSolverTestCase(zeroMoveProblem, zeroMoveSolution); }
 
 private:

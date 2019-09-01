@@ -55,6 +55,12 @@ void TestSolver::TestRandomCase(void)
 {
    Solver solver;
    SeahavenProblem problem = SeahavenProblem::CreateRandom();
-   problem.Dump();
+   //problem.Dump();
    solver.Solve(problem);
+}
+
+void TestSolver::TestSlowProblem(void)
+{
+   Solver   solver;
+   Solution solution = solver.Solve(slowTestProblem);
 }
