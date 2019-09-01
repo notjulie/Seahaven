@@ -24,6 +24,14 @@ public:
    Solution Solve(const SeahavenProblem& problem);
 
 private:
+   enum FreeMovesResult {
+      Normal,
+      Victory,
+      DeadEnd
+   };
+
+private:
+   FreeMovesResult DoFreeMoves(int currentStateIndex);
    void  SolverStep(int currentStateIndex);
 
 private:

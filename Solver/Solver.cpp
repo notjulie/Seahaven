@@ -62,22 +62,19 @@ void Solver::SolverStep(int currentStateIndex)
    // on entry, currentStateIndex points to our starting point; however,
    // it is not expected necessarily to be clean; so we need to clean it
    // first before we decide what the next step might be
-   SolverState *state = &stateStack[currentStateIndex];
-   state->DoFreeMoves();
-   
-   // if everything is on the aces, it's a victory... if so, move the
-   // current stack to the result stack and be done
-   if (state->IsVictory())
+   switch (DoFreeMoves(currentStateIndex))
    {
-      resultStack = stateStack;
-      resultStack.resize(currentStateIndex + 1);
+   case Normal:
+      break;
+   case Victory:
+   case DeadEnd:
       return;
+
+   default:
+      throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
    }
 
-   // never mind if the current position is in the cache
-   if (cache.TestAndSet(state->GetHashValue()))
-      return;
-   
+   SolverState *state = &stateStack[currentStateIndex];   
    SolverState *nextState = &stateStack[currentStateIndex + 1];
 
    bool columnsMoved[10] = {false, false, false, false, false, false, false, false, false, false};
@@ -114,4 +111,34 @@ void Solver::SolverStep(int currentStateIndex)
    // all we do is exit... if we found a solution it will have been saved,
    // and we will continue on looking to see if there's a shorter one; if
    // not we'll just keep looking to find one at all
+}
+
+
+/// <summary>
+/// Performs free moves to the aces and combinations of cards; this is
+/// called after performing a move to clean up the state of the game.
+/// On completion it returns:
+///    Victory: the game is won
+///    DeadEnd: we've already tried this position before; don't continue
+///    Normal: no surprises, continue solving
+/// </summary>
+Solver::FreeMovesResult Solver::DoFreeMoves(int currentStateIndex)
+{
+   SolverState* state = &stateStack[currentStateIndex];
+   state->DoFreeMoves();
+
+   // if everything is on the aces, it's a victory... if so, move the
+   // current stack to the result stack and be done
+   if (state->IsVictory())
+   {
+      resultStack = stateStack;
+      resultStack.resize((int)currentStateIndex + 1);
+      return Victory;
+   }
+
+   // never mind if the current position is in the cache
+   if (cache.TestAndSet(state->GetHashValue()))
+      return DeadEnd;
+
+   return Normal;
 }
