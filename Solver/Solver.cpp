@@ -70,20 +70,12 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 
 void Solver::SolverStep(int currentStateIndex)
 {
-   // if we have a solution that is only one longer than the current state
-   // then we know we can't do better; this macro is what checks that
-#define RETURN_IF_TOO_MANY_MOVES \
-   if (!resultStack.empty()) \
-   { \
-      if (currentStateIndex + 2 >= resultStack.size()) \
-         return; \
-   }
-
+   SolverMove move;
+   
    // increment our number of steps
    ++totalSteps;
 
    SolverState* state = &stateStack[currentStateIndex];
-   SolverState* nextState = &stateStack[currentStateIndex + 1];
 
    bool columnsMoved[10] = { false, false, false, false, false, false, false, false, false, false };
 
@@ -91,26 +83,10 @@ void Solver::SolverStep(int currentStateIndex)
    for (int i = 0; i < 10; ++i)
    {
       if (state->CanMoveColumnToColumnOrThrone(i)) {
-         *nextState = *state;
-         SolverMove move;
          move.type = SolverMove::MoveFromColumn;
          move.column = i;
-         nextState->PerformMove(move);
+         TryMove(currentStateIndex, move);
          columnsMoved[i] = true;
-         switch (DoFreeMoves(currentStateIndex + 1))
-         {
-         case Normal:
-            break;
-         case Victory:
-            return;
-         case DeadEnd:
-            continue;
-         default:
-            throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
-         }
-
-         SolverStep(currentStateIndex + 1);
-         RETURN_IF_TOO_MANY_MOVES;
       }
    }
 
@@ -121,26 +97,9 @@ void Solver::SolverStep(int currentStateIndex)
          continue;
 
       if (state->CanMoveColumnToTower(i)) {
-         *nextState = *state;
-         SolverMove move;
          move.type = SolverMove::MoveFromColumn;
          move.column = i;
-         nextState->PerformMove(move);
-         columnsMoved[i] = true;
-         switch (DoFreeMoves(currentStateIndex + 1))
-         {
-         case Normal:
-            break;
-         case Victory:
-            return;
-         case DeadEnd:
-            continue;
-         default:
-            throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
-         }
-
-         SolverStep(currentStateIndex + 1);
-         RETURN_IF_TOO_MANY_MOVES;
+         TryMove(currentStateIndex, move);
       }
    }
 
@@ -149,6 +108,48 @@ void Solver::SolverStep(int currentStateIndex)
    // not we'll just keep looking to find one at all
 }
 
+
+/// <summary>
+/// Performs the given move and recursively determines if it results in a
+/// better solution than any we currently have.
+/// </summary>
+void Solver::TryMove(int currentStateIndex, SolverMove move)
+{
+   // if our new stack size after we push another state will be as large as a
+   // previous solution, don't bother continuing... if we already have a solution
+   // the only thing we would be interested in would be a shorter solution
+   int currentSolutionSize = resultStack.size();
+   if (currentSolutionSize != 0)
+   {
+      int newSolutionMinimumSize = currentStateIndex + 2;
+      if (newSolutionMinimumSize >= currentSolutionSize)
+         return;
+   }
+
+   // push a new copy of the current state
+   SolverState* state = &stateStack[currentStateIndex];
+   SolverState* nextState = &stateStack[(size_t)currentStateIndex + 1];
+   *nextState = *state;
+
+   // do the move
+   nextState->PerformMove(move);
+
+   // do any resulting free moves
+   switch (DoFreeMoves(currentStateIndex + 1))
+   {
+   case Normal:
+      break;
+   case Victory:
+      return;
+   case DeadEnd:
+      return;
+   default:
+      throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
+   }
+
+   // recursively analyze the result
+   SolverStep(currentStateIndex + 1);
+}
 
 /// <summary>
 /// Performs free moves to the aces and combinations of cards; this is

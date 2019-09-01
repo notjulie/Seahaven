@@ -33,6 +33,7 @@ private:
 private:
    FreeMovesResult DoFreeMoves(int currentStateIndex);
    void  SolverStep(int currentStateIndex);
+   void TryMove(int currentStateIndex, SolverMove move);
 
 private:
    std::vector<SolverState>   stateStack;
