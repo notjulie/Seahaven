@@ -5,7 +5,8 @@
 struct SolverMove {
    enum {
       MoveNothing,
-      MoveFromColumn
+      MoveFromColumnToHigherCard,
+      MoveFromColumnToTower
    } type = MoveNothing;
    union {
       uint8_t column;

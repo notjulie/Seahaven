@@ -121,15 +121,19 @@ bool SolverState::CanMoveColumnToTower(int columnIndex) const
 }
 
 
+/// <summary>
+/// Carries out the move defined by the SolverMove object
+/// </summary>
 void SolverState::PerformMove(SolverMove move)
 {
    switch (move.type)
    {
-   case SolverMove::MoveFromColumn:
-      if (CanMoveColumnToColumnOrThrone(move.column))
-         MoveColumnToColumnOrThrone(move.column);
-      else
-         MoveColumnToTower(move.column);
+   case SolverMove::MoveFromColumnToHigherCard:
+      MoveColumnToColumnOrThrone(move.column);
+      break;
+
+   case SolverMove::MoveFromColumnToTower:
+      MoveColumnToTower(move.column);
       break;
 
    default:

@@ -55,7 +55,8 @@ Solution Solver::Solve(const SeahavenProblem& problem)
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       switch (move.type)
       {
-      case SolverMove::MoveFromColumn:
+      case SolverMove::MoveFromColumnToHigherCard:
+      case SolverMove::MoveFromColumnToTower:
          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
          break;
 
@@ -83,7 +84,7 @@ void Solver::SolverStep(int currentStateIndex)
    for (int i = 0; i < 10; ++i)
    {
       if (state->CanMoveColumnToColumnOrThrone(i)) {
-         move.type = SolverMove::MoveFromColumn;
+         move.type = SolverMove::MoveFromColumnToHigherCard;
          move.column = i;
          TryMove(currentStateIndex, move);
          columnsMoved[i] = true;
@@ -97,7 +98,7 @@ void Solver::SolverStep(int currentStateIndex)
          continue;
 
       if (state->CanMoveColumnToTower(i)) {
-         move.type = SolverMove::MoveFromColumn;
+         move.type = SolverMove::MoveFromColumnToTower;
          move.column = i;
          TryMove(currentStateIndex, move);
       }
@@ -118,7 +119,7 @@ void Solver::TryMove(int currentStateIndex, SolverMove move)
    // if our new stack size after we push another state will be as large as a
    // previous solution, don't bother continuing... if we already have a solution
    // the only thing we would be interested in would be a shorter solution
-   int currentSolutionSize = resultStack.size();
+   int currentSolutionSize = (int)resultStack.size();
    if (currentSolutionSize != 0)
    {
       int newSolutionMinimumSize = currentStateIndex + 2;
