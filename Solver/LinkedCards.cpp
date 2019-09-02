@@ -28,6 +28,16 @@ LinkedCard LinkedCards::GetAce(Suit suit) const
    return LinkedCard(links[FIRST_ACE_LINK + suit]);
 }
 
+int LinkedCards::GetEmptyTowers(void) const
+{
+   return
+      4 -
+      LinkedCard(links[FIRST_TOWER_LINK]).size -
+      LinkedCard(links[FIRST_TOWER_LINK + 1]).size -
+      LinkedCard(links[FIRST_TOWER_LINK + 2]).size -
+      LinkedCard(links[FIRST_TOWER_LINK + 3]).size;
+}
+
 LinkedCard LinkedCards::GetTower(int i) const
 {
    return LinkedCard(links[FIRST_TOWER_LINK + i]);
@@ -59,6 +69,20 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
       
       link = card.toLower;
    }
+}
+
+int LinkedCards::GetThroneOccupationMask(void) const
+{
+   return
+      (LinkedCard(links[FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
+      (LinkedCard(links[FIRST_THRONE_LINK + 1]).size != 0 ? 2 : 0) +
+      (LinkedCard(links[FIRST_THRONE_LINK + 2]).size != 0 ? 4 : 0) +
+      (LinkedCard(links[FIRST_THRONE_LINK + 3]).size != 0 ? 8 : 0);
+}
+
+bool LinkedCards::IsKing(LinkedCard card) const
+{
+   return IsTower(card.toHigher);
 }
 
 void LinkedCards::MoveToHigher(LinkID link)

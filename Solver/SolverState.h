@@ -11,17 +11,30 @@
 #include "LinkedCards.h"
 #include "SolverMove.h"
 #include "Suit.h"
-#include "ThroneArbitor.h"
 
 class SeahavenProblem;
 class SolverHashCode;
+
+class ColumnCounts {
+public:
+   ColumnCounts(void);
+
+   void Clear(void);
+   void Decrement(uint8_t column);
+   uint8_t Get(uint8_t column) const;
+   const uint8_t* GetPointer(void) const { return columnCounts; }
+   void Increment(uint8_t column);
+
+private:
+   uint8_t        columnCounts[10];
+};
 
 class SolverState {
 public:
    SolverState(void);
    SolverState(const SeahavenProblem &problem);
 
-   bool  CanMoveColumnToColumnOrThrone(int columnIndex) const;
+   bool  CanMoveColumnToColumn(int columnIndex) const;
    bool  CanMoveColumnToTower(int columnIndex) const;
    void  DoFreeMoves(void);
    bool  IsBottomColumnCard(LinkID link) const;
@@ -33,7 +46,6 @@ public:
    void PerformMove(SolverMove move);
    
 private:
-   void ArbitrateThrones(void);
    void Clear(void);
    void  MoveColumnToColumnOrThrone(int columnIndex);
    void  MoveColumnToTower(int columnIndex);
@@ -43,9 +55,8 @@ private:
 
 private:
    LinkedCards    cards;
-   ThroneArbitor  throneArbitor;
-   uint8_t        columnCounts[10];
    SolverMove     movePerformed;
+   ColumnCounts   columnCounts;
 };
 
 #endif	/* SOLVERSTATE_H */

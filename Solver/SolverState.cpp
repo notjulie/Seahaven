@@ -48,7 +48,7 @@ SolverState::SolverState(const SeahavenProblem &problem) {
             highLink,
             compactedCards[j].cardCount
          );
-         columnCounts[columnIndex]++;
+         columnCounts.Increment(columnIndex);
       }
    }
    
@@ -85,39 +85,48 @@ SolverState::SolverState(const SeahavenProblem &problem) {
 }
 
 
-bool SolverState::CanMoveColumnToColumnOrThrone(int columnIndex) const
+/// <summary>
+/// Determines if the bottom card on the column can be moved to the next
+/// higher card (on another column) or an empty column if it's a king
+/// </summary>
+bool SolverState::CanMoveColumnToColumn(int columnIndex) const
 {
    // never mind if the column is empty
-   if (columnCounts[columnIndex] == 0)
+   if (columnCounts.Get(columnIndex) == 0)
       return false;
    
    // get the card on the bottom of the column
-   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts[columnIndex] - 1);
+   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts.Get(columnIndex) - 1);
 
-   // if the higher is a throne, check that
-   if (LinkedCards::IsThrone(card.toHigher))
-      return throneArbitor.CanMoveToThrone(card.size);
-   
-   // never mind if we don't have the tower space
-   if (card.size > throneArbitor.GetEmptyTowers() + 1)
+   // in order to move it we need enough tower space
+   if (card.size > cards.GetEmptyTowers() + 1)
       return false;
-   
-   // easy from there
-   return this->IsBottomColumnCard(card.toHigher);
+
+   // if it's a king it needs to go to an empty column, or by proxy, to its throne
+   if (cards.IsKing(card))
+   {
+      throw SolverException("SolverState::CanMoveColumnToColumn: Move king to column not implemented");
+   }
+   else
+   {
+      // else we just need to know if the next higher card is on the bottom of
+      // a column
+      return this->IsBottomColumnCard(card.toHigher);
+   }
 }
 
 
 bool SolverState::CanMoveColumnToTower(int columnIndex) const
 {
    // never mind if the column is empty
-   if (columnCounts[columnIndex] == 0)
+   if (columnCounts.Get(columnIndex) == 0)
       return false;
    
    // get the card on the bottom of the column
-   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts[columnIndex] - 1);
+   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts.Get(columnIndex) - 1);
    
    // all good as long as we don't have the tower space
-   return card.size <= throneArbitor.GetEmptyTowers();
+   return card.size <= cards.GetEmptyTowers();
 }
 
 
@@ -128,11 +137,11 @@ void SolverState::PerformMove(SolverMove move)
 {
    switch (move.type)
    {
-   case SolverMove::MoveFromColumnToHigherCard:
+   case SolverMoveType::FromColumnToColumn:
       MoveColumnToColumnOrThrone(move.column);
       break;
 
-   case SolverMove::MoveFromColumnToTower:
+   case SolverMoveType::FromColumnToTower:
       MoveColumnToTower(move.column);
       break;
 
@@ -147,7 +156,8 @@ void SolverState::PerformMove(SolverMove move)
 void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
 {
    // move it and decrement the column count
-   LinkID   link = cards.GetColumnLinkID(columnIndex, --columnCounts[columnIndex]);
+   columnCounts.Decrement(columnIndex);
+   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex));
    cards.MoveColumnCardToHigher(link);
 }
 
@@ -155,23 +165,21 @@ void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
 void SolverState::MoveColumnToTower(int columnIndex)
 {
    // move it and decrement the column count
-   LinkID   link = cards.GetColumnLinkID(columnIndex, --columnCounts[columnIndex]);
+   columnCounts.Decrement(columnIndex);
+   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex));
    cards.MoveToOpenTower(link);
 }
 
 
 ProblemCard SolverState::GetBottomColumnCardDetails(int columnIndex) const
 {
-   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts[columnIndex]-1);
+   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex)-1);
    return cards.GetCardDetails(link);
 }
 
 
 void SolverState::DoFreeMoves(void)
 {
-   // first we need to update the state of the thrones
-   ArbitrateThrones();
-   
    // try moving to the aces repeatedly until nothing happens
    for (;;)
    {
@@ -191,10 +199,10 @@ void SolverState::DoFreeMoves(void)
          if (column>=0 && column<=9)
          {
             int row = (nextAceCard - FIRST_COLUMN_LINK) % 5;
-            if (row+1 == columnCounts[column])
+            if (row+1 == columnCounts.Get(column))
             {
                cards.MoveToLower(nextAceCard);
-               columnCounts[column]--;
+               columnCounts.Decrement(column);
                acesMoved = true;
             }
          }
@@ -222,40 +230,6 @@ void SolverState::DoFreeMoves(void)
       if (LinkedCards::IsTower(throne.toLower) || IsOnlyCardOnColumn(throne.toLower))
          cards.MoveToHigher(LinkedCards::GetThroneLinkID((Suit)i));
    }
-   
-   // and we need to update the state of the thrones again
-   ArbitrateThrones();
-}
-
-void SolverState::ArbitrateThrones(void)
-{
-   // figure out how many towers are used by non-kings
-   int towersUsed = 0;
-   for (int i=0; i<4; ++i)
-   {
-      LinkedCard tower = cards.GetTower(i);
-      towersUsed += tower.size;
-   }
-   
-   // figure out how many empty columns we have
-   uint8_t emptyColumns = 0;
-   for (int i=0; i<10; ++i)
-      if (columnCounts[i] == 0)
-         ++emptyColumns;
-   
-   // get the throne sizes
-   uint8_t throneSizes[4];
-   for (int i=0; i<4; ++i)
-   {
-      LinkedCard throne = cards.GetThrone(i);
-      throneSizes[i] = throne.size;
-   }
-   
-   throneArbitor.Arbitrate(
-      towersUsed,
-      emptyColumns,
-      throneSizes
-      );
 }
 
 bool SolverState::IsBottomColumnCard(LinkID link) const
@@ -264,7 +238,7 @@ bool SolverState::IsBottomColumnCard(LinkID link) const
    if (column<0 || column>9)
       return false;
    int row = (link - FIRST_COLUMN_LINK) % 5;
-   return (row+1 == columnCounts[column]);
+   return (row+1 == columnCounts.Get(column));
 }
 
 bool SolverState::IsOnlyCardOnColumn(LinkID link) const
@@ -272,13 +246,13 @@ bool SolverState::IsOnlyCardOnColumn(LinkID link) const
    int column = (link - FIRST_COLUMN_LINK) / 5;
    if (column<0 || column>9)
       return false;
-   return columnCounts[column] == 0;
+   return columnCounts.Get(column) == 0;
 }
 
 bool SolverState::IsVictory(void) const
 {
    for (int i=0; i<10; ++i)
-      if (columnCounts[i] != 0)
+      if (columnCounts.Get(i) != 0)
          return false;
    
    return true;
@@ -287,8 +261,7 @@ bool SolverState::IsVictory(void) const
 
 void SolverState::Clear(void)
 {
-   for (int i=0; i<10; ++i)
-      columnCounts[i] = 0;
+   columnCounts.Clear();
    cards.Clear();
 }
 
@@ -338,7 +311,38 @@ LinkID SolverState::GetLinkID(const SeahavenProblem &problem, Suit suit, uint8_t
 SolverHashCode SolverState::GetHashValue(void) const
 {
    return SolverHashCode(
-      columnCounts,
-      throneArbitor.GetThroneStates()
+      columnCounts.GetPointer(),
+      cards.GetThroneOccupationMask()
       );
 }
+
+
+
+ColumnCounts::ColumnCounts(void)
+{
+   Clear();
+}
+
+void ColumnCounts::Clear(void)
+{
+   for (int i = 0; i < 10; ++i)
+      columnCounts[i] = 0;
+}
+
+void ColumnCounts::Decrement(uint8_t column)
+{
+   if (--columnCounts[column] >= 10)
+      throw SolverException("ColumnCounts::Decrement: count overflow");
+}
+
+uint8_t ColumnCounts::Get(uint8_t column) const
+{
+   return columnCounts[column];
+}
+
+void ColumnCounts::Increment(uint8_t column)
+{
+   if (++columnCounts[column] >= 10)
+      throw SolverException("ColumnCounts::Decrement: count overflow");
+}
+

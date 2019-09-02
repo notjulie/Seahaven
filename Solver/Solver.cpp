@@ -55,8 +55,8 @@ Solution Solver::Solve(const SeahavenProblem& problem)
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       switch (move.type)
       {
-      case SolverMove::MoveFromColumnToHigherCard:
-      case SolverMove::MoveFromColumnToTower:
+      case SolverMoveType::FromColumnToColumn:
+      case SolverMoveType::FromColumnToTower:
          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
          break;
 
@@ -83,8 +83,8 @@ void Solver::SolverStep(int currentStateIndex)
    // try all the column-to-column moves
    for (int i = 0; i < 10; ++i)
    {
-      if (state->CanMoveColumnToColumnOrThrone(i)) {
-         move.type = SolverMove::MoveFromColumnToHigherCard;
+      if (state->CanMoveColumnToColumn(i)) {
+         move.type = SolverMoveType::FromColumnToColumn;
          move.column = i;
          TryMove(currentStateIndex, move);
          columnsMoved[i] = true;
@@ -98,7 +98,7 @@ void Solver::SolverStep(int currentStateIndex)
          continue;
 
       if (state->CanMoveColumnToTower(i)) {
-         move.type = SolverMove::MoveFromColumnToTower;
+         move.type = SolverMoveType::FromColumnToTower;
          move.column = i;
          TryMove(currentStateIndex, move);
       }
