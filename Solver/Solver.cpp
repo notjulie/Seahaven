@@ -257,8 +257,56 @@ void Solver::TryMoveAnyKingToColumn(int currentStateIndex)
    throw SolverException("Solver::TryMoveAnyKingToColumn not implemented");
 }
 
-void Solver::TryMovingACardToColumn(int currentStateIndex, int column)
+void Solver::TryMovingACardToColumn(int currentStateIndex, int targetColumn)
 {
-   throw SolverException("Solver::TryMovingACardToColumn not implemented");
+   // find the source column
+   SolverState* currentState = &stateStack[currentStateIndex];
+   LinkedCard targetCard = currentState->GetColumnBottomCard(targetColumn);
+   int sourceColumn = LinkedCards::GetColumnIndex(targetCard.toLower);
+   if (sourceColumn < 0)
+      return;
+   int sourceRow = LinkedCards::GetRowIndex(targetCard.toLower);
+
+   // move cards off the column until we move the source card or something
+   // we disapprove of happens
+   for (;;)
+   {
+      // if the card we are looking for is at the bottom of the column we just do
+      // the column to column move that we intended to do
+      if (currentState->GetColumnCardCount(sourceColumn) == sourceRow + 1)
+      {
+         // push
+         currentState[1] = currentState[0];
+         ++currentState;
+         ++currentStateIndex;
+
+         // move
+         SolverMove move;
+         move.type = SolverMoveType::FromColumnToColumn;
+         move.column = sourceColumn;
+         currentState->PerformMove(move);
+
+         // walk the tree from that point on and be done
+         DoFreeMovesAndSolve(currentStateIndex);
+         return;
+      }
+
+      // else we just blast the card to a tower... if we can't then we're done
+      if (!currentState->CanMoveColumnToTower(sourceColumn))
+         return;
+
+      // push
+      currentState[1] = currentState[0];
+      ++currentState;
+      ++currentStateIndex;
+
+      // move
+      SolverMove move;
+      move.type = SolverMoveType::FromColumnToTower;
+      move.column = sourceColumn;
+      currentState->PerformMove(move);
+
+      // continue until we get to the card we wanted
+   }
 }
 

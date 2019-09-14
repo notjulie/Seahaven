@@ -41,6 +41,7 @@ public:
    bool  IsBottomColumnCard(LinkID link) const;
    bool  IsOnlyCardOnColumn(LinkID link) const;
    bool  IsVictory(void) const;
+   LinkedCard GetColumnBottomCard(int column) const { return cards.GetColumnCard(column, columnCounts.Get(column)); }
    ProblemCard GetBottomColumnCardDetails(int column) const;
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;

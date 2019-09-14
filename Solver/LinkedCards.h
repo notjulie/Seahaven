@@ -79,7 +79,17 @@ public:
       return link>=FIRST_TOWER_LINK && link-FIRST_TOWER_LINK<=3; }
    static inline bool IsThrone(LinkID link) {
       return link>=FIRST_TOWER_LINK && link-FIRST_TOWER_LINK<=3; }
-   
+   static inline int GetColumnIndex(LinkID link) {
+      int column = (link - FIRST_COLUMN_LINK) / 5;
+      if (column >= 10)
+         return -1;
+      else
+         return column;
+   }
+   static inline int GetRowIndex(LinkID link) {
+      return (link - FIRST_COLUMN_LINK) % 5;
+   }
+
 private:
    uint16_t links[LINK_COUNT];
 };
