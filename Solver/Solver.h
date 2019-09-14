@@ -25,15 +25,20 @@ public:
 
 private:
    enum FreeMovesResult {
-      Normal,
+      DidFreeMoves,
+      DidNothing,
       Victory,
       DeadEnd
    };
 
 private:
    FreeMovesResult DoFreeMoves(int currentStateIndex);
+   void DoFreeMovesAndSolve(int currentStateIndex);
    void  SolverStep(int currentStateIndex);
    void TryMove(int currentStateIndex, SolverMove move);
+   void TryMoveAnyKingToColumn(int currentStateIndex);
+   void TryMovingACardToColumn(int currentStateIndex, int column);
+   void TryColumnMoves(int currentStateIndex, int column);
 
 private:
    std::vector<SolverState>   stateStack;

@@ -178,8 +178,10 @@ ProblemCard SolverState::GetBottomColumnCardDetails(int columnIndex) const
 }
 
 
-void SolverState::DoFreeMoves(void)
+bool SolverState::DoFreeMoves(void)
 {
+   bool didFreeMoves = false;
+
    // try moving to the aces repeatedly until nothing happens
    for (;;)
    {
@@ -210,6 +212,7 @@ void SolverState::DoFreeMoves(void)
       
       if (!acesMoved)
          break;
+      didFreeMoves = true;
    }
    
    // the next thing to do is to combine cards on towers with columns or thrones
@@ -219,7 +222,10 @@ void SolverState::DoFreeMoves(void)
       if (tower.size == 0)
          continue;
       if (LinkedCards::IsThrone(tower.toHigher) || IsBottomColumnCard(tower.toHigher))
+      {
          cards.MoveToHigher(LinkedCards::GetTowerLinkID(i));
+         didFreeMoves = true;
+      }
    }
 
    // any kings sitting on a tower or as the only card on a column get moved
@@ -228,8 +234,13 @@ void SolverState::DoFreeMoves(void)
    {
       LinkedCard throne = cards.GetThrone(i);
       if (LinkedCards::IsTower(throne.toLower) || IsOnlyCardOnColumn(throne.toLower))
+      {
          cards.MoveToHigher(LinkedCards::GetThroneLinkID((Suit)i));
+         didFreeMoves = true;
+      }
    }
+
+   return didFreeMoves;
 }
 
 bool SolverState::IsBottomColumnCard(LinkID link) const

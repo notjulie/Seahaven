@@ -35,7 +35,8 @@ Solution Solver::Solve(const SeahavenProblem& problem)
    {
    case Victory:
       return Solution();
-   case Normal:
+   case DidFreeMoves:
+   case DidNothing:
       break;
    default:
       throw SolverException("Solver::Solve: unexpected result from DoFreeMoves");
@@ -68,45 +69,98 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 }
 
 
-
+/// <summary>
+/// Tries to solve (recursively) the problem at the given stack index.  On entry it is expected that
+/// auto moves have been performed.
+/// </summary>
 void Solver::SolverStep(int currentStateIndex)
 {
+   for (int column = 0; column < 10; ++column)
+      TryColumnMoves(currentStateIndex, column);
+}
+
+
+/// <summary>
+/// Tries solving the problem assuming that the next move will be from the given column
+/// </summary>
+void Solver::TryColumnMoves(int currentStateIndex, int column)
+{
    SolverMove move;
-   
-   // increment our number of steps
-   ++totalSteps;
 
-   SolverState* state = &stateStack[currentStateIndex];
+   // Our goal is to find a move that has a purpose.  We move cards off the column until
+   // we expose a card that serves some particular purpose.  Details as we go along...
 
-   bool columnsMoved[10] = { false, false, false, false, false, false, false, false, false, false };
+   // point to the top of the stack
+   SolverState *currentState = &stateStack[currentStateIndex];
 
-   // try all the column-to-column moves
-   for (int i = 0; i < 10; ++i)
+   // right away we know we should exit if the column is empty
+   if (currentState->GetColumnCardCount(column) == 0)
+      return;
+
+   // move cards off the column until we do something that seems to have a purpose
+   for (;;)
    {
-      if (state->CanMoveColumnToColumn(i)) {
+      // if the next card on the column can move to a column, that counts as a
+      // move that has a purpose, so we try that and exit
+      if (currentState->CanMoveColumnToColumn(column))
+      {
+         // push
+         currentState[1] = currentState[0];
+         ++currentState;
+         ++currentStateIndex;
+
+         // move
          move.type = SolverMoveType::FromColumnToColumn;
-         move.column = i;
-         TryMove(currentStateIndex, move);
-         columnsMoved[i] = true;
+         move.column = column;
+         currentState->PerformMove(move);
+         DoFreeMovesAndSolve(currentStateIndex);
+         return;
+      }
+
+      // if the next card can't move to a tower, then we are done here
+      if (!currentState->CanMoveColumnToTower(column))
+         return;
+
+      // push
+      currentState[1] = currentState[0];
+      ++currentState;
+      ++currentStateIndex;
+
+      // move
+      move.type = SolverMoveType::FromColumnToTower;
+      move.column = column;
+      currentState->PerformMove(move);
+
+      // if that empties out the column, the only purpose that can serve is if we
+      // move a king to an empty column
+      if (currentState->GetColumnCardCount(column) == 0)
+      {
+         TryMoveAnyKingToColumn(currentStateIndex);
+         return;
+      }
+
+      // see if we can do any free moves
+      switch (DoFreeMoves(currentStateIndex))
+      {
+      case DidFreeMoves:
+         // if we did free moves that means that this move served a purpose so
+         // continue our recursive search
+         SolverStep(currentStateIndex);
+         return;
+
+      case DidNothing:
+         // try the branch where we move a card to this column
+         TryMovingACardToColumn(currentStateIndex, column);
+
+         // and after checking that branch, continue trying to move cards off this column
+         break;
+
+      case Victory:
+      case DeadEnd:
+         // in either of these cases we are done
+         return;
       }
    }
-
-   // try all the column-to-tower moves
-   for (int i = 0; i < 10; ++i)
-   {
-      if (columnsMoved[i])
-         continue;
-
-      if (state->CanMoveColumnToTower(i)) {
-         move.type = SolverMoveType::FromColumnToTower;
-         move.column = i;
-         TryMove(currentStateIndex, move);
-      }
-   }
-
-   // all we do is exit... if we found a solution it will have been saved,
-   // and we will continue on looking to see if there's a shorter one; if
-   // not we'll just keep looking to find one at all
 }
 
 
@@ -138,10 +192,10 @@ void Solver::TryMove(int currentStateIndex, SolverMove move)
    // do any resulting free moves
    switch (DoFreeMoves(currentStateIndex + 1))
    {
-   case Normal:
+   case DidFreeMoves:
+   case DidNothing:
       break;
    case Victory:
-      return;
    case DeadEnd:
       return;
    default:
@@ -163,14 +217,14 @@ void Solver::TryMove(int currentStateIndex, SolverMove move)
 Solver::FreeMovesResult Solver::DoFreeMoves(int currentStateIndex)
 {
    SolverState* state = &stateStack[currentStateIndex];
-   state->DoFreeMoves();
+   bool didFreeMoves = state->DoFreeMoves();
 
    // if everything is on the aces, it's a victory... if so, move the
    // current stack to the result stack and be done
    if (state->IsVictory())
    {
       resultStack = stateStack;
-      resultStack.resize((int)currentStateIndex + 1);
+      resultStack.resize((size_t)currentStateIndex + 1);
       return Victory;
    }
 
@@ -178,5 +232,33 @@ Solver::FreeMovesResult Solver::DoFreeMoves(int currentStateIndex)
    if (cache.TestAndSet(state->GetHashValue()))
       return DeadEnd;
 
-   return Normal;
+   return didFreeMoves ? DidFreeMoves : DidNothing;
 }
+
+
+void Solver::DoFreeMovesAndSolve(int currentStateIndex)
+{
+   switch (DoFreeMoves(currentStateIndex))
+   {
+   case DidFreeMoves:
+   case DidNothing:
+      SolverStep(currentStateIndex);
+      break;
+
+   case Victory:
+   case DeadEnd:
+      break;
+   }
+}
+
+
+void Solver::TryMoveAnyKingToColumn(int currentStateIndex)
+{
+   throw SolverException("Solver::TryMoveAnyKingToColumn not implemented");
+}
+
+void Solver::TryMovingACardToColumn(int currentStateIndex, int column)
+{
+   throw SolverException("Solver::TryMovingACardToColumn not implemented");
+}
+

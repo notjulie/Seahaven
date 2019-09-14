@@ -36,7 +36,8 @@ public:
 
    bool  CanMoveColumnToColumn(int columnIndex) const;
    bool  CanMoveColumnToTower(int columnIndex) const;
-   void  DoFreeMoves(void);
+   bool  DoFreeMoves(void);
+   uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
    bool  IsBottomColumnCard(LinkID link) const;
    bool  IsOnlyCardOnColumn(LinkID link) const;
    bool  IsVictory(void) const;
