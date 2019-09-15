@@ -26,6 +26,7 @@ public:
 
 public:
    static Suit FromIndex(int index);
+   static Suit FromMnemonic(char mnemonic);
 
 public:
    static const Suit Clubs;

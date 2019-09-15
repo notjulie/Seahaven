@@ -64,31 +64,7 @@ ProblemCard::ProblemCard(const char *_s)
         }
     }
 
-    switch (_s[1])
-    {
-        case 'C':
-            suit = Suit::Clubs;
-            break;
-            
-        case 'D':
-            suit = Suit::Diamonds;
-            break;
-            
-        case 'H':
-            suit = Suit::Hearts;
-            break;
-            
-        case 'S':
-            suit = Suit::Spades;
-            break;
-            
-        default:
-        {
-            char        buffer[100];
-            snprintf(buffer, sizeof(buffer), "ProblemCard: invalid suit character: %c", _s[1]);
-            throw SolverException(buffer);
-        }
-    }
+    suit = Suit::FromMnemonic(_s[1]);
 }
 
 ProblemCard::ProblemCard(Suit _suit, int _rank)
