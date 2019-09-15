@@ -19,20 +19,7 @@ enum LinkID {
    NO_LINK = LINK_COUNT
 };
 
-class LinkedCard {
-public:
-   LinkedCard(LinkID toHigher = NO_LINK, LinkID toLower = NO_LINK, uint8_t size = 0) {
-      this->toHigher = toHigher;
-      this->toLower = toLower;
-      this->size = size;
-   }
-
-   LinkedCard(uint16_t ui16) {
-      toHigher = (LinkID)(ui16 >> 10);
-      toLower = (LinkID)(0x3f & (ui16 >> 4));
-      size = 0xF & ui16;
-   }
-
+struct LinkedCard {
 public:
    LinkID toHigher;
    LinkID toLower;
@@ -42,16 +29,35 @@ public:
 
 class alignas(2) CompressedLink {
 public:
-
    inline CompressedLink& operator=(const LinkedCard & card) {
-      link = 
-         card.size +
-         (card.toLower << 4) +
-         (card.toHigher << 10);
+      link = CalculateLink(card.toLower, card.toHigher, card.size);
       return *this;
    }
 
-   operator LinkedCard() { return LinkedCard(link); }
+   operator LinkedCard() {
+      LinkedCard result;
+      result.toHigher = (LinkID)(link >> 10);
+      result.toLower = (LinkID)(0x3f & (link >> 4));
+      result.size = 0xF & link;
+      return result;
+   }
+
+   static CompressedLink Create(LinkID toLower, LinkID toHigher, uint8_t size) {
+      CompressedLink result;
+      result.link = CalculateLink(toLower, toHigher, size);
+      return result;
+   }
+
+public:
+   static const CompressedLink Null;
+
+private:
+   inline static uint16_t CalculateLink(LinkID toLower, LinkID toHigher, uint8_t size) {
+      return
+         size +
+         (toLower << 4) +
+         (toHigher << 10);
+   }
 
 private:
    uint16_t link;

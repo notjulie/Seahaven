@@ -12,15 +12,18 @@
 
 #include "LinkedCards.h"
 
+
+const CompressedLink CompressedLink::Null = CompressedLink::Create(NO_LINK, NO_LINK, 0);
+
+
 // ==============================================================
 //    class LinksArray
 // ==============================================================
 
 void LinksArray::Clear(void)
 {
-   LinkedCard  nullCard;
    for (int i = 0; i < LINK_COUNT; ++i)
-      links[i] = nullCard;
+      links[i] = CompressedLink::Null;
 }
 
 
@@ -117,7 +120,7 @@ void LinkedCards::MoveToHigher(LinkID link)
    links[card.toHigher] = higher;
    
    // make the card being moved go away
-   links[link] = LinkedCard();
+   links[link] = CompressedLink::Null;
 }
 
 void LinkedCards::MoveColumnCardToHigher(LinkID link)
@@ -169,7 +172,7 @@ void LinkedCards::MoveToLower(LinkID link)
    links[card.toLower] = lower;
    
    // make the card being moved go away
-   links[link] = LinkedCard();
+   links[link] = CompressedLink::Null;
 }
 
 void LinkedCards::MoveToOpenTower(LinkID link)
@@ -199,7 +202,7 @@ void LinkedCards::MoveToOpenTower(LinkID link)
    
    // move the card to the tower
    links[tower] = links[link];
-   links[link] = LinkedCard();
+   links[link] = CompressedLink::Null;
 }
 
 void LinkedCards::SetAceSizes(void)
@@ -262,3 +265,5 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
       links[toHigh] = higherCard;
    }   
 }
+
+
