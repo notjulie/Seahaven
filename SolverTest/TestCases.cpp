@@ -68,8 +68,8 @@ const Solution singleColumnToColumnSolution(
 /// simple test case that requires only one column to column move
 /// </summary>
 const SeahavenProblem singleColumnToTowerProblem(
-        ProblemCards("KS", "JS", "9S", "TS"),
-        ProblemCards("QS"),
+        ProblemCards("KS", "QS", "JS", "9S", "TS"),
+        ProblemCards(),
         ProblemCards(),
         ProblemCards(),
         ProblemCards(),

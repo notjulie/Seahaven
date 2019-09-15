@@ -46,15 +46,32 @@ public:
    uint8_t size;
 };
 
+
+class alignas(2) CompressedLink {
+public:
+
+   inline CompressedLink& operator=(const LinkedCard & card) {
+      link = card.AsUInt16();
+      return *this;
+   }
+
+   operator LinkedCard() { return LinkedCard(link); }
+
+private:
+   uint16_t link;
+};
+static_assert(sizeof(CompressedLink) == 2, "CompressedLink length is not 2");
+
+
 class LinksArray {
 public:
    void Clear(void);
 
-   inline uint16_t& operator[](LinkID linkID) { return links[linkID]; }
-   inline uint16_t operator[](LinkID linkID) const { return links[linkID]; }
+   inline CompressedLink& operator[](LinkID linkID) { return links[linkID]; }
+   inline CompressedLink operator[](LinkID linkID) const { return links[linkID]; }
 
 private:
-   uint16_t links[LINK_COUNT];
+   CompressedLink links[LINK_COUNT];
 };
 
 class LinkedCards {

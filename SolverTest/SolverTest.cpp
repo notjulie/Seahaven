@@ -10,8 +10,8 @@ int main()
    TestSolver tester;
 
    tester.testZeroMoveProblem();
-   tester.testSingleColumnToColumnProblem();
    tester.testSingleColumnToTowerProblem();
+   tester.testSingleColumnToColumnProblem();
    tester.TestCache();
 
    tester.TestScottsProblem();

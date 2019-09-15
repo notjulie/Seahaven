@@ -20,7 +20,7 @@ void LinksArray::Clear(void)
 {
    LinkedCard  nullCard;
    for (int i = 0; i < LINK_COUNT; ++i)
-      links[i] = nullCard.AsUInt16();
+      links[i] = nullCard;
 }
 
 
