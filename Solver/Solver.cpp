@@ -252,10 +252,10 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
    // find the source column
    LinkedCard targetCard = stackPointer->GetColumnBottomCard(targetColumn);
-   int sourceColumn = LinkedCards::GetColumnIndex(targetCard.toLower);
+   int sourceColumn = targetCard.toLower.GetColumnIndex();
    if (sourceColumn < 0)
       return;
-   int sourceRow = LinkedCards::GetRowIndex(targetCard.toLower);
+   int sourceRow = targetCard.toLower.GetRowIndex();
 
    // move cards off the column until we move the source card or something
    // we disapprove of happens

@@ -24,6 +24,9 @@
     <ClInclude Include="SolverMove.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CardLocation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Solver.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Suit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CardLocation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

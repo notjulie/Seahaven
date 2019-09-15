@@ -189,21 +189,21 @@ bool SolverState::DoFreeMoves(void)
       for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
       {
          LinkedCard ace = cards.GetAce(suit);
-         LinkID nextAceCard = ace.toHigher;
-         if (LinkedCards::IsTower(nextAceCard) || LinkedCards::IsThrone(nextAceCard))
+         CardLocation nextAceCard = ace.toHigher;
+         if (nextAceCard.IsTower() || nextAceCard.IsThrone())
          {
-            cards.MoveToLower(nextAceCard);
+            cards.MoveToLower(nextAceCard.GetLinkID());
             acesMoved = true;
             continue;
          }
          
-         int column = ((uint8_t)nextAceCard - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
+         int column = nextAceCard.GetColumnIndex();
          if (column>=0 && column<=9)
          {
-            int row = ((uint8_t)nextAceCard - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
+            int row = nextAceCard.GetRowIndex();
             if (row+1 == columnCounts.Get(column))
             {
-               cards.MoveToLower(nextAceCard);
+               cards.MoveToLower(nextAceCard.GetLinkID());
                columnCounts.Decrement(column);
                acesMoved = true;
             }
@@ -221,7 +221,7 @@ bool SolverState::DoFreeMoves(void)
       LinkedCard tower = cards.GetTower(i);
       if (tower.size == 0)
          continue;
-      if (LinkedCards::IsThrone(tower.toHigher) || IsBottomColumnCard(tower.toHigher))
+      if (tower.toHigher.IsThrone() || IsBottomColumnCard(tower.toHigher))
       {
          cards.MoveToHigher(LinkedCards::GetTowerLinkID(i));
          didFreeMoves = true;
@@ -233,7 +233,7 @@ bool SolverState::DoFreeMoves(void)
    for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
    {
       LinkedCard throne = cards.GetThrone(suit);
-      if (LinkedCards::IsTower(throne.toLower) || IsOnlyCardOnColumn(throne.toLower))
+      if (throne.toLower.IsTower() || IsOnlyCardOnColumn(throne.toLower.GetLinkID()))
       {
          cards.MoveToHigher(LinkedCards::GetThroneLinkID(suit));
          didFreeMoves = true;
@@ -243,12 +243,12 @@ bool SolverState::DoFreeMoves(void)
    return didFreeMoves;
 }
 
-bool SolverState::IsBottomColumnCard(LinkID link) const
+bool SolverState::IsBottomColumnCard(CardLocation cardLocation) const
 {
-   int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
+   int column = cardLocation.GetColumnIndex();
    if (column<0 || column>9)
       return false;
-   int row = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
+   int row = cardLocation.GetRowIndex();
    return (row+1 == columnCounts.Get(column));
 }
 

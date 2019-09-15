@@ -8,21 +8,13 @@
 #ifndef LINKEDCARDS_H
 #define	LINKEDCARDS_H
 
+#include "CardLocation.h"
 #include "Suit.h"
-
-enum class LinkID : uint8_t {
-   FIRST_COLUMN_LINK = 0,
-   FIRST_TOWER_LINK = 50,
-   FIRST_ACE_LINK = 54,
-   FIRST_THRONE_LINK = 58,
-   LINK_COUNT = 62,
-   NO_LINK = LINK_COUNT
-};
 
 struct LinkedCard {
 public:
-   LinkID toHigher;
-   LinkID toLower;
+   CardLocation toHigher;
+   CardLocation toLower;
    uint8_t size;
 };
 
@@ -30,14 +22,14 @@ public:
 class alignas(2) CompressedLink {
 public:
    inline CompressedLink& operator=(const LinkedCard & card) {
-      link = CalculateLink(card.toLower, card.toHigher, card.size);
+      link = CalculateLink(card.toLower.GetLinkID(), card.toHigher.GetLinkID(), card.size);
       return *this;
    }
 
    operator LinkedCard() {
       LinkedCard result;
-      result.toHigher = (LinkID)(link >> 10);
-      result.toLower = (LinkID)(0x3f & (link >> 4));
+      result.toHigher.SetLinkID((LinkID)(link >> 10));
+      result.toLower.SetLinkID((LinkID)(0x3f & (link >> 4)));
       result.size = 0xF & link;
       return result;
    }
@@ -105,20 +97,6 @@ public:
       return (LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit.GetIndex()); }
    static inline LinkID GetTowerLinkID(uint8_t tower) {
       return (LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + tower); }
-   static inline bool IsTower(LinkID link) {
-      return (uint8_t)link>= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)link- (uint8_t)LinkID::FIRST_TOWER_LINK<=3; }
-   static inline bool IsThrone(LinkID link) {
-      return (uint8_t)link>= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)link- (uint8_t)LinkID::FIRST_TOWER_LINK<=3; }
-   static inline int GetColumnIndex(LinkID link) {
-      int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
-      if (column >= 10)
-         return -1;
-      else
-         return column;
-   }
-   static inline int GetRowIndex(LinkID link) {
-      return ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
-   }
 
 private:
    LinksArray links;

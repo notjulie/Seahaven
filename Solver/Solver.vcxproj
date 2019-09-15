@@ -153,11 +153,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CardLocation.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SolverMove.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CardLocation.cpp" />
     <ClCompile Include="LinkedCards.cpp" />
     <ClCompile Include="ProblemCard.cpp" />
     <ClCompile Include="ProblemCards.cpp" />
