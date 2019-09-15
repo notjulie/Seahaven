@@ -42,9 +42,6 @@ private:
    void  MoveColumnToTower(int columnIndex);
 
 private:
-   static LinkID GetLinkID(const SeahavenProblem &problem, Suit suit, uint8_t rank);
-
-private:
    LinkedCards    cards;
    SolverMove     movePerformed;
    ColumnCounts   columnCounts;

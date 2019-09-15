@@ -30,13 +30,11 @@ SolverState::SolverState(const SeahavenProblem &problem) {
       for (int j=0; j<compactedCards.size(); ++j)
       {
          // get the links
-         LinkID highLink = GetLinkID(
-            problem,
+         LinkID highLink = problem.GetCardLinkID(
             compactedCards[j].topCard.GetSuit(),
             compactedCards[j].topCard.GetRank() + 1
             );
-         LinkID lowLink = GetLinkID(
-            problem,
+         LinkID lowLink = problem.GetCardLinkID(
             compactedCards[j].topCard.GetSuit(),
             compactedCards[j].topCard.GetRank() - compactedCards[j].cardCount
             );
@@ -58,13 +56,11 @@ SolverState::SolverState(const SeahavenProblem &problem) {
       ProblemCard tower = problem.GetTower(i);
       if (!tower.IsNull())
       {
-         LinkID highLink = GetLinkID(
-            problem,
+         LinkID highLink = problem.GetCardLinkID(
             tower.GetSuit(),
             tower.GetRank() + 1
             );
-         LinkID lowLink = GetLinkID(
-            problem,
+         LinkID lowLink = problem.GetCardLinkID(
             tower.GetSuit(),
             tower.GetRank() - 1
             );
@@ -293,49 +289,6 @@ int SolverState::GetEmptyColumnCount(void) const
    return emptyColumns;
 }
 
-
-/// <summary>
-/// Locates the given card in the problem object and returns its location
-/// as a link.
-/// </summary>
-LinkID SolverState::GetLinkID(const SeahavenProblem &problem, Suit suit, uint8_t rank)
-{
-   // a rank of zero would mean the location that an ace would link down to
-   if (rank == 0)
-      return LinkedCards::GetAceLinkID(suit);
-   
-   // a rank of 14 would be the location that a king would link up to
-   if (rank == 14)
-      return LinkedCards::GetThroneLinkID(suit);
-   
-   // see if it's on a column
-   for (int columnIndex=0; columnIndex<10; ++columnIndex)
-   {
-      std::vector<CompactedColumnCard> compactedCards = problem.GetCompactedColumn(columnIndex);
-
-      for (int i=0; i<compactedCards.size(); ++i)
-      {
-         if (suit != compactedCards[i].topCard.GetSuit())
-            continue;
-         int   topRank = compactedCards[i].topCard.GetRank();
-         int   bottomRank = topRank + 1 - compactedCards[i].cardCount;
-         if (rank>=bottomRank && rank<=topRank)
-            return LinkedCards::GetColumnLinkID(columnIndex, i);
-      }
-   }
-   
-   // see if it's on a tower
-   for (int towerIndex=0; towerIndex<4; ++towerIndex)
-   {
-      ProblemCard card = problem.GetTower(towerIndex);
-      if (card.GetSuit()==suit && card.GetRank()==rank)
-         return LinkedCards::GetTowerLinkID(towerIndex);
-   }
-   
-   // else we assume it must be sitting on top of the ace pile... there isn't
-   // anywhere else that it could be
-   return LinkedCards::GetAceLinkID(suit);
-}
 
 SolverHashCode SolverState::GetHashValue(void) const
 {

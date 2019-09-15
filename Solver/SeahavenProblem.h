@@ -8,6 +8,7 @@
 #ifndef SEAHAVENPROBLEM_H
 #define	SEAHAVENPROBLEM_H
 
+#include "CardLocation.h"
 #include "ProblemCards.h"
 
 struct CompactedColumnCard {
@@ -36,6 +37,7 @@ public:
     void Dump(void);
     std::vector<CompactedColumnCard> GetCompactedColumn(uint8_t columnIndex) const;
     ProblemCard GetTower(uint8_t index) const { return towers.GetCard(index); }
+    LinkID GetCardLinkID(Suit suit, uint8_t rank) const;
 
     static SeahavenProblem CreateRandom(void);
 

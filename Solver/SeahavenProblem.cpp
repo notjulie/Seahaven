@@ -7,6 +7,7 @@
 
 #include "SolverIncludes.h"
 
+#include "LinkedCards.h"
 #include "ProblemCards.h"
 #include "SolverException.h"
 
@@ -129,3 +130,48 @@ std::vector<CompactedColumnCard> SeahavenProblem::GetCompactedColumn(uint8_t col
    // return the result
    return result;
 }
+
+
+/// <summary>
+/// Locates the given card in the problem object and returns its location
+/// as a link.
+/// </summary>
+LinkID SeahavenProblem::GetCardLinkID(Suit suit, uint8_t rank) const
+{
+   // a rank of zero would mean the location that an ace would link down to
+   if (rank == 0)
+      return suit.GetAceLinkID();
+
+   // a rank of 14 would be the location that a king would link up to
+   if (rank == 14)
+      return suit.GetThroneLinkID();
+
+   // see if it's on a column
+   for (int columnIndex = 0; columnIndex < 10; ++columnIndex)
+   {
+      std::vector<CompactedColumnCard> compactedCards = GetCompactedColumn(columnIndex);
+
+      for (int i = 0; i < compactedCards.size(); ++i)
+      {
+         if (suit != compactedCards[i].topCard.GetSuit())
+            continue;
+         int   topRank = compactedCards[i].topCard.GetRank();
+         int   bottomRank = topRank + 1 - compactedCards[i].cardCount;
+         if (rank >= bottomRank && rank <= topRank)
+            return LinkedCards::GetColumnLinkID(columnIndex, i);
+      }
+   }
+
+   // see if it's on a tower
+   for (int towerIndex = 0; towerIndex < 4; ++towerIndex)
+   {
+      ProblemCard card = GetTower(towerIndex);
+      if (card.GetSuit() == suit && card.GetRank() == rank)
+         return LinkedCards::GetTowerLinkID(towerIndex);
+   }
+
+   // else we assume it must be sitting on top of the ace pile... there isn't
+   // anywhere else that it could be
+   return suit.GetAceLinkID();
+}
+

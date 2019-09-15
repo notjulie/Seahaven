@@ -9,6 +9,7 @@
 #define	LINKEDCARDS_H
 
 #include "CardLocation.h"
+#include "ProblemCard.h"
 #include "Suit.h"
 
 struct LinkedCard {
