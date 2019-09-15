@@ -197,10 +197,10 @@ bool SolverState::DoFreeMoves(void)
             continue;
          }
          
-         int column = (nextAceCard - FIRST_COLUMN_LINK) / 5;
+         int column = ((uint8_t)nextAceCard - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
          if (column>=0 && column<=9)
          {
-            int row = (nextAceCard - FIRST_COLUMN_LINK) % 5;
+            int row = ((uint8_t)nextAceCard - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
             if (row+1 == columnCounts.Get(column))
             {
                cards.MoveToLower(nextAceCard);
@@ -245,16 +245,16 @@ bool SolverState::DoFreeMoves(void)
 
 bool SolverState::IsBottomColumnCard(LinkID link) const
 {
-   int column = (link - FIRST_COLUMN_LINK) / 5;
+   int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
    if (column<0 || column>9)
       return false;
-   int row = (link - FIRST_COLUMN_LINK) % 5;
+   int row = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
    return (row+1 == columnCounts.Get(column));
 }
 
 bool SolverState::IsOnlyCardOnColumn(LinkID link) const
 {
-   int column = (link - FIRST_COLUMN_LINK) / 5;
+   int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
    if (column<0 || column>9)
       return false;
    return columnCounts.Get(column) == 0;

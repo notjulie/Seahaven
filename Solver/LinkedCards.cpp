@@ -13,7 +13,7 @@
 #include "LinkedCards.h"
 
 
-const CompressedLink CompressedLink::Null = CompressedLink::Create(NO_LINK, NO_LINK, 0);
+const CompressedLink CompressedLink::Null = CompressedLink::Create(LinkID::NO_LINK, LinkID::NO_LINK, 0);
 
 
 // ==============================================================
@@ -22,7 +22,7 @@ const CompressedLink CompressedLink::Null = CompressedLink::Create(NO_LINK, NO_L
 
 void LinksArray::Clear(void)
 {
-   for (int i = 0; i < LINK_COUNT; ++i)
+   for (int i = 0; i < (uint8_t)LinkID::LINK_COUNT; ++i)
       links[i] = CompressedLink::Null;
 }
 
@@ -42,27 +42,27 @@ void LinkedCards::Clear(void)
 
 LinkedCard LinkedCards::GetAce(Suit suit) const
 {
-   return LinkedCard(links[(LinkID)(FIRST_ACE_LINK + suit)]);
+   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit)]);
 }
 
 int LinkedCards::GetEmptyTowers(void) const
 {
    return
       4 -
-      LinkedCard(links[FIRST_TOWER_LINK]).size -
-      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 1)]).size -
-      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 2)]).size -
-      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 3)]).size;
+      LinkedCard(links[LinkID::FIRST_TOWER_LINK]).size -
+      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 1)]).size -
+      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 2)]).size -
+      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 3)]).size;
 }
 
 LinkedCard LinkedCards::GetTower(int i) const
 {
-   return LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + i)]);
+   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + i)]);
 }
 
 LinkedCard LinkedCards::GetThrone(int i) const
 {
-   return LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + i)]);
+   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + i)]);
 }
 
 LinkedCard LinkedCards::GetColumnCard(int column, int row) const
@@ -78,9 +78,9 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
       LinkedCard  card(links[link]);
       rank += card.size;
       
-      if (card.toLower == NO_LINK)
+      if (card.toLower == LinkID::NO_LINK)
          return ProblemCard(
-            (Suit)(link - FIRST_ACE_LINK),
+            (Suit)((uint8_t)link - (uint8_t)LinkID::FIRST_ACE_LINK),
             rank
             );
       
@@ -91,10 +91,10 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
 int LinkedCards::GetThroneOccupationMask(void) const
 {
    return
-      (LinkedCard(links[FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
-      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
-      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
-      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
+      (LinkedCard(links[LinkID::FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
+      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
+      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
+      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
 }
 
 bool LinkedCards::IsKing(LinkedCard card) const
@@ -157,7 +157,7 @@ void LinkedCards::MoveToLower(LinkID link)
    LinkedCard card(links[link]);
    
    // link the higher to the lower
-   if (card.toHigher != NO_LINK)
+   if (card.toHigher != LinkID::NO_LINK)
    {
       LinkedCard higher(links[card.toHigher]);
       higher.toLower = card.toLower;
@@ -178,13 +178,13 @@ void LinkedCards::MoveToLower(LinkID link)
 void LinkedCards::MoveToOpenTower(LinkID link)
 {
    // find an open tower... we assume we have one
-   LinkID tower = FIRST_TOWER_LINK;
+   LinkID tower = LinkID::FIRST_TOWER_LINK;
    for (;;)
    {
       LinkedCard t(links[tower]);
       if (t.size == 0)
          break;
-      tower = (LinkID)(tower + 1);
+      tower = (LinkID)((uint8_t)tower + 1);
    }
    
    // get the card
@@ -211,18 +211,18 @@ void LinkedCards::SetAceSizes(void)
    // aces must be 13 - all other cards in the suit's chain
    for (int i=0; i<4; ++i)
    {
-      LinkedCard  ace(links[(LinkID)(FIRST_ACE_LINK + i)]);
+      LinkedCard  ace(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)]);
       
       int totalCards = 0;
       LinkedCard  card = ace;
-      while (card.toHigher != NO_LINK)
+      while (card.toHigher != LinkID::NO_LINK)
       {
          card = LinkedCard(links[card.toHigher]);
          totalCards += card.size;
       }
       
       ace.size = 13 - totalCards;
-      links[(LinkID)(FIRST_ACE_LINK + i)] = ace;
+      links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)] = ace;
    }
 }
 
@@ -236,9 +236,9 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
 {
    // update the card in question
    LinkedCard  linkedCard(links[card]);
-   if (linkedCard.toLower!=NO_LINK && linkedCard.toLower!=toLow)
+   if (linkedCard.toLower!= LinkID::NO_LINK && linkedCard.toLower!=toLow)
       throw SolverException("LinkedCards::SetCard: rewriting link to lower");
-   if (linkedCard.toHigher!=NO_LINK && linkedCard.toHigher!=toHigh)
+   if (linkedCard.toHigher!= LinkID::NO_LINK && linkedCard.toHigher!=toHigh)
       throw SolverException("LinkedCards::SetCard: rewriting link to higher");
    linkedCard.toHigher = toHigh;
    linkedCard.toLower = toLow;
@@ -246,20 +246,20 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
    links[card] = linkedCard;
 
    // update the lower
-   if (toLow != NO_LINK)
+   if (toLow != LinkID::NO_LINK)
    {
       LinkedCard  lowerCard(links[toLow]);
-      if (lowerCard.toHigher!=NO_LINK && lowerCard.toHigher!=card)
+      if (lowerCard.toHigher!= LinkID::NO_LINK && lowerCard.toHigher!=card)
          throw SolverException("LinkedCards::SetCard: rewriting link from lower");
       lowerCard.toHigher = card;
       links[toLow] = lowerCard;      
    }
    
    // update the higher
-   if (toHigh != NO_LINK)
+   if (toHigh != LinkID::NO_LINK)
    {
       LinkedCard  higherCard(links[toHigh]);
-      if (higherCard.toLower!=NO_LINK && higherCard.toLower!=card)
+      if (higherCard.toLower!= LinkID::NO_LINK && higherCard.toLower!=card)
          throw SolverException("LinkedCards::SetCard: rewriting link from higher");
       higherCard.toLower = card;
       links[toHigh] = higherCard;

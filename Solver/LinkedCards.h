@@ -10,7 +10,7 @@
 
 #include "Suit.h"
 
-enum LinkID {
+enum class LinkID : uint8_t {
    FIRST_COLUMN_LINK = 0,
    FIRST_TOWER_LINK = 50,
    FIRST_ACE_LINK = 54,
@@ -55,8 +55,8 @@ private:
    inline static uint16_t CalculateLink(LinkID toLower, LinkID toHigher, uint8_t size) {
       return
          size +
-         (toLower << 4) +
-         (toHigher << 10);
+         ((uint8_t)toLower << 4) +
+         ((uint8_t)toHigher << 10);
    }
 
 private:
@@ -69,11 +69,11 @@ class LinksArray {
 public:
    void Clear(void);
 
-   inline CompressedLink& operator[](LinkID linkID) { return links[linkID]; }
-   inline CompressedLink operator[](LinkID linkID) const { return links[linkID]; }
+   inline CompressedLink& operator[](LinkID linkID) { return links[(uint8_t)linkID]; }
+   inline CompressedLink operator[](LinkID linkID) const { return links[(uint8_t)linkID]; }
 
 private:
-   CompressedLink links[LINK_COUNT];
+   CompressedLink links[(uint8_t)LinkID::LINK_COUNT];
 };
 
 class LinkedCards {
@@ -98,26 +98,26 @@ public:
    
 public:
    static inline LinkID GetAceLinkID(Suit suit) {
-      return (LinkID)(FIRST_ACE_LINK + suit); }
+      return (LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit); }
    static inline LinkID GetColumnLinkID(uint8_t column, uint8_t index) {
-      return (LinkID)(FIRST_COLUMN_LINK + 5*column + index); }
+      return (LinkID)((uint8_t)LinkID::FIRST_COLUMN_LINK + 5*column + index); }
    static inline LinkID GetThroneLinkID(Suit suit) {
-      return (LinkID)(FIRST_THRONE_LINK + suit); }
+      return (LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit); }
    static inline LinkID GetTowerLinkID(uint8_t tower) {
-      return (LinkID)(FIRST_TOWER_LINK + tower); }
+      return (LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + tower); }
    static inline bool IsTower(LinkID link) {
-      return link>=FIRST_TOWER_LINK && link-FIRST_TOWER_LINK<=3; }
+      return (uint8_t)link>= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)link- (uint8_t)LinkID::FIRST_TOWER_LINK<=3; }
    static inline bool IsThrone(LinkID link) {
-      return link>=FIRST_TOWER_LINK && link-FIRST_TOWER_LINK<=3; }
+      return (uint8_t)link>= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)link- (uint8_t)LinkID::FIRST_TOWER_LINK<=3; }
    static inline int GetColumnIndex(LinkID link) {
-      int column = (link - FIRST_COLUMN_LINK) / 5;
+      int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
       if (column >= 10)
          return -1;
       else
          return column;
    }
    static inline int GetRowIndex(LinkID link) {
-      return (link - FIRST_COLUMN_LINK) % 5;
+      return ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
    }
 
 private:
