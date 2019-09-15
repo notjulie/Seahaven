@@ -33,13 +33,6 @@ public:
       size = 0xF & ui16;
    }
 
-   uint16_t AsUInt16(void) const {
-      return
-         size +
-         (toLower << 4) +
-         (toHigher << 10);
-   }
-
 public:
    LinkID toHigher;
    LinkID toLower;
@@ -51,7 +44,10 @@ class alignas(2) CompressedLink {
 public:
 
    inline CompressedLink& operator=(const LinkedCard & card) {
-      link = card.AsUInt16();
+      link = 
+         card.size +
+         (card.toLower << 4) +
+         (card.toHigher << 10);
       return *this;
    }
 

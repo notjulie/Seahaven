@@ -107,17 +107,17 @@ void LinkedCards::MoveToHigher(LinkID link)
    // link the lower to the higher
    LinkedCard lower(links[card.toLower]);
    lower.toHigher = card.toHigher;
-   links[card.toLower] = lower.AsUInt16();
+   links[card.toLower] = lower;
    
    // link the higher to the lower and add the size of the card
    // being moved
    LinkedCard higher(links[card.toHigher]);
    higher.toLower = card.toLower;
    higher.size += card.size;
-   links[card.toHigher] = higher.AsUInt16();
+   links[card.toHigher] = higher;
    
    // make the card being moved go away
-   links[link] = LinkedCard().AsUInt16();
+   links[link] = LinkedCard();
 }
 
 void LinkedCards::MoveColumnCardToHigher(LinkID link)
@@ -138,11 +138,11 @@ void LinkedCards::MoveColumnCardToHigher(LinkID link)
    // make the higher bigger by one
    LinkedCard higher(links[card.toHigher]);
    higher.size++;
-   links[card.toHigher] = higher.AsUInt16();
+   links[card.toHigher] = higher;
    
    // make the card being moved smaller by one
    card.size--;
-   links[link] = card.AsUInt16();
+   links[link] = card;
    
    // move the rest of the card to a tower
    MoveToOpenTower(link);
@@ -158,7 +158,7 @@ void LinkedCards::MoveToLower(LinkID link)
    {
       LinkedCard higher(links[card.toHigher]);
       higher.toLower = card.toLower;
-      links[card.toHigher] = higher.AsUInt16();
+      links[card.toHigher] = higher;
    }
    
    // link the lower to the higher and add the size of the card
@@ -166,10 +166,10 @@ void LinkedCards::MoveToLower(LinkID link)
    LinkedCard lower(links[card.toLower]);
    lower.toHigher = card.toHigher;
    lower.size += card.size;
-   links[card.toLower] = lower.AsUInt16();
+   links[card.toLower] = lower;
    
    // make the card being moved go away
-   links[link] = LinkedCard().AsUInt16();
+   links[link] = LinkedCard();
 }
 
 void LinkedCards::MoveToOpenTower(LinkID link)
@@ -190,16 +190,16 @@ void LinkedCards::MoveToOpenTower(LinkID link)
    // link the lower to the tower
    LinkedCard lower(links[card.toLower]);
    lower.toHigher = tower;
-   links[card.toLower] = lower.AsUInt16();
+   links[card.toLower] = lower;
    
    // link the higher to the tower
    LinkedCard higher(links[card.toHigher]);
    higher.toLower = tower;
-   links[card.toHigher] = higher.AsUInt16();
+   links[card.toHigher] = higher;
    
    // move the card to the tower
    links[tower] = links[link];
-   links[link] = LinkedCard().AsUInt16();
+   links[link] = LinkedCard();
 }
 
 void LinkedCards::SetAceSizes(void)
@@ -219,7 +219,7 @@ void LinkedCards::SetAceSizes(void)
       }
       
       ace.size = 13 - totalCards;
-      links[(LinkID)(FIRST_ACE_LINK + i)] = ace.AsUInt16();
+      links[(LinkID)(FIRST_ACE_LINK + i)] = ace;
    }
 }
 
@@ -240,7 +240,7 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
    linkedCard.toHigher = toHigh;
    linkedCard.toLower = toLow;
    linkedCard.size = size;
-   links[card] = linkedCard.AsUInt16();
+   links[card] = linkedCard;
 
    // update the lower
    if (toLow != NO_LINK)
@@ -249,7 +249,7 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
       if (lowerCard.toHigher!=NO_LINK && lowerCard.toHigher!=card)
          throw SolverException("LinkedCards::SetCard: rewriting link from lower");
       lowerCard.toHigher = card;
-      links[toLow] = lowerCard.AsUInt16();      
+      links[toLow] = lowerCard;      
    }
    
    // update the higher
@@ -259,6 +259,6 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
       if (higherCard.toLower!=NO_LINK && higherCard.toLower!=card)
          throw SolverException("LinkedCards::SetCard: rewriting link from higher");
       higherCard.toLower = card;
-      links[toHigh] = higherCard.AsUInt16();
+      links[toHigh] = higherCard;
    }   
 }
