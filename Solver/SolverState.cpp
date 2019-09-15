@@ -186,9 +186,9 @@ bool SolverState::DoFreeMoves(void)
    for (;;)
    {
       bool acesMoved = false;
-      for (int i=0; i<4; ++i)
+      for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
       {
-         LinkedCard ace = cards.GetAce((Suit)i);
+         LinkedCard ace = cards.GetAce(suit);
          LinkID nextAceCard = ace.toHigher;
          if (LinkedCards::IsTower(nextAceCard) || LinkedCards::IsThrone(nextAceCard))
          {
@@ -230,12 +230,12 @@ bool SolverState::DoFreeMoves(void)
 
    // any kings sitting on a tower or as the only card on a column get moved
    // to their throne
-   for (int i=0; i<4; ++i)
+   for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
    {
-      LinkedCard throne = cards.GetThrone(i);
+      LinkedCard throne = cards.GetThrone(suit);
       if (LinkedCards::IsTower(throne.toLower) || IsOnlyCardOnColumn(throne.toLower))
       {
-         cards.MoveToHigher(LinkedCards::GetThroneLinkID((Suit)i));
+         cards.MoveToHigher(LinkedCards::GetThroneLinkID(suit));
          didFreeMoves = true;
       }
    }

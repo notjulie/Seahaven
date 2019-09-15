@@ -16,7 +16,7 @@ ProblemCard::ProblemCard(const char *_s)
     if (_s == NULL)
     {
         rank = 0;
-        suit = Clubs;
+        suit = Suit::Clubs;
         return;
     }
     
@@ -67,19 +67,19 @@ ProblemCard::ProblemCard(const char *_s)
     switch (_s[1])
     {
         case 'C':
-            suit = Clubs;
+            suit = Suit::Clubs;
             break;
             
         case 'D':
-            suit = Diamonds;
+            suit = Suit::Diamonds;
             break;
             
         case 'H':
-            suit = Hearts;
+            suit = Suit::Hearts;
             break;
             
         case 'S':
-            suit = Spades;
+            suit = Suit::Spades;
             break;
             
         default:
@@ -107,11 +107,10 @@ bool ProblemCard::operator==(const ProblemCard &that) const
 void ProblemCard::DumpToConsole(void) const
 {
    static const char ranks[] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J','Q', 'K'};
-   static const char suits[] = {'C', 'D', 'H', 'S'};
    
    char s[3];
    s[0] = ranks[rank - 1];
-   s[1] = suits[suit];
+   s[1] = suit.GetMnemonic();
    s[2] = 0;
    printf("%s\r\n", s);
 }

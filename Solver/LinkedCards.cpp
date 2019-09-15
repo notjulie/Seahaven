@@ -42,7 +42,7 @@ void LinkedCards::Clear(void)
 
 LinkedCard LinkedCards::GetAce(Suit suit) const
 {
-   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit)]);
+   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit.GetIndex())]);
 }
 
 int LinkedCards::GetEmptyTowers(void) const
@@ -60,9 +60,9 @@ LinkedCard LinkedCards::GetTower(int i) const
    return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + i)]);
 }
 
-LinkedCard LinkedCards::GetThrone(int i) const
+LinkedCard LinkedCards::GetThrone(Suit suit) const
 {
-   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + i)]);
+   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit.GetIndex())]);
 }
 
 LinkedCard LinkedCards::GetColumnCard(int column, int row) const
@@ -80,7 +80,7 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
       
       if (card.toLower == LinkID::NO_LINK)
          return ProblemCard(
-            (Suit)((uint8_t)link - (uint8_t)LinkID::FIRST_ACE_LINK),
+            Suit::All[((uint8_t)link - (uint8_t)LinkID::FIRST_ACE_LINK)],
             rank
             );
       

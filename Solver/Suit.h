@@ -9,13 +9,35 @@
 #define	SUIT_H
 
 
-enum Suit {
-    Clubs,
-    Diamonds,
-    Hearts,
-    Spades
-};
+class Suit {
+public:
+   inline uint8_t GetIndex(void) const { return index; }
 
+   inline bool operator<=(Suit suit) const { return index <= suit.index; }
+   inline bool operator==(Suit suit) const { return index == suit.index; }
+   inline bool operator!=(Suit suit) const { return index != suit.index; }
+   inline Suit operator++() { ++index; return *this; }
+
+public:
+   char GetMnemonic(void) const;
+
+public:
+   static Suit FromIndex(int index);
+
+public:
+   static const Suit Clubs;
+   static const Suit Diamonds;
+   static const Suit Hearts;
+   static const Suit Spades;
+
+   static const Suit First;
+   static const Suit Last;
+
+   static const Suit All[4];
+
+private:
+   uint8_t index;
+};
 
 #endif	/* SUIT_H */
 

@@ -59,10 +59,10 @@ SeahavenProblem SeahavenProblem::CreateRandom(void)
 
    // create a deck
    std::vector<ProblemCard>  deck;
-   for (int suit = 0; suit < 4; ++suit)
+   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
    {
       for (int rank = 1; rank <= 13; ++rank)
-         deck.push_back(ProblemCard((Suit)suit, rank));
+         deck.push_back(ProblemCard(suit, rank));
    }
 
    // push random cards into the result
