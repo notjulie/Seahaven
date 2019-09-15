@@ -276,6 +276,24 @@ void SolverState::Clear(void)
    cards.Clear();
 }
 
+
+int SolverState::GetEmptyColumnCount(void) const
+{
+   // first we check the columns that are empty
+   int emptyColumns = columnCounts.GetEmptyCount();
+
+   // Thrones are basically places that kings sit when there are empty columns, since
+   // there's no effective difference between a king on column 1 or column 7.  So
+   // subtract one from the count for any non-empty throne.
+   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+      if (cards.GetThrone(suit).size != 0)
+         --emptyColumns;
+
+   // done
+   return emptyColumns;
+}
+
+
 /// <summary>
 /// Locates the given card in the problem object and returns its location
 /// as a link.
@@ -328,32 +346,4 @@ SolverHashCode SolverState::GetHashValue(void) const
 }
 
 
-
-ColumnCounts::ColumnCounts(void)
-{
-   Clear();
-}
-
-void ColumnCounts::Clear(void)
-{
-   for (int i = 0; i < 10; ++i)
-      columnCounts[i] = 0;
-}
-
-void ColumnCounts::Decrement(uint8_t column)
-{
-   if (--columnCounts[column] >= 10)
-      throw SolverException("ColumnCounts::Decrement: count overflow");
-}
-
-uint8_t ColumnCounts::Get(uint8_t column) const
-{
-   return columnCounts[column];
-}
-
-void ColumnCounts::Increment(uint8_t column)
-{
-   if (++columnCounts[column] >= 10)
-      throw SolverException("ColumnCounts::Decrement: count overflow");
-}
 

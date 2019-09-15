@@ -98,6 +98,29 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
    // move cards off the column until we do something that seems to have a purpose
    for (;;)
    {
+      // if this is the last card on the column and we don't have any empty columns,
+      // then the purpose of this move is to empty a column in order to move a king
+      // to the column
+      if (stackPointer->GetColumnCardCount(column) == 1)
+      {
+         // if we already have empty columns then this would not be a productive move...
+         // we've followed this sequence as far as we can
+         if (stackPointer->GetEmptyColumnCount() != 0)
+            return;
+
+         // push
+         stackPointer.PushCurrentState();
+
+         // move
+         move.type = SolverMoveType::FromColumnToTower;
+         move.column = column;
+         stackPointer->PerformMove(move);
+
+         // try all possibilities for the next move
+         TryMoveAnyKingToColumn(stackPointer);
+         return;
+      }
+
       // if the next card on the column can move to a column, that counts as a
       // move that has a purpose, so we try that and exit
       if (stackPointer->CanMoveColumnToColumn(column))
@@ -124,14 +147,6 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
       move.type = SolverMoveType::FromColumnToTower;
       move.column = column;
       stackPointer->PerformMove(move);
-
-      // if that empties out the column, the only purpose that can serve is if we
-      // move a king to an empty column
-      if (stackPointer->GetColumnCardCount(column) == 0)
-      {
-         TryMoveAnyKingToColumn(stackPointer);
-         return;
-      }
 
       // see if we can do any free moves
       switch (DoFreeMoves(stackPointer))
