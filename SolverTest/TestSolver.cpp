@@ -45,8 +45,8 @@ void TestSolver::TestCache(void)
       throw SolverException("TestSolver::TestCache: results do not match");
 
    // but faster
-   int stepsWithCacheing = solverWithCacheing.GetTotalSteps();
-   int stepsWithoutCacheing = solverWithoutCacheing.GetTotalSteps();
+   int stepsWithCacheing = solutionWithCacheing.GetTotalBranchesTested();
+   int stepsWithoutCacheing = solutionWithoutCacheing.GetTotalBranchesTested();
    if (stepsWithoutCacheing <= stepsWithCacheing)
       throw SolverException("TestSolver::TestCache: cacheing didn't help");
 }

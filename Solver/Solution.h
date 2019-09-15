@@ -19,6 +19,9 @@ public:
     void AddStep(const SolutionStep &step);
     void DumpToConsole(void) const;
 
+    int GetTotalBranchesTested(void) const { return totalBranchesTested; }
+    void SetTotalBranchesTested(int _totalBranchesTested) { totalBranchesTested = _totalBranchesTested; }
+
 public:
    bool operator==(const Solution&) const;
    bool operator!=(const Solution&s) const { return !operator==(s); }
@@ -28,6 +31,7 @@ public:
    
 private:
    bool  success;
+   int   totalBranchesTested = 0;
    std::vector<SolutionStep>  steps;
 };
 

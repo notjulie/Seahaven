@@ -14,15 +14,10 @@
 #include "Solver.h"
 
 Solver::Solver() {
-   // clear
-   totalSteps = 0;
 }
 
 Solution Solver::Solve(const SeahavenProblem& problem)
 {
-   // clear
-   totalSteps = 0;
-
    // allocate the stack
    stateStack.SetSize(100);
 
@@ -48,7 +43,11 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 
    // if no solution was found...
    if (resultStack.IsEmpty())
-      return Solution::Fail();
+   {
+      Solution solution = Solution::Fail();
+      solution.SetTotalBranchesTested(stateStack.GetTotalPushCount());
+      return solution;
+   }
 
    // else put together a solution from the changing states
    Solution solution;
@@ -66,6 +65,8 @@ Solution Solver::Solve(const SeahavenProblem& problem)
          throw SolverException("Solver::Solve: unrecognized move type");
       }
    }
+
+   solution.SetTotalBranchesTested(stateStack.GetTotalPushCount());
    return solution;
 }
 

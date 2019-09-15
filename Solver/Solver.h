@@ -18,13 +18,16 @@ class SeahavenProblem;
 class SolverStack {
 public:
    size_t GetSize(void) const { return stack.size(); }
+   int GetTotalPushCount(void) const { return totalPushes; }
    bool IsEmpty(void) const { return stack.empty(); }
    void SetSize(int size) { stack.resize(size); }
+   inline void IncrementPushCount(void) { ++totalPushes; }
 
    inline SolverState& operator[](int i) { return stack[i]; }
 
 private:
    std::vector<SolverState>   stack;
+   int totalPushes = 0;
 };
 
 class StackPointer {
@@ -35,7 +38,7 @@ public:
    }
 
    int GetIndex(void) const { return index; }
-   void PushCurrentState(void) { stack[index + 1] = stack[index]; ++index; }
+   void PushCurrentState(void) { stack[index + 1] = stack[index]; ++index; stack.IncrementPushCount(); }
 
    inline SolverState& operator*(void) { return stack[index]; }
    inline SolverState* operator->(void) { return &stack[index]; }
@@ -50,7 +53,6 @@ public:
    Solver(void);
 
    void DisableCacheing(void) { cache.Disable(); }
-   uint32_t GetTotalSteps(void) const { return totalSteps; }
    Solution Solve(const SeahavenProblem& problem);
 
 private:
@@ -73,7 +75,6 @@ private:
 private:
    SolverStack   stateStack;
    SolverStack   resultStack;
-   uint32_t   totalSteps;
    SolverCache cache;
 };
 
