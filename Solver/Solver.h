@@ -15,6 +15,36 @@
 class SeahavenProblem;
 
 
+class SolverStack {
+public:
+   size_t GetSize(void) const { return stack.size(); }
+   bool IsEmpty(void) const { return stack.empty(); }
+   void SetSize(int size) { stack.resize(size); }
+
+   inline SolverState& operator[](int i) { return stack[i]; }
+
+private:
+   std::vector<SolverState>   stack;
+};
+
+class StackPointer {
+public:
+   StackPointer(SolverStack &_stack)
+      : stack(_stack)
+   {
+   }
+
+   int GetIndex(void) const { return index; }
+   void PushCurrentState(void) { stack[index + 1] = stack[index]; ++index; }
+
+   inline SolverState& operator*(void) { return stack[index]; }
+   inline SolverState* operator->(void) { return &stack[index]; }
+
+private:
+   SolverStack& stack;
+   int index = 0;
+};
+
 class Solver {
 public:
    Solver(void);
@@ -32,17 +62,17 @@ private:
    };
 
 private:
-   FreeMovesResult DoFreeMoves(int currentStateIndex);
-   void DoFreeMovesAndSolve(int currentStateIndex);
-   void  SolverStep(int currentStateIndex);
-   void TryMove(int currentStateIndex, SolverMove move);
-   void TryMoveAnyKingToColumn(int currentStateIndex);
-   void TryMovingACardToColumn(int currentStateIndex, int column);
-   void TryColumnMoves(int currentStateIndex, int column);
+   FreeMovesResult DoFreeMoves(StackPointer stackPointer);
+   void DoFreeMovesAndSolve(StackPointer stackPointer);
+   void  SolverStep(StackPointer stackPointer);
+   void TryMove(StackPointer stackPointer, SolverMove move);
+   void TryMoveAnyKingToColumn(StackPointer stackPointer);
+   void TryMovingACardToColumn(StackPointer stackPointer, int column);
+   void TryColumnMoves(StackPointer stackPointer, int column);
 
 private:
-   std::vector<SolverState>   stateStack;
-   std::vector<SolverState>   resultStack;
+   SolverStack   stateStack;
+   SolverStack   resultStack;
    uint32_t   totalSteps;
    SolverCache cache;
 };

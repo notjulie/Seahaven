@@ -16,9 +16,6 @@
 Solver::Solver() {
    // clear
    totalSteps = 0;
-
-   // allocate the stack
-   stateStack.resize(100);
 }
 
 Solution Solver::Solve(const SeahavenProblem& problem)
@@ -26,12 +23,16 @@ Solution Solver::Solve(const SeahavenProblem& problem)
    // clear
    totalSteps = 0;
 
+   // allocate the stack
+   stateStack.SetSize(100);
+
    // create the initial state
-   stateStack[0] = SolverState(problem);
+   StackPointer stackPointer = StackPointer(stateStack);
+   *stackPointer = SolverState(problem);
 
    // and make sure that it's a clean state with no free moves waiting to be
    // done
-   switch (DoFreeMoves(0))
+   switch (DoFreeMoves(stackPointer))
    {
    case Victory:
       return Solution();
@@ -43,15 +44,15 @@ Solution Solver::Solve(const SeahavenProblem& problem)
    }
 
    // start the process of recursively solving
-   SolverStep(0);
+   SolverStep(stackPointer);
 
    // if no solution was found...
-   if (resultStack.empty())
+   if (resultStack.IsEmpty())
       return Solution::Fail();
 
    // else put together a solution from the changing states
    Solution solution;
-   for (int i = 1; i < resultStack.size(); ++i)
+   for (int i = 1; i < resultStack.GetSize(); ++i)
    {
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       switch (move.type)
@@ -73,28 +74,25 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 /// Tries to solve (recursively) the problem at the given stack index.  On entry it is expected that
 /// auto moves have been performed.
 /// </summary>
-void Solver::SolverStep(int currentStateIndex)
+void Solver::SolverStep(StackPointer stackPointer)
 {
    for (int column = 0; column < 10; ++column)
-      TryColumnMoves(currentStateIndex, column);
+      TryColumnMoves(stackPointer, column);
 }
 
 
 /// <summary>
 /// Tries solving the problem assuming that the next move will be from the given column
 /// </summary>
-void Solver::TryColumnMoves(int currentStateIndex, int column)
+void Solver::TryColumnMoves(StackPointer stackPointer, int column)
 {
    SolverMove move;
 
    // Our goal is to find a move that has a purpose.  We move cards off the column until
    // we expose a card that serves some particular purpose.  Details as we go along...
 
-   // point to the top of the stack
-   SolverState *currentState = &stateStack[currentStateIndex];
-
    // right away we know we should exit if the column is empty
-   if (currentState->GetColumnCardCount(column) == 0)
+   if (stackPointer->GetColumnCardCount(column) == 0)
       return;
 
    // move cards off the column until we do something that seems to have a purpose
@@ -102,55 +100,51 @@ void Solver::TryColumnMoves(int currentStateIndex, int column)
    {
       // if the next card on the column can move to a column, that counts as a
       // move that has a purpose, so we try that and exit
-      if (currentState->CanMoveColumnToColumn(column))
+      if (stackPointer->CanMoveColumnToColumn(column))
       {
          // push
-         currentState[1] = currentState[0];
-         ++currentState;
-         ++currentStateIndex;
+         stackPointer.PushCurrentState();
 
          // move
          move.type = SolverMoveType::FromColumnToColumn;
          move.column = column;
-         currentState->PerformMove(move);
-         DoFreeMovesAndSolve(currentStateIndex);
+         stackPointer->PerformMove(move);
+         DoFreeMovesAndSolve(stackPointer);
          return;
       }
 
       // if the next card can't move to a tower, then we are done here
-      if (!currentState->CanMoveColumnToTower(column))
+      if (!stackPointer->CanMoveColumnToTower(column))
          return;
 
       // push
-      currentState[1] = currentState[0];
-      ++currentState;
-      ++currentStateIndex;
+      stackPointer.PushCurrentState();
 
       // move
       move.type = SolverMoveType::FromColumnToTower;
       move.column = column;
-      currentState->PerformMove(move);
+      stackPointer->PerformMove(move);
 
       // if that empties out the column, the only purpose that can serve is if we
       // move a king to an empty column
-      if (currentState->GetColumnCardCount(column) == 0)
+      if (stackPointer->GetColumnCardCount(column) == 0)
       {
-         TryMoveAnyKingToColumn(currentStateIndex);
+         TryMoveAnyKingToColumn(stackPointer);
          return;
       }
 
       // see if we can do any free moves
-      switch (DoFreeMoves(currentStateIndex))
+      switch (DoFreeMoves(stackPointer))
       {
       case DidFreeMoves:
          // if we did free moves that means that this move served a purpose so
          // continue our recursive search
-         SolverStep(currentStateIndex);
+         SolverStep(stackPointer);
          return;
 
       case DidNothing:
          // try the branch where we move a card to this column
-         TryMovingACardToColumn(currentStateIndex, column);
+         TryMovingACardToColumn(stackPointer, column);
 
          // and after checking that branch, continue trying to move cards off this column
          break;
@@ -168,29 +162,27 @@ void Solver::TryColumnMoves(int currentStateIndex, int column)
 /// Performs the given move and recursively determines if it results in a
 /// better solution than any we currently have.
 /// </summary>
-void Solver::TryMove(int currentStateIndex, SolverMove move)
+void Solver::TryMove(StackPointer stackPointer, SolverMove move)
 {
    // if our new stack size after we push another state will be as large as a
    // previous solution, don't bother continuing... if we already have a solution
    // the only thing we would be interested in would be a shorter solution
-   int currentSolutionSize = (int)resultStack.size();
+   int currentSolutionSize = (int)resultStack.GetSize();
    if (currentSolutionSize != 0)
    {
-      int newSolutionMinimumSize = currentStateIndex + 2;
+      int newSolutionMinimumSize = stackPointer.GetIndex() + 2;
       if (newSolutionMinimumSize >= currentSolutionSize)
          return;
    }
 
    // push a new copy of the current state
-   SolverState* state = &stateStack[currentStateIndex];
-   SolverState* nextState = &stateStack[(size_t)currentStateIndex + 1];
-   *nextState = *state;
+   stackPointer.PushCurrentState();
 
    // do the move
-   nextState->PerformMove(move);
+   stackPointer->PerformMove(move);
 
    // do any resulting free moves
-   switch (DoFreeMoves(currentStateIndex + 1))
+   switch (DoFreeMoves(stackPointer))
    {
    case DidFreeMoves:
    case DidNothing:
@@ -203,7 +195,7 @@ void Solver::TryMove(int currentStateIndex, SolverMove move)
    }
 
    // recursively analyze the result
-   SolverStep(currentStateIndex + 1);
+   SolverStep(stackPointer);
 }
 
 /// <summary>
@@ -214,35 +206,34 @@ void Solver::TryMove(int currentStateIndex, SolverMove move)
 ///    DeadEnd: we've already tried this position before; don't continue
 ///    Normal: no surprises, continue solving
 /// </summary>
-Solver::FreeMovesResult Solver::DoFreeMoves(int currentStateIndex)
+Solver::FreeMovesResult Solver::DoFreeMoves(StackPointer stackPointer)
 {
-   SolverState* state = &stateStack[currentStateIndex];
-   bool didFreeMoves = state->DoFreeMoves();
+   bool didFreeMoves = stackPointer->DoFreeMoves();
 
    // if everything is on the aces, it's a victory... if so, move the
    // current stack to the result stack and be done
-   if (state->IsVictory())
+   if (stackPointer->IsVictory())
    {
       resultStack = stateStack;
-      resultStack.resize((size_t)currentStateIndex + 1);
+      resultStack.SetSize((size_t)stackPointer.GetIndex() + 1);
       return Victory;
    }
 
    // never mind if the current position is in the cache
-   if (cache.TestAndSet(state->GetHashValue()))
+   if (cache.TestAndSet(stackPointer->GetHashValue()))
       return DeadEnd;
 
    return didFreeMoves ? DidFreeMoves : DidNothing;
 }
 
 
-void Solver::DoFreeMovesAndSolve(int currentStateIndex)
+void Solver::DoFreeMovesAndSolve(StackPointer stackPointer)
 {
-   switch (DoFreeMoves(currentStateIndex))
+   switch (DoFreeMoves(stackPointer))
    {
    case DidFreeMoves:
    case DidNothing:
-      SolverStep(currentStateIndex);
+      SolverStep(stackPointer);
       break;
 
    case Victory:
@@ -252,16 +243,15 @@ void Solver::DoFreeMovesAndSolve(int currentStateIndex)
 }
 
 
-void Solver::TryMoveAnyKingToColumn(int currentStateIndex)
+void Solver::TryMoveAnyKingToColumn(StackPointer stackPointer)
 {
    throw SolverException("Solver::TryMoveAnyKingToColumn not implemented");
 }
 
-void Solver::TryMovingACardToColumn(int currentStateIndex, int targetColumn)
+void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
    // find the source column
-   SolverState* currentState = &stateStack[currentStateIndex];
-   LinkedCard targetCard = currentState->GetColumnBottomCard(targetColumn);
+   LinkedCard targetCard = stackPointer->GetColumnBottomCard(targetColumn);
    int sourceColumn = LinkedCards::GetColumnIndex(targetCard.toLower);
    if (sourceColumn < 0)
       return;
@@ -273,38 +263,34 @@ void Solver::TryMovingACardToColumn(int currentStateIndex, int targetColumn)
    {
       // if the card we are looking for is at the bottom of the column we just do
       // the column to column move that we intended to do
-      if (currentState->GetColumnCardCount(sourceColumn) == sourceRow + 1)
+      if (stackPointer->GetColumnCardCount(sourceColumn) == sourceRow + 1)
       {
          // push
-         currentState[1] = currentState[0];
-         ++currentState;
-         ++currentStateIndex;
+         stackPointer.PushCurrentState();
 
          // move
          SolverMove move;
          move.type = SolverMoveType::FromColumnToColumn;
          move.column = sourceColumn;
-         currentState->PerformMove(move);
+         stackPointer->PerformMove(move);
 
          // walk the tree from that point on and be done
-         DoFreeMovesAndSolve(currentStateIndex);
+         DoFreeMovesAndSolve(stackPointer);
          return;
       }
 
       // else we just blast the card to a tower... if we can't then we're done
-      if (!currentState->CanMoveColumnToTower(sourceColumn))
+      if (!stackPointer->CanMoveColumnToTower(sourceColumn))
          return;
 
       // push
-      currentState[1] = currentState[0];
-      ++currentState;
-      ++currentStateIndex;
+      stackPointer.PushCurrentState();
 
       // move
       SolverMove move;
       move.type = SolverMoveType::FromColumnToTower;
       move.column = sourceColumn;
-      currentState->PerformMove(move);
+      stackPointer->PerformMove(move);
 
       // continue until we get to the card we wanted
    }
