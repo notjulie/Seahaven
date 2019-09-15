@@ -9,10 +9,10 @@ int main()
 {
    TestSolver tester;
 
-   tester.TestCache();
+   tester.testZeroMoveProblem();
    tester.testSingleColumnToColumnProblem();
    tester.testSingleColumnToTowerProblem();
-   tester.testZeroMoveProblem();
+   tester.TestCache();
 
    tester.TestScottsProblem();
 

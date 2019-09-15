@@ -46,6 +46,17 @@ public:
    uint8_t size;
 };
 
+class LinksArray {
+public:
+   void Clear(void);
+
+   inline uint16_t& operator[](LinkID linkID) { return links[linkID]; }
+   inline uint16_t operator[](LinkID linkID) const { return links[linkID]; }
+
+private:
+   uint16_t links[LINK_COUNT];
+};
+
 class LinkedCards {
 public:
    LinkedCards();
@@ -91,7 +102,7 @@ public:
    }
 
 private:
-   uint16_t links[LINK_COUNT];
+   LinksArray links;
 };
 
 #endif	/* LINKEDCARDS_H */

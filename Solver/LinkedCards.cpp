@@ -12,20 +12,34 @@
 
 #include "LinkedCards.h"
 
+// ==============================================================
+//    class LinksArray
+// ==============================================================
+
+void LinksArray::Clear(void)
+{
+   LinkedCard  nullCard;
+   for (int i = 0; i < LINK_COUNT; ++i)
+      links[i] = nullCard.AsUInt16();
+}
+
+
+// ==============================================================
+//    class LinkedCards
+// ==============================================================
+
 LinkedCards::LinkedCards() {
    Clear();
 }
 
 void LinkedCards::Clear(void)
 {
-   LinkedCard  nullCard;   
-   for (int i=0; i<LINK_COUNT; ++i)
-      links[i] = nullCard.AsUInt16();
+   links.Clear();
 }
 
 LinkedCard LinkedCards::GetAce(Suit suit) const
 {
-   return LinkedCard(links[FIRST_ACE_LINK + suit]);
+   return LinkedCard(links[(LinkID)(FIRST_ACE_LINK + suit)]);
 }
 
 int LinkedCards::GetEmptyTowers(void) const
@@ -33,19 +47,19 @@ int LinkedCards::GetEmptyTowers(void) const
    return
       4 -
       LinkedCard(links[FIRST_TOWER_LINK]).size -
-      LinkedCard(links[FIRST_TOWER_LINK + 1]).size -
-      LinkedCard(links[FIRST_TOWER_LINK + 2]).size -
-      LinkedCard(links[FIRST_TOWER_LINK + 3]).size;
+      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 1)]).size -
+      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 2)]).size -
+      LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + 3)]).size;
 }
 
 LinkedCard LinkedCards::GetTower(int i) const
 {
-   return LinkedCard(links[FIRST_TOWER_LINK + i]);
+   return LinkedCard(links[(LinkID)(FIRST_TOWER_LINK + i)]);
 }
 
 LinkedCard LinkedCards::GetThrone(int i) const
 {
-   return LinkedCard(links[FIRST_THRONE_LINK + i]);
+   return LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + i)]);
 }
 
 LinkedCard LinkedCards::GetColumnCard(int column, int row) const
@@ -75,9 +89,9 @@ int LinkedCards::GetThroneOccupationMask(void) const
 {
    return
       (LinkedCard(links[FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
-      (LinkedCard(links[FIRST_THRONE_LINK + 1]).size != 0 ? 2 : 0) +
-      (LinkedCard(links[FIRST_THRONE_LINK + 2]).size != 0 ? 4 : 0) +
-      (LinkedCard(links[FIRST_THRONE_LINK + 3]).size != 0 ? 8 : 0);
+      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
+      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
+      (LinkedCard(links[(LinkID)(FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
 }
 
 bool LinkedCards::IsKing(LinkedCard card) const
@@ -194,7 +208,7 @@ void LinkedCards::SetAceSizes(void)
    // aces must be 13 - all other cards in the suit's chain
    for (int i=0; i<4; ++i)
    {
-      LinkedCard  ace(links[FIRST_ACE_LINK + i]);
+      LinkedCard  ace(links[(LinkID)(FIRST_ACE_LINK + i)]);
       
       int totalCards = 0;
       LinkedCard  card = ace;
@@ -205,7 +219,7 @@ void LinkedCards::SetAceSizes(void)
       }
       
       ace.size = 13 - totalCards;
-      links[FIRST_ACE_LINK + i] = ace.AsUInt16(); 
+      links[(LinkID)(FIRST_ACE_LINK + i)] = ace.AsUInt16();
    }
 }
 
