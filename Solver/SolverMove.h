@@ -15,7 +15,7 @@ enum class SolverMoveType {
    /// Move the bottom card on an indicated column to the next higher card or
    /// to an empty column if the card is a King
    /// </summary>
-   FromColumnToColumn,
+   FromColumnToHigherCard,
 
    /// <summary>
    /// Move the bottom card on an indicated column to a tower

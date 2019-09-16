@@ -133,7 +133,7 @@ void SolverState::PerformMove(SolverMove move)
 {
    switch (move.type)
    {
-   case SolverMoveType::FromColumnToColumn:
+   case SolverMoveType::FromColumnToHigherCard:
       MoveColumnToColumnOrThrone(move.column);
       break;
 

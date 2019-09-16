@@ -56,7 +56,7 @@ Solution Solver::Solve(const SeahavenProblem& problem)
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       switch (move.type)
       {
-      case SolverMoveType::FromColumnToColumn:
+      case SolverMoveType::FromColumnToHigherCard:
       case SolverMoveType::FromColumnToTower:
          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
          break;
@@ -90,8 +90,6 @@ void Solver::SolverStep(StackPointer stackPointer)
 /// </summary>
 void Solver::TryColumnMoves(StackPointer stackPointer, int column)
 {
-   SolverMove move;
-
    // Our goal is to find a move that has a purpose.  We move cards off the column until
    // we expose a card that serves some particular purpose.  Details as we go along...
 
@@ -111,20 +109,10 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
          return;
       }
 
-      // if the next card on the column can move to a column, that counts as a
+      // if the next card on the column can move to the card a rank above it, that counts as a
       // move that has a purpose, so we try that and exit
-      if (stackPointer->CanMoveColumnToColumn(column))
-      {
-         // push
-         stackPointer.PushCurrentState();
-
-         // move
-         move.type = SolverMoveType::FromColumnToColumn;
-         move.column = column;
-         stackPointer->PerformMove(move);
-         DoFreeMovesAndSolve(stackPointer);
+      if (TryPushColumnToHigherAndSolve(stackPointer, column))
          return;
-      }
 
       // if the next card can't move to a tower, then we are done here
       if (!TryPushColumnToTowerMove(stackPointer, column))
@@ -359,17 +347,7 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
       // the column to column move that we intended to do
       if (stackPointer->GetColumnCardCount(sourceColumn) == sourceRow + 1)
       {
-         // push
-         stackPointer.PushCurrentState();
-
-         // move
-         SolverMove move;
-         move.type = SolverMoveType::FromColumnToColumn;
-         move.column = sourceColumn;
-         stackPointer->PerformMove(move);
-
-         // walk the tree from that point on and be done
-         DoFreeMovesAndSolve(stackPointer);
+         TryPushColumnToHigherAndSolve(stackPointer, sourceColumn);
          return;
       }
 
@@ -381,3 +359,20 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
    }
 }
 
+
+bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int column)
+{
+   if (!stackPointer->CanMoveColumnToColumn(column))
+      return false;
+
+   // push
+   stackPointer.PushCurrentState();
+
+   // move
+   SolverMove move;
+   move.type = SolverMoveType::FromColumnToHigherCard;
+   move.column = column;
+   stackPointer->PerformMove(move);
+   DoFreeMovesAndSolve(stackPointer);
+   return true;
+}
