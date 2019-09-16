@@ -69,6 +69,7 @@ private:
    void SolverStep(StackPointer stackPointer);
    void TryMove(StackPointer stackPointer, SolverMove move);
    void TryMoveKingToColumn(StackPointer stackPointer, Suit suit);
+   void TryMoveLastCardFromColumn(StackPointer stackPointer, int column);
    void TryMovingACardToColumn(StackPointer stackPointer, int column);
    void TryColumnMoves(StackPointer stackPointer, int column);
    bool TryPushColumnToTowerMove(StackPointer &stackPointer, int column);

@@ -107,18 +107,7 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
       // to the column
       if (stackPointer->GetColumnCardCount(column) == 1)
       {
-         // if we already have empty columns then this would not be a productive move...
-         // we've followed this sequence as far as we can
-         if (stackPointer->GetEmptyColumnCount() != 0)
-            return;
-
-         // push the card to a tower; if we can't this is as far as we can go down this road
-         if (!TryPushColumnToTowerMove(stackPointer, column))
-            return;
-
-         // try all possibilities for the next move
-         for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
-            TryMoveKingToColumn(stackPointer, suit);
+         TryMoveLastCardFromColumn(stackPointer, column);
          return;
       }
 
@@ -165,6 +154,26 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
    }
 }
 
+/// <summary>
+/// Moving the last card from a column would only be useful if we intend to
+/// move a king to that column.  This pursues that branch of moves for the
+/// given column.
+/// </summary>
+void Solver::TryMoveLastCardFromColumn(StackPointer stackPointer, int column)
+{
+   // if we already have empty columns then this would not be a productive move...
+   // we've followed this sequence as far as we can
+   if (stackPointer->GetEmptyColumnCount() != 0)
+      return;
+
+   // push the card to a tower; if we can't this is as far as we can go down this road
+   if (!TryPushColumnToTowerMove(stackPointer, column))
+      return;
+
+   // try all possibilities for the next move
+   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+      TryMoveKingToColumn(stackPointer, suit);
+}
 
 /// <summary>
 /// Performs the given move and recursively determines if it results in a
