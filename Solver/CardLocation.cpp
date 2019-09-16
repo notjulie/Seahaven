@@ -11,3 +11,13 @@ int CardLocation::GetColumnIndex(void) const
    else
       return column;
 }
+
+
+Suit CardLocation::GetSuit(void) const
+{
+   int suitIndex = (uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK;
+   if (suitIndex<0 || suitIndex>=4)
+      suitIndex = (uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK;
+   return Suit::FromIndex(suitIndex);
+}
+

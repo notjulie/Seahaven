@@ -29,8 +29,10 @@ public:
    LinkedCard GetColumnBottomCard(int column) const { return cards.GetColumnCard(column, columnCounts.Get(column)); }
    ProblemCard GetBottomColumnCardDetails(int column) const;
    int GetEmptyColumnCount(void) const;
+   int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;
+   LinkedCard GetThrone(Suit suit) const { return cards.GetThrone(suit); }
    bool  IsBottomColumnCard(CardLocation card) const;
    bool  IsOnlyCardOnColumn(LinkID link) const;
    bool  IsVictory(void) const;

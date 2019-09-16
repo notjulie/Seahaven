@@ -77,8 +77,11 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 /// </summary>
 void Solver::SolverStep(StackPointer stackPointer)
 {
+   // go through all columns and try to find moves that have some evident purpose
    for (int column = 0; column < 10; ++column)
       TryColumnMoves(stackPointer, column);
+
+   // TODO... try moving kings from columns to towers
 }
 
 
@@ -109,16 +112,13 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
          if (stackPointer->GetEmptyColumnCount() != 0)
             return;
 
-         // push
-         stackPointer.PushCurrentState();
-
-         // move
-         move.type = SolverMoveType::FromColumnToTower;
-         move.column = column;
-         stackPointer->PerformMove(move);
+         // push the card to a tower; if we can't this is as far as we can go down this road
+         if (!TryPushColumnToTowerMove(stackPointer, column))
+            return;
 
          // try all possibilities for the next move
-         TryMoveAnyKingToColumn(stackPointer);
+         for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
+            TryMoveKingToColumn(stackPointer, suit);
          return;
       }
 
@@ -138,16 +138,8 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
       }
 
       // if the next card can't move to a tower, then we are done here
-      if (!stackPointer->CanMoveColumnToTower(column))
+      if (!TryPushColumnToTowerMove(stackPointer, column))
          return;
-
-      // push
-      stackPointer.PushCurrentState();
-
-      // move
-      move.type = SolverMoveType::FromColumnToTower;
-      move.column = column;
-      stackPointer->PerformMove(move);
 
       // see if we can do any free moves
       switch (DoFreeMoves(stackPointer))
@@ -259,10 +251,87 @@ void Solver::DoFreeMovesAndSolve(StackPointer stackPointer)
 }
 
 
-void Solver::TryMoveAnyKingToColumn(StackPointer stackPointer)
+/// <summary>
+/// Called immediately after removing the last card from a column, our job is to
+/// find the given king and move it to the column.
+/// </summary>
+void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
 {
-   throw SolverException("Solver::TryMoveAnyKingToColumn not implemented");
+   // find the throne, which is the link that points downward to the king
+   LinkedCard throne = stackPointer->GetThrone(suit);
+
+   // a throne acts as a column that the king can be moved to, so if the throne's
+   // size is not zero it means that this king is already on a column
+   if (throne.size != 0)
+      return;
+
+   // else the throne just points to the king
+   CardLocation kingLocation = throne.toLower;
+
+   // handle the case where the king is on a column 
+   int columnIndex = kingLocation.GetColumnIndex();
+   if (columnIndex >= 0)
+   {
+      // we are trying to move the king to an empty column; if it's already
+      // the top card in the column that it's in there's no benefit to moving it
+      // to a different column
+      int rowIndex = kingLocation.GetRowIndex();
+      if (rowIndex == 0)
+         return;
+
+      // push any cards on top of the king to a tower
+      while (stackPointer->GetColumnCardCount(columnIndex) > rowIndex + 1)
+         if (!TryPushColumnToTowerMove(stackPointer, columnIndex))
+            return;
+
+      // If we have enough towers left we can move the king to its throne.  Note that
+      // I'm intentionally not checking free moves yet.  If we need to do free moves to
+      // pull this off then that means we have some other move that has to happen first.
+      LinkedCard king = stackPointer->GetColumnBottomCard(columnIndex);
+      if (king.size > stackPointer->GetFreeTowers() + 1)
+         return;
+
+      // go
+      stackPointer.PushCurrentState();
+
+      SolverMove move;
+      move.type = SolverMoveType::ToThrone;
+      move.suit = kingLocation.GetSuit();
+      stackPointer->PerformMove(move);
+      DoFreeMovesAndSolve(stackPointer);
+      return;
+   }
+
+   // if the king is currently on a tower then moving it to a column/throne is easy
+   if (kingLocation.IsTower())
+   {
+      throw SolverException("TryMoveKingToColumn not supported for tower king");
+   }
 }
+
+/// <summary>
+/// Attempts to move the bottom card on the given column to a tower; if it
+/// can it will push a new state onto the stack
+/// </summary>
+bool Solver::TryPushColumnToTowerMove(StackPointer &stackPointer, int sourceColumn)
+{
+   // else we just blast the card to a tower... if we can't then we're done
+   if (!stackPointer->CanMoveColumnToTower(sourceColumn))
+      return false;
+
+   // push
+   stackPointer.PushCurrentState();
+
+   // move
+   SolverMove move;
+   move.type = SolverMoveType::FromColumnToTower;
+   move.column = sourceColumn;
+   stackPointer->PerformMove(move);
+
+   // done
+   return true;
+}
+
 
 void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
@@ -296,17 +365,8 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
       }
 
       // else we just blast the card to a tower... if we can't then we're done
-      if (!stackPointer->CanMoveColumnToTower(sourceColumn))
+      if (!TryPushColumnToTowerMove(stackPointer, sourceColumn))
          return;
-
-      // push
-      stackPointer.PushCurrentState();
-
-      // move
-      SolverMove move;
-      move.type = SolverMoveType::FromColumnToTower;
-      move.column = sourceColumn;
-      stackPointer->PerformMove(move);
 
       // continue until we get to the card we wanted
    }

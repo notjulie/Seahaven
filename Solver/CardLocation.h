@@ -3,7 +3,7 @@
 #define CARDLOCATION_H
 
 #include "LinkID.h"
-
+#include "Suit.h"
 
 class CardLocation {
 public:
@@ -14,6 +14,7 @@ public:
    inline void SetLinkID(LinkID linkID) { this->linkID = linkID; }
 
    int GetColumnIndex(void) const;
+   Suit GetSuit(void) const;
 
 private:
    LinkID linkID;

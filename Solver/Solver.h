@@ -66,11 +66,12 @@ private:
 private:
    FreeMovesResult DoFreeMoves(StackPointer stackPointer);
    void DoFreeMovesAndSolve(StackPointer stackPointer);
-   void  SolverStep(StackPointer stackPointer);
+   void SolverStep(StackPointer stackPointer);
    void TryMove(StackPointer stackPointer, SolverMove move);
-   void TryMoveAnyKingToColumn(StackPointer stackPointer);
+   void TryMoveKingToColumn(StackPointer stackPointer, Suit suit);
    void TryMovingACardToColumn(StackPointer stackPointer, int column);
    void TryColumnMoves(StackPointer stackPointer, int column);
+   bool TryPushColumnToTowerMove(StackPointer &stackPointer, int column);
 
 private:
    SolverStack   stateStack;
