@@ -61,6 +61,10 @@ Solution Solver::Solve(const SeahavenProblem& problem)
          solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
          break;
 
+      case SolverMoveType::FromTowerToEmptyThrone:
+         solution.AddStep(ProblemCard(move.suit, 13));
+         break;
+
       default:
          throw SolverException("Solver::Solve: unrecognized move type");
       }
@@ -289,7 +293,12 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
    // if the king is currently on a tower then moving it to a column/throne is easy
    if (kingLocation.IsTower())
    {
-      throw SolverException("TryMoveKingToColumn not supported for tower king");
+      SolverMove move;
+      move.type = SolverMoveType::FromTowerToEmptyThrone;
+      move.suit = suit;
+      stackPointer.PushCurrentState();
+      stackPointer->PerformMove(move);
+      DoFreeMovesAndSolve(stackPointer);
    }
 }
 

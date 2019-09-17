@@ -20,7 +20,12 @@ enum class SolverMoveType {
    /// <summary>
    /// Move the bottom card on an indicated column to a tower
    /// </summary>
-   FromColumnToTower
+   FromColumnToTower,
+
+   /// <summary>
+   /// Moves a king from the tower to the corresponding empty throne
+   /// </summary>
+   FromTowerToEmptyThrone
 };
 
 struct SolverMove {

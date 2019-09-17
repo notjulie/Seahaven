@@ -40,8 +40,9 @@ public:
    
 private:
    void Clear(void);
-   void  MoveColumnToColumnOrThrone(int columnIndex);
-   void  MoveColumnToTower(int columnIndex);
+   void MoveColumnToColumnOrThrone(int columnIndex);
+   void MoveColumnToTower(int columnIndex);
+   void MoveTowerToThrone(Suit suit);
 
 private:
    LinkedCards    cards;

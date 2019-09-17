@@ -110,6 +110,10 @@ void SolverState::PerformMove(SolverMove move)
       MoveColumnToTower(move.column);
       break;
 
+   case SolverMoveType::FromTowerToEmptyThrone:
+      MoveTowerToThrone(move.suit);
+      break;
+
    default:
       throw SolverException("SolverState:PerformMove: unrecognized move type");
    }
@@ -135,6 +139,14 @@ void SolverState::MoveColumnToTower(int columnIndex)
    cards.MoveToOpenTower(link);
 }
 
+void SolverState::MoveTowerToThrone(Suit suit)
+{
+   // get the throne
+   LinkedCard throne = cards.GetThrone(suit);
+
+   // and just move its lower to it
+   cards.MoveToHigher(throne.toLower.GetLinkID());
+}
 
 ProblemCard SolverState::GetBottomColumnCardDetails(int columnIndex) const
 {
