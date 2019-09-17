@@ -22,10 +22,10 @@ public:
    SolverState(void);
    SolverState(const SeahavenProblem &problem);
 
-   bool  CanMoveColumnToColumn(int columnIndex) const;
    bool  CanMoveColumnToTower(int columnIndex) const;
    bool  DoFreeMoves(void);
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
+   LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
    LinkedCard GetColumnBottomCard(int column) const { return cards.GetColumnCard(column, columnCounts.Get(column)); }
    ProblemCard GetBottomColumnCardDetails(int column) const;
    int GetEmptyColumnCount(void) const;

@@ -75,6 +75,7 @@ public:
 
    void Clear(void);
    LinkedCard GetAce(Suit suit) const;
+   LinkedCard GetCard(CardLocation cardLocation) const { return links[cardLocation.GetLinkID()]; }
    LinkedCard GetColumnCard(int column, int row) const;
    int GetEmptyTowers(void) const;
    LinkedCard GetThrone(Suit suit) const;

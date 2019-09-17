@@ -281,21 +281,8 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
          if (!TryPushColumnToTowerMove(stackPointer, columnIndex))
             return;
 
-      // If we have enough towers left we can move the king to its throne.  Note that
-      // I'm intentionally not checking free moves yet.  If we need to do free moves to
-      // pull this off then that means we have some other move that has to happen first.
-      LinkedCard king = stackPointer->GetColumnBottomCard(columnIndex);
-      if (king.size > stackPointer->GetFreeTowers() + 1)
-         return;
-
-      // go
-      stackPointer.PushCurrentState();
-
-      SolverMove move;
-      move.type = SolverMoveType::ToThrone;
-      move.suit = kingLocation.GetSuit();
-      stackPointer->PerformMove(move);
-      DoFreeMovesAndSolve(stackPointer);
+      // try the move
+      TryPushColumnToHigherAndSolve(stackPointer, columnIndex);
       return;
    }
 
@@ -362,8 +349,35 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 
 bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int column)
 {
-   if (!stackPointer->CanMoveColumnToColumn(column))
+   // get the card
+   LinkedCard card = stackPointer->GetColumnBottomCard(column);
+
+   // we need to have enough towers
+   if (card.size > stackPointer->GetFreeTowers() + 1)
       return false;
+
+   // check if we can do the move
+   if (card.toHigher.IsThrone())
+   {
+      LinkedCard throne = stackPointer->GetCard(card.toHigher);
+
+      // If the throne is not empty, that means we are basically pointing at a king
+      // already on a column, making this a simple column to column move.  However, if
+      // it is empty, we are moving a king to an empty column, in which case we need to
+      // have an empty column available.
+      if (throne.size == 0)
+         if (stackPointer->GetEmptyColumnCount() <= 0)
+            return false;
+   }
+   else
+   {
+      // else we can only do this if the higher card is the bottom card on a column
+      int column = card.toHigher.GetColumnIndex();
+      if (column < 0)
+         return false;
+      if (stackPointer->GetColumnCardCount(column) != card.toHigher.GetRowIndex() + 1)
+         return false;
+   }
 
    // push
    stackPointer.PushCurrentState();

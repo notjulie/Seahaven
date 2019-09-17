@@ -81,37 +81,6 @@ SolverState::SolverState(const SeahavenProblem &problem) {
 }
 
 
-/// <summary>
-/// Determines if the bottom card on the column can be moved to the next
-/// higher card (on another column) or an empty column if it's a king
-/// </summary>
-bool SolverState::CanMoveColumnToColumn(int columnIndex) const
-{
-   // never mind if the column is empty
-   if (columnCounts.Get(columnIndex) == 0)
-      return false;
-   
-   // get the card on the bottom of the column
-   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts.Get(columnIndex) - 1);
-
-   // in order to move it we need enough tower space
-   if (card.size > cards.GetEmptyTowers() + 1)
-      return false;
-
-   // if it's a king it needs to go to an empty column, or by proxy, to its throne
-   if (cards.IsKing(card))
-   {
-      throw SolverException("SolverState::CanMoveColumnToColumn: Move king to column not implemented");
-   }
-   else
-   {
-      // else we just need to know if the next higher card is on the bottom of
-      // a column
-      return this->IsBottomColumnCard(card.toHigher);
-   }
-}
-
-
 bool SolverState::CanMoveColumnToTower(int columnIndex) const
 {
    // never mind if the column is empty
@@ -121,7 +90,7 @@ bool SolverState::CanMoveColumnToTower(int columnIndex) const
    // get the card on the bottom of the column
    LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts.Get(columnIndex) - 1);
    
-   // all good as long as we don't have the tower space
+   // all good as long as we have the tower space
    return card.size <= cards.GetEmptyTowers();
 }
 
