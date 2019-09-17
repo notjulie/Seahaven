@@ -266,4 +266,17 @@ void LinkedCards::SetCard(LinkID card, LinkID toLow, LinkID toHigh, uint8_t size
    }   
 }
 
+int LinkedCards::CountKingsOnTowers(void) const
+{
+   int kingsOnTowers = 0;
+   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+   {
+      LinkedCard throne = GetThrone(suit);
+      if (throne.size == 0)
+         if (throne.toLower.IsTower())
+            ++kingsOnTowers;
+   }
+   return kingsOnTowers;
+}
+
 

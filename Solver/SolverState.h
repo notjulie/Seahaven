@@ -23,6 +23,7 @@ public:
    SolverState(const SeahavenProblem &problem);
 
    bool  CanMoveColumnToTower(int columnIndex) const;
+   int CountKingsOnTowers(void) const { return cards.CountKingsOnTowers(); }
    bool  DoFreeMoves(void);
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
    LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }

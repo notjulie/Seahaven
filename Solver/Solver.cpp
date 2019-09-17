@@ -81,6 +81,21 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 /// </summary>
 void Solver::SolverStep(StackPointer stackPointer)
 {
+   // If we have kings on towers and empty columns to put them in, all we can do
+   // on this go around is to rotate through the kings and see which ones should get
+   // pulled down.  Note that if there were enough empty columns, DoFreeMoves will already
+   // have covered that case.  Our job is to take care of arbitration when the empty
+   // columns are a scarce resource.
+   int kingsOnTowers = stackPointer->CountKingsOnTowers();
+   if (kingsOnTowers > 0)
+   {
+      int emptyColumns = stackPointer->GetEmptyColumnCount();
+      if (emptyColumns > 0)
+      {
+         throw SolverException("Throne arbitration not implemented");
+      }
+   }
+
    // go through all columns and try to find moves that have some evident purpose
    for (int column = 0; column < 10; ++column)
       TryColumnMoves(stackPointer, column);
@@ -185,10 +200,7 @@ void Solver::TryMove(StackPointer stackPointer, SolverMove move)
    }
 
    // push a new copy of the current state
-   stackPointer.PushCurrentState();
-
-   // do the move
-   stackPointer->PerformMove(move);
+   stackPointer.PushCurrentStateAndPerformMove(move);
 
    // do any resulting free moves
    switch (DoFreeMoves(stackPointer))
@@ -296,8 +308,7 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
       SolverMove move;
       move.type = SolverMoveType::FromTowerToEmptyThrone;
       move.suit = suit;
-      stackPointer.PushCurrentState();
-      stackPointer->PerformMove(move);
+      stackPointer.PushCurrentStateAndPerformMove(move);
       DoFreeMovesAndSolve(stackPointer);
    }
 }
@@ -312,14 +323,11 @@ bool Solver::TryPushColumnToTowerMove(StackPointer &stackPointer, int sourceColu
    if (!stackPointer->CanMoveColumnToTower(sourceColumn))
       return false;
 
-   // push
-   stackPointer.PushCurrentState();
-
    // move
    SolverMove move;
    move.type = SolverMoveType::FromColumnToTower;
    move.column = sourceColumn;
-   stackPointer->PerformMove(move);
+   stackPointer.PushCurrentStateAndPerformMove(move);
 
    // done
    return true;
@@ -388,14 +396,11 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int colum
          return false;
    }
 
-   // push
-   stackPointer.PushCurrentState();
-
    // move
    SolverMove move;
    move.type = SolverMoveType::FromColumnToHigherCard;
    move.column = column;
-   stackPointer->PerformMove(move);
+   stackPointer.PushCurrentStateAndPerformMove(move);
    DoFreeMovesAndSolve(stackPointer);
    return true;
 }

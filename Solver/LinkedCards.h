@@ -10,6 +10,7 @@
 
 #include "CardLocation.h"
 #include "ProblemCard.h"
+#include "SolverException.h"
 #include "Suit.h"
 
 struct LinkedCard {
@@ -62,8 +63,14 @@ class LinksArray {
 public:
    void Clear(void);
 
-   inline CompressedLink& operator[](LinkID linkID) { return links[(uint8_t)linkID]; }
-   inline CompressedLink operator[](LinkID linkID) const { return links[(uint8_t)linkID]; }
+   inline CompressedLink& operator[](LinkID linkID) {
+      if (linkID >= LinkID::LINK_COUNT) throw SolverException("LinksArray: index out of bounds");
+      return links[(uint8_t)linkID]; 
+   }
+   inline CompressedLink operator[](LinkID linkID) const { 
+      if (linkID >= LinkID::LINK_COUNT) throw SolverException("LinksArray: index out of bounds");
+      return links[(uint8_t)linkID];
+   }
 
 private:
    CompressedLink links[(uint8_t)LinkID::LINK_COUNT];
@@ -74,6 +81,7 @@ public:
    LinkedCards();
 
    void Clear(void);
+   int CountKingsOnTowers(void) const;
    LinkedCard GetAce(Suit suit) const;
    LinkedCard GetCard(CardLocation cardLocation) const { return links[cardLocation.GetLinkID()]; }
    LinkedCard GetColumnCard(int column, int row) const;

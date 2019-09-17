@@ -205,15 +205,46 @@ bool SolverState::DoFreeMoves(void)
       }
    }
 
-   // any kings sitting on a tower or as the only card on a column get moved
-   // to their throne
-   for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
+   // any kings that are the only card on a column get moved to their throne, since
+   // the thrones are invented for exactly that purpose
+   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
    {
+      // get the throne, make sure that it's empty
       LinkedCard throne = cards.GetThrone(suit);
-      if (throne.toLower.IsTower() || IsOnlyCardOnColumn(throne.toLower.GetLinkID()))
+      if (throne.size != 0)
+         continue;
+
+      // get the king, make sure that it's on a column
+      CardLocation kingLocation = throne.toLower;
+      int column = kingLocation.GetColumnIndex();
+      if (column < 0)
+         continue;
+
+      // if it is the only card on the column, move it to the throne
+      if (columnCounts.Get(column) == 1)
       {
-         cards.MoveToHigher(LinkedCards::GetThroneLinkID(suit));
+         cards.MoveToHigher(kingLocation.GetLinkID());
+         columnCounts.Decrement(column);
          didFreeMoves = true;
+      }
+   }
+
+   // if we have kings on the towers and enough empty columns to hold them all,
+   // then they all get moved to their thrones
+   int kingsOnTowers = cards.CountKingsOnTowers();
+   if (kingsOnTowers > 0 && GetEmptyColumnCount() >= kingsOnTowers)
+   {
+      for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+      {
+         LinkedCard throne = cards.GetThrone(suit);
+         if (throne.size == 0)
+         {
+            if (throne.toLower.IsTower())
+            {
+               cards.MoveToHigher(throne.toLower.GetLinkID());
+               didFreeMoves = true;
+            }
+         }
       }
    }
 

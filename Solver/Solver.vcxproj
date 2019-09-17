@@ -184,6 +184,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">SolverIncludes.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="SolverStack.cpp" />
     <ClCompile Include="SolverState.cpp" />
     <ClCompile Include="Suit.cpp" />
   </ItemGroup>

@@ -27,7 +27,7 @@ public:
    }
 
    int GetIndex(void) const { return index; }
-   void PushCurrentState(void) { stack[index + 1] = stack[index]; ++index; stack.IncrementPushCount(); }
+   void PushCurrentStateAndPerformMove(SolverMove move);
 
    inline SolverState& operator*(void) { return stack[index]; }
    inline SolverState* operator->(void) { return &stack[index]; }
