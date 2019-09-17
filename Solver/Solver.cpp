@@ -92,7 +92,9 @@ void Solver::SolverStep(StackPointer stackPointer)
       int emptyColumns = stackPointer->GetEmptyColumnCount();
       if (emptyColumns > 0)
       {
-         throw SolverException("Throne arbitration not implemented");
+         for (int tower = 0; tower < 4; ++tower)
+            TryPushTowerToThroneAndSolve(stackPointer, tower);
+         return;
       }
    }
 
@@ -404,3 +406,31 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int colum
    DoFreeMovesAndSolve(stackPointer);
    return true;
 }
+
+
+void Solver::TryPushTowerToThroneAndSolve(StackPointer stackPointer, int towerIndex)
+{
+   // get the tower
+   LinkedCard towerCard = stackPointer->GetTower(towerIndex);
+
+   // empty towers of course mean nothing
+   if (towerCard.size == 0)
+      return;
+
+   // if it's not pointing up at a throne never mind
+   if (!towerCard.toHigher.IsThrone())
+      return;
+
+   // move
+   SolverMove move;
+   move.type = SolverMoveType::FromTowerToEmptyThrone;
+   move.suit = towerCard.toHigher.GetSuit();
+   stackPointer.PushCurrentStateAndPerformMove(move);
+
+   // In order to make sure that this move serves a purpose, we need to lock the throne
+   stackPointer->LockThrone(move.suit);
+
+   // continue
+   DoFreeMovesAndSolve(stackPointer);
+}
+

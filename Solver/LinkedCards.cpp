@@ -125,6 +125,7 @@ void LinkedCards::MoveToHigher(LinkID link)
 
 void LinkedCards::MoveColumnCardToHigher(LinkID link)
 {
+   throw SolverException("LinkedCards::MoveColumnCardToHigher is messed up");
    // get the card in question
    LinkedCard card(links[link]);
    
