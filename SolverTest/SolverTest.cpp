@@ -9,6 +9,7 @@ int main()
 {
    TestSolver tester;
 
+   tester.TestCombineTowersProblem();
    tester.TestCache();
    tester.testZeroMoveProblem();
    tester.testSingleColumnToTowerProblem();

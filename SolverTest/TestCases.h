@@ -14,6 +14,7 @@
 extern const SeahavenProblem cacheTestProblem;
 extern const SeahavenProblem slowTestProblem;
 extern const SeahavenProblem scottsProblem;
+extern const SeahavenProblem combineTowersProblem;
 
 extern const SeahavenProblem zeroMoveProblem;
 extern const Solution zeroMoveSolution;

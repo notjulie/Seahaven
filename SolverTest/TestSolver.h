@@ -23,6 +23,7 @@ public:
    void TestScottsProblem(void) { doSolverTestCase(scottsProblem, Solution::Fail()); }
    void TestSlowProblem(void);
    void testZeroMoveProblem() { doSolverTestCase(zeroMoveProblem, zeroMoveSolution); }
+   void TestCombineTowersProblem(void) { doSolverTestCase(combineTowersProblem, Solution::Fail()); }
 
 private:
    void doSolverTestCase(const SeahavenProblem &problem, const Solution &expectedResult);

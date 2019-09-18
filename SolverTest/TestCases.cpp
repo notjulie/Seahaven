@@ -10,19 +10,36 @@
 /// simple test case that verifies that cards get moved to the aces automatically
 /// </summary>
 const SeahavenProblem zeroMoveProblem(
-        ProblemCards("KS", "QS", "JS", "TS", "9S"),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards(),
-        ProblemCards()
-        );
+   ProblemCards("KS", "QS", "JS", "TS", "9S"),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards()
+);
 const Solution zeroMoveSolution;
+
+/// <summary>
+/// simple test case that tests combining towers
+/// </summary>
+const SeahavenProblem combineTowersProblem(
+   ProblemCards("QS", "6S", "KS", "7S", "8S"),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards(),
+   ProblemCards("JS", "TS", "9S")
+);
 
 
 /// <summary>
