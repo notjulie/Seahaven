@@ -123,35 +123,6 @@ void LinkedCards::MoveToHigher(LinkID link)
    links[link] = CompressedLink::Null;
 }
 
-void LinkedCards::MoveColumnCardToHigher(LinkID link)
-{
-   throw SolverException("LinkedCards::MoveColumnCardToHigher is messed up");
-   // get the card in question
-   LinkedCard card(links[link]);
-   
-   // if it is of size == 1 this is just a simple MoveToHigher
-   if (card.size == 1)
-   {
-      MoveToHigher(link);
-      return;
-   }
-   
-   // else we just transfer one card to the higher and move
-   // the rest to a tower
-
-   // make the higher bigger by one
-   LinkedCard higher(links[card.toHigher.GetLinkID()]);
-   higher.size++;
-   links[card.toHigher.GetLinkID()] = higher;
-   
-   // make the card being moved smaller by one
-   card.size--;
-   links[link] = card;
-   
-   // move the rest of the card to a tower
-   MoveToOpenTower(link);
-}
-
 void LinkedCards::MoveToLower(LinkID link)
 {
    // get the card

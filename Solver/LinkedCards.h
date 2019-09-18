@@ -90,7 +90,6 @@ public:
    int GetThroneOccupationMask(void) const;
    LinkedCard GetTower(int i) const;
    bool IsKing(LinkedCard card) const;
-   void MoveColumnCardToHigher(LinkID link);
    void MoveToOpenTower(LinkID link);
    void MoveToHigher(LinkID link);
    void MoveToLower(LinkID link);

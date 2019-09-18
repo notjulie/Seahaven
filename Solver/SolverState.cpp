@@ -127,7 +127,7 @@ void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
    // move it and decrement the column count
    columnCounts.Decrement(columnIndex);
    LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex));
-   cards.MoveColumnCardToHigher(link);
+   cards.MoveToHigher(link);
 }
 
 

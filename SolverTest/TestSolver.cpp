@@ -25,7 +25,10 @@ void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution
    Solver   solver;
    Solution solution = solver.Solve(problem);
    if (solution != expectedResult)
+   {
+      solution.DumpToConsole();
       throw SolverException("doSolverTestCase: result does not match expectation");
+   }
 }
 
 
