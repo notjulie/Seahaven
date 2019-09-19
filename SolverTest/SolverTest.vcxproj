@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SolverTest.cpp" />
+    <ClCompile Include="TestCardOverlap.cpp" />
     <ClCompile Include="TestCases.cpp" />
     <ClCompile Include="TestSolver.cpp" />
   </ItemGroup>
@@ -163,6 +164,9 @@
     <ProjectReference Include="..\Solver\Solver.vcxproj">
       <Project>{106c5e5d-626f-486c-a21a-24f44d69cc99}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestCardOverlap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

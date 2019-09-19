@@ -3,11 +3,14 @@
 
 #include <chrono>
 #include <iostream>
+#include "TestCardOverlap.h"
 #include "TestSolver.h"
 
 int main()
 {
    TestSolver tester;
+
+   TestCardOverlap();
 
    std::cout << "Starting slow problem... ";
    tester.TestSlowProblem();

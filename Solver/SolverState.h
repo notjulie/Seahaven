@@ -27,7 +27,7 @@ public:
    bool  DoFreeMoves(void);
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
    LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
-   LinkedCard GetColumnBottomCard(int column) const { return cards.GetColumnCard(column, columnCounts.Get(column)); }
+   LinkedCard GetColumnBottomCard(int column) const;
    ProblemCard GetBottomColumnCardDetails(int column) const;
    ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation.GetLinkID()); }
    int GetEmptyColumnCount(void) const;
