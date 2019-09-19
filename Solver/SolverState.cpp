@@ -278,14 +278,6 @@ bool SolverState::IsBottomColumnCard(CardLocation cardLocation) const
    return (row+1 == columnCounts.Get(column));
 }
 
-bool SolverState::IsOnlyCardOnColumn(LinkID link) const
-{
-   int column = ((uint8_t)link - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
-   if (column<0 || column>9)
-      return false;
-   return columnCounts.Get(column) == 0;
-}
-
 bool SolverState::IsVictory(void) const
 {
    for (int i=0; i<10; ++i)

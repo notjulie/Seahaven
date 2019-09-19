@@ -98,12 +98,8 @@ public:
    ProblemCard GetCardDetails(LinkID link) const;
    
 public:
-   static inline LinkID GetAceLinkID(Suit suit) {
-      return (LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit.GetIndex()); }
    static inline LinkID GetColumnLinkID(uint8_t column, uint8_t index) {
       return (LinkID)((uint8_t)LinkID::FIRST_COLUMN_LINK + 5*column + index); }
-   static inline LinkID GetThroneLinkID(Suit suit) {
-      return (LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit.GetIndex()); }
    static inline LinkID GetTowerLinkID(uint8_t tower) {
       return (LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + tower); }
 

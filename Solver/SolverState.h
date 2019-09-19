@@ -37,7 +37,6 @@ public:
    LinkedCard GetTower(int tower) const { return cards.GetTower(tower); }
    LinkedCard GetThrone(Suit suit) const { return cards.GetThrone(suit); }
    bool  IsBottomColumnCard(CardLocation card) const;
-   bool  IsOnlyCardOnColumn(LinkID link) const;
    bool  IsVictory(void) const;
    void LockThrone(Suit suit);
    void PerformMove(SolverMove move);
