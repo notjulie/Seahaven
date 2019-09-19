@@ -39,6 +39,9 @@
     <ClInclude Include="SolverStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolverResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Solver.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolverStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolverResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

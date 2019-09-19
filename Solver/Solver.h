@@ -10,6 +10,7 @@
 
 #include "Solution.h"
 #include "SolverCache.h"
+#include "SolverResult.h"
 #include "SolverStack.h"
 
 class SeahavenProblem;
@@ -20,6 +21,7 @@ public:
    Solver(void);
 
    void DisableCacheing(void) { cache.Disable(); }
+   int GetTotalBranchesTested(void) { return stateStack.GetTotalPushCount(); }
    Solution Solve(const SeahavenProblem& problem);
 
 private:
@@ -45,8 +47,8 @@ private:
 
 private:
    SolverStack   stateStack;
-   SolverStack   resultStack;
    SolverCache cache;
+   SolverResult result;
 };
 
 #endif	/* SOLVER_H */

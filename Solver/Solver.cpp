@@ -38,40 +38,12 @@ Solution Solver::Solve(const SeahavenProblem& problem)
       throw SolverException("Solver::Solve: unexpected result from DoFreeMoves");
    }
 
-   // start the process of recursively solving
+   // solve recursively
    SolverStep(stackPointer);
 
-   // if no solution was found...
-   if (resultStack.IsEmpty())
-   {
-      Solution solution = Solution::Fail();
-      solution.SetTotalBranchesTested(stateStack.GetTotalPushCount());
-      return solution;
-   }
+   // return the solution
+   return result.CreateSolution();
 
-   // else put together a solution from the changing states
-   Solution solution;
-   for (int i = 1; i < resultStack.GetSize(); ++i)
-   {
-      SolverMove move = resultStack[i].GetMoveThatWasPerformed();
-      switch (move.type)
-      {
-      case SolverMoveType::FromColumnToHigherCard:
-      case SolverMoveType::FromColumnToTower:
-         solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
-         break;
-
-      case SolverMoveType::FromTowerToEmptyThrone:
-         solution.AddStep(ProblemCard(move.suit, 13));
-         break;
-
-      default:
-         throw SolverException("Solver::Solve: unrecognized move type");
-      }
-   }
-
-   solution.SetTotalBranchesTested(stateStack.GetTotalPushCount());
-   return solution;
 }
 
 
@@ -193,7 +165,7 @@ void Solver::TryMove(StackPointer stackPointer, SolverMove move)
    // if our new stack size after we push another state will be as large as a
    // previous solution, don't bother continuing... if we already have a solution
    // the only thing we would be interested in would be a shorter solution
-   int currentSolutionSize = (int)resultStack.GetSize();
+   int currentSolutionSize = result.GetSize();
    if (currentSolutionSize != 0)
    {
       int newSolutionMinimumSize = stackPointer.GetIndex() + 2;
@@ -237,8 +209,7 @@ Solver::FreeMovesResult Solver::DoFreeMoves(StackPointer stackPointer)
    // current stack to the result stack and be done
    if (stackPointer->IsVictory())
    {
-      resultStack = stateStack;
-      resultStack.SetSize((size_t)stackPointer.GetIndex() + 1);
+      result.SetResultStack(stateStack.GetRange(0, stackPointer.GetIndex() + 1));
       return Victory;
    }
 

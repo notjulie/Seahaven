@@ -17,3 +17,12 @@ void StackPointer::PushCurrentStateAndPerformMove(SolverMove move)
    stack[index].PerformMove(move);
 }
 
+
+SolverStack SolverStack::GetRange(int first, int size)
+{
+   SolverStack result;
+   result.SetSize(size);
+   for (int i = 0; i < size; ++i)
+      result[i] = (*this)[first + i];
+   return result;
+}

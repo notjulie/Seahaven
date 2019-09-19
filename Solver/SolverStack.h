@@ -6,13 +6,16 @@
 
 class SolverStack {
 public:
-   size_t GetSize(void) const { return stack.size(); }
+   int GetSize(void) const { return (int)stack.size(); }
    int GetTotalPushCount(void) const { return totalPushes; }
    bool IsEmpty(void) const { return stack.empty(); }
    void SetSize(int size) { stack.resize(size); }
    inline void IncrementPushCount(void) { ++totalPushes; }
 
    inline SolverState& operator[](int i) { return stack[i]; }
+   inline const SolverState& operator[](int i) const { return stack[i]; }
+
+   SolverStack GetRange(int first, int size);
 
 private:
    std::vector<SolverState>   stack;
