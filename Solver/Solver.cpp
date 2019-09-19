@@ -368,7 +368,7 @@ void Solver::TryPushTowerToThroneAndSolve(StackPointer stackPointer, int towerIn
 }
 
 
-bool Solver::PushCurrentStateAndPerformMove(StackPointer stackPointer, SolverMove move)
+bool Solver::PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMove move)
 {
    // if we already have a solution we aren't allowed to do any moves unless it
    // might still result in a solution shorter than the one we already have

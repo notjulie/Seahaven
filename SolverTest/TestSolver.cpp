@@ -72,4 +72,10 @@ void TestSolver::TestSlowProblem(void)
 {
    Solver   solver;
    Solution solution = solver.Solve(slowTestProblem);
+
+   FILE* resultFile = std::fopen("TestSlowProblem.txt", "wt");
+   if (resultFile == nullptr)
+      throw SolverException("TestSlowProblem: error opening dump file");
+   solver.GetResult().DumpToFile(resultFile);
+   fclose(resultFile);
 }
