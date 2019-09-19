@@ -9,17 +9,16 @@ int main()
 {
    TestSolver tester;
 
+   std::cout << "Starting slow problem... ";
+   tester.TestSlowProblem();
+   std::cout << "done" << std::endl;
+
    tester.TestScottsProblem();
    tester.TestCombineTowersProblem();
    tester.TestCache();
    tester.testZeroMoveProblem();
    tester.testSingleColumnToTowerProblem();
    tester.testSingleColumnToColumnProblem();
-
-
-   std::cout << "Starting slow problem... ";
-   tester.TestSlowProblem();
-   std::cout << "done" << std::endl;
 
    for (int i = 0; i < 1000; ++i)
    {

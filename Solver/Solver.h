@@ -37,8 +37,8 @@ private:
 private:
    FreeMovesResult DoFreeMoves(StackPointer stackPointer);
    void DoFreeMovesAndSolve(StackPointer stackPointer);
+   bool PushCurrentStateAndPerformMove(StackPointer stackPointer, SolverMove move);
    void SolverStep(StackPointer stackPointer);
-   void TryMove(StackPointer stackPointer, SolverMove move);
    void TryMoveKingToColumn(StackPointer stackPointer, Suit suit);
    void TryMoveLastCardFromColumn(StackPointer stackPointer, int column);
    void TryMovingACardToColumn(StackPointer stackPointer, int column);

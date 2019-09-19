@@ -157,43 +157,6 @@ void Solver::TryMoveLastCardFromColumn(StackPointer stackPointer, int column)
 }
 
 /// <summary>
-/// Performs the given move and recursively determines if it results in a
-/// better solution than any we currently have.
-/// </summary>
-void Solver::TryMove(StackPointer stackPointer, SolverMove move)
-{
-   // if our new stack size after we push another state will be as large as a
-   // previous solution, don't bother continuing... if we already have a solution
-   // the only thing we would be interested in would be a shorter solution
-   int currentSolutionSize = result.GetSize();
-   if (currentSolutionSize != 0)
-   {
-      int newSolutionMinimumSize = stackPointer.GetIndex() + 2;
-      if (newSolutionMinimumSize >= currentSolutionSize)
-         return;
-   }
-
-   // push a new copy of the current state
-   stackPointer.PushCurrentStateAndPerformMove(move);
-
-   // do any resulting free moves
-   switch (DoFreeMoves(stackPointer))
-   {
-   case DidFreeMoves:
-   case DidNothing:
-      break;
-   case Victory:
-   case DeadEnd:
-      return;
-   default:
-      throw SolverException("Solver::SolverStep: unexpected DoFreeMoves result");
-   }
-
-   // recursively analyze the result
-   SolverStep(stackPointer);
-}
-
-/// <summary>
 /// Performs free moves to the aces and combinations of cards; this is
 /// called after performing a move to clean up the state of the game.
 /// On completion it returns:
@@ -281,8 +244,8 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
       SolverMove move;
       move.type = SolverMoveType::FromTowerToEmptyThrone;
       move.suit = suit;
-      stackPointer.PushCurrentStateAndPerformMove(move);
-      DoFreeMovesAndSolve(stackPointer);
+      if (PushCurrentStateAndPerformMove(stackPointer, move))
+         DoFreeMovesAndSolve(stackPointer);
    }
 }
 
@@ -300,10 +263,7 @@ bool Solver::TryPushColumnToTowerMove(StackPointer &stackPointer, int sourceColu
    SolverMove move;
    move.type = SolverMoveType::FromColumnToTower;
    move.column = sourceColumn;
-   stackPointer.PushCurrentStateAndPerformMove(move);
-
-   // done
-   return true;
+   return PushCurrentStateAndPerformMove(stackPointer, move);
 }
 
 
@@ -373,7 +333,8 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int colum
    SolverMove move;
    move.type = SolverMoveType::FromColumnToHigherCard;
    move.column = column;
-   stackPointer.PushCurrentStateAndPerformMove(move);
+   if (!PushCurrentStateAndPerformMove(stackPointer, move))
+      return false;
    DoFreeMovesAndSolve(stackPointer);
    return true;
 }
@@ -396,12 +357,41 @@ void Solver::TryPushTowerToThroneAndSolve(StackPointer stackPointer, int towerIn
    SolverMove move;
    move.type = SolverMoveType::FromTowerToEmptyThrone;
    move.suit = towerCard.toHigher.GetSuit();
-   stackPointer.PushCurrentStateAndPerformMove(move);
+   if (!PushCurrentStateAndPerformMove(stackPointer, move))
+      return;
 
    // In order to make sure that this move serves a purpose, we need to lock the throne
    stackPointer->LockThrone(move.suit);
 
    // continue
    DoFreeMovesAndSolve(stackPointer);
+}
+
+
+bool Solver::PushCurrentStateAndPerformMove(StackPointer stackPointer, SolverMove move)
+{
+   // if we already have a solution we aren't allowed to do any moves unless it
+   // might still result in a solution shorter than the one we already have
+   int currentResultSize = result.GetSize();
+   if (currentResultSize > 0)
+   {
+      // just so I don't get into any one-off confusion, let's do this carefully...
+      // the maximum result size that we will allow is one less than the one we already have
+      int maxResultSize = currentResultSize - 1;
+
+      // current stack size is...
+      int currentStackSize = stackPointer.GetIndex() + 1;
+
+      // after this move it will be
+      int nextStackSize = currentStackSize + 1;
+
+      // and we insist that it be less
+      if (nextStackSize >= maxResultSize)
+         return false;
+   }
+
+   // go ahead and do the move
+   stackPointer.PushCurrentStateAndPerformMove(move);
+   return true;
 }
 
