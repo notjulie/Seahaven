@@ -18,9 +18,15 @@ struct CompactedColumnCard {
 
 class SolverState;
 
+struct ProblemDefinition {
+   std::initializer_list<std::initializer_list<const char*>> columns;
+   std::initializer_list<const char*> towers;
+};
+
 class SeahavenProblem {
 public:
    SeahavenProblem(void);
+   SeahavenProblem(const ProblemDefinition& problemDefinition);
    SeahavenProblem(const SolverState &state);
    SeahavenProblem(
             const ProblemCards &column0,

@@ -24,6 +24,7 @@ public:
             const ProblemCard &card7 = ProblemCard(),
             const ProblemCard &card8 = ProblemCard()
             );
+    ProblemCards(const std::initializer_list<const char*> cards);
 
     void Append(const ProblemCard& card) { cards.push_back(card); }
     void Dump(FILE *f);

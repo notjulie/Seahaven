@@ -14,7 +14,15 @@
 
 #include "SeahavenProblem.h"
 
-SeahavenProblem::SeahavenProblem() {
+SeahavenProblem::SeahavenProblem(void)
+{
+}
+
+SeahavenProblem::SeahavenProblem(const ProblemDefinition& problemDefinition)
+{
+   for (auto cards : problemDefinition.columns)
+      columns.push_back(ProblemCards(cards));
+   towers = ProblemCards(problemDefinition.towers);
 }
 
 SeahavenProblem::SeahavenProblem(const SolverState& state)

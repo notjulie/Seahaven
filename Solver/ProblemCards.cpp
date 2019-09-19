@@ -44,6 +44,12 @@ ProblemCards::ProblemCards(
         cards.push_back(card8);
 }
 
+ProblemCards::ProblemCards(const std::initializer_list<const char*> _cards)
+{
+   for (auto card : _cards)
+      cards.push_back(ProblemCard(card));
+}
+
 ProblemCard ProblemCards::GetCard(uint8_t index) const
 {
    if (index >= cards.size())

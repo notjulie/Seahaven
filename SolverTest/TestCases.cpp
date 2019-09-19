@@ -45,20 +45,23 @@ const SeahavenProblem combineTowersProblem(
 /// <summary>
 /// Scott's original problem that he suspects is not solvable
 /// </summary>
-const SeahavenProblem scottsProblem(
-    ProblemCards("JS", "6H", "QH", "JH", "7H"),
-    ProblemCards("4C", "JD", "8S", "2C"),
-    ProblemCards("5S", "QC"),
-    ProblemCards("AC", "7S", "9C"),
-    ProblemCards("4S", "3D", "3C", "8C", "QD"),
-    ProblemCards("JC", "KS", "5C", "KC", "6S"),
-    ProblemCards("TC", "5H", "9S", "TS", "8D"),
-    ProblemCards("KH", "6C", "TD", "5D", "6D"),
-    ProblemCards("2S", "4D", "9H", "QS", "7D"),
-    ProblemCards("7C", "3S", "AS", "8H", "TH"),
-    ProblemCards("9D", "KD")
-    );
-
+const ProblemDefinition scottsProblem = {
+   // columns
+   {
+      {"JS", "6H", "QH", "JH", "7H"},
+      {"4C", "JD", "8S", "2C"},
+      {"5S", "QC"},
+      {"AC", "7S", "9C"},
+      {"4S", "3D", "3C", "8C", "QD"},
+      {"JC", "KS", "5C", "KC", "6S"},
+      {"TC", "5H", "9S", "TS", "8D"},
+      {"KH", "6C", "TD", "5D", "6D"},
+      {"2S", "4D", "9H", "QS", "7D"},
+      {"7C", "3S", "AS", "8H", "TH"}
+   },
+   //towers
+   { "9D", "KD" }
+};
 
 /// <summary>
 /// simple test case that requires only one column to column move
