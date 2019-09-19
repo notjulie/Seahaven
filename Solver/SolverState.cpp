@@ -192,13 +192,31 @@ bool SolverState::DoFreeMoves(void)
       didFreeMoves = true;
    }
    
-   // the next thing to do is to combine cards on towers with columns or thrones
+   // the next thing to do is to combine cards on towers with columns or thrones or towers
    for (int i=0; i<4; ++i)
    {
+      // grab the tower
       LinkedCard tower = cards.GetTower(i);
       if (tower.size == 0)
          continue;
-      if (tower.toHigher.IsThrone() || IsBottomColumnCard(tower.toHigher))
+
+      // if its higher link is the bottom card on a column we can combine them
+      bool canMoveToHigher = false;
+      if (IsBottomColumnCard(tower.toHigher))
+         canMoveToHigher = true;
+
+      // if its higher link is a non-empty throne (i.e. a king that has been put on
+      // an empty column) we can likewise move it there
+      if (tower.toHigher.IsThrone())
+         if (GetCard(tower.toHigher).size != 0)
+            canMoveToHigher = true;
+
+      // and if its higher is on a tower we can also combine the tower cards
+      if (tower.toHigher.IsTower())
+         canMoveToHigher = true;
+
+      // combine with the next higher card if we can
+      if (canMoveToHigher)
       {
          cards.MoveToHigher(LinkedCards::GetTowerLinkID(i));
          didFreeMoves = true;

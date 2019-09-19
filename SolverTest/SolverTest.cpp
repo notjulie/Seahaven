@@ -9,13 +9,13 @@ int main()
 {
    TestSolver tester;
 
+   tester.TestScottsProblem();
    tester.TestCombineTowersProblem();
    tester.TestCache();
    tester.testZeroMoveProblem();
    tester.testSingleColumnToTowerProblem();
    tester.testSingleColumnToColumnProblem();
 
-   tester.TestScottsProblem();
 
    std::cout << "Starting slow problem... ";
    tester.TestSlowProblem();
