@@ -32,7 +32,8 @@ bool SolutionStep::operator!=(const SolutionStep &that) const
    return !operator==(that);
 }
 
-void SolutionStep::DumpToConsole(void) const
+void SolutionStep::Dump(FILE *f) const
 {
-   card.DumpToConsole();
+   card.Dump(f);
+   fprintf(f, "\r\n");
 }

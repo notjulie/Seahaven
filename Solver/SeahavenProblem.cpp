@@ -10,10 +10,25 @@
 #include "LinkedCards.h"
 #include "ProblemCards.h"
 #include "SolverException.h"
+#include "SolverState.h"
 
 #include "SeahavenProblem.h"
 
 SeahavenProblem::SeahavenProblem() {
+}
+
+SeahavenProblem::SeahavenProblem(const SolverState& state)
+{
+   for (int i = 0; i < 10; ++i)
+   {
+      ProblemCards column;
+      for (int row = 0; row < state.GetColumnCardCount(i); ++row)
+         AddCardToCollection(state, column, CardLocation::GetColumnCard(i, row));
+      columns.push_back(column);
+   }
+
+   for (int i = 0; i < 4; ++i)
+      AddCardToCollection(state, towers, CardLocation::GetTower(i));
 }
 
 SeahavenProblem::SeahavenProblem(
@@ -47,11 +62,11 @@ SeahavenProblem::~SeahavenProblem() {
 }
 
 
-void SeahavenProblem::Dump(void)
+void SeahavenProblem::Dump(FILE *f)
 {
    for (int i = 0; i < columns.size(); ++i)
-      columns[i].Dump();
-   towers.Dump();
+      columns[i].Dump(f);
+   towers.Dump(f);
 }
 
 SeahavenProblem SeahavenProblem::CreateRandom(void)
@@ -83,6 +98,25 @@ SeahavenProblem SeahavenProblem::CreateRandom(void)
    result.towers.Append(deck[1]);
 
    return result;
+}
+
+
+void SeahavenProblem::AddCardToCollection(const SolverState& state, ProblemCards& cards, CardLocation cardLocation)
+{
+   // get the card
+   LinkedCard card = state.GetCard(cardLocation);
+   if (card.size == 0)
+      return;
+
+   // get the info about the top card of the group
+   ProblemCard cardInfo = state.GetCardDetails(cardLocation);
+   
+   // add however many cards we need to add
+   for (int i = 0; i < card.size; ++i)
+   {
+      cards.Append(cardInfo);
+      cardInfo = ProblemCard(cardInfo.GetSuit(), cardInfo.GetRank() - 1);
+   }
 }
 
 

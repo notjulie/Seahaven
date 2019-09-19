@@ -80,7 +80,7 @@ bool ProblemCard::operator==(const ProblemCard &that) const
       suit == that.suit;
 }
 
-void ProblemCard::DumpToConsole(void) const
+void ProblemCard::Dump(FILE *f) const
 {
    static const char ranks[] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J','Q', 'K'};
    
@@ -88,5 +88,5 @@ void ProblemCard::DumpToConsole(void) const
    s[0] = ranks[rank - 1];
    s[1] = suit.GetMnemonic();
    s[2] = 0;
-   printf("%s\r\n", s);
+   fprintf(f, "%s", s);
 }

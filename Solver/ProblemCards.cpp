@@ -52,10 +52,14 @@ ProblemCard ProblemCards::GetCard(uint8_t index) const
       return cards[index];
 }
 
-void ProblemCards::Dump(void)
+void ProblemCards::Dump(FILE *f)
 {
    for (int i = 0; i < cards.size(); ++i)
-      cards[i].DumpToConsole();
-   std::cout << std::endl;
+   {
+      if (i != 0)
+         fprintf(f, " ");
+      cards[i].Dump(f);
+   }
+   fprintf(f, "\r\n");
 }
 

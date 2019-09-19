@@ -15,7 +15,7 @@ public:
     ProblemCard(const char *_s = NULL);
     ProblemCard(Suit _suit, int _rank);
 
-    void       DumpToConsole(void) const;
+    void       Dump(FILE *f) const;
     bool       IsNull(void) const { return rank==0; }
     Suit       GetSuit(void) const { return suit; }
     uint8_t    GetRank(void) const { return rank; }

@@ -26,7 +26,13 @@ void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution
    Solution solution = solver.Solve(problem);
    if (solution != expectedResult)
    {
-      solution.DumpToConsole();
+      // open up a file and dump the result to it
+      FILE* resultFile = std::fopen("solveFailure.txt", "wt");
+      if (resultFile == nullptr)
+         throw SolverException("doSolverTestCase: error opening dump file");
+      solver.GetResult().DumpToFile(resultFile);
+      fclose(resultFile);
+
       throw SolverException("doSolverTestCase: result does not match expectation");
    }
 }

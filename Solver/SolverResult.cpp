@@ -1,5 +1,6 @@
 
 #include "SolverIncludes.h"
+#include "SeahavenProblem.h"
 #include "SolverResult.h"
 
 Solution SolverResult::CreateSolution(void) const
@@ -32,3 +33,30 @@ Solution SolverResult::CreateSolution(void) const
    return solution;
 }
 
+
+void SolverResult::DumpToFile(FILE* file) const
+{
+   // create a solution... that's really nothing more than a list showing the card that
+   // was moved in each step
+   Solution solution = CreateSolution();
+
+   // loop through every state in the result and dump it to the file
+   for (int i = 0; i < resultStack.GetSize(); ++i)
+   {
+      if (i != 0)
+         fprintf(file, "======================================================\r\n");
+
+      // create a problem from the state entry
+      SeahavenProblem problem(resultStack[i]);
+
+      // dump it
+      problem.Dump(file);
+
+      // dump out the next move
+      if (i < solution.GetStepCount())
+      {
+         fprintf(file, "Next move: ");
+         solution.GetStep(i).Dump(file);
+      }
+   }
+}

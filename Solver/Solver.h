@@ -21,7 +21,9 @@ public:
    Solver(void);
 
    void DisableCacheing(void) { cache.Disable(); }
+   const SolverResult& GetResult(void) const { return result; }
    int GetTotalBranchesTested(void) { return stateStack.GetTotalPushCount(); }
+
    Solution Solve(const SeahavenProblem& problem);
 
 private:

@@ -16,10 +16,13 @@ struct CompactedColumnCard {
    uint8_t  cardCount;
 };
 
+class SolverState;
+
 class SeahavenProblem {
 public:
-    SeahavenProblem();
-    SeahavenProblem(
+   SeahavenProblem(void);
+   SeahavenProblem(const SolverState &state);
+   SeahavenProblem(
             const ProblemCards &column0,
             const ProblemCards &column1,
             const ProblemCards &column2,
@@ -34,12 +37,15 @@ public:
             );
     virtual ~SeahavenProblem();
 
-    void Dump(void);
+    void Dump(FILE *f);
     std::vector<CompactedColumnCard> GetCompactedColumn(uint8_t columnIndex) const;
     ProblemCard GetTower(uint8_t index) const { return towers.GetCard(index); }
     LinkID GetCardLinkID(Suit suit, uint8_t rank) const;
 
     static SeahavenProblem CreateRandom(void);
+
+private:
+   void AddCardToCollection(const SolverState &state, ProblemCards &cards, CardLocation cardLocation);
 
 private:
     ProblemCards towers;

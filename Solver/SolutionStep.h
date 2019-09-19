@@ -15,7 +15,7 @@ public:
    SolutionStep(const char *s = NULL);
    SolutionStep(const ProblemCard &card);
 
-   void DumpToConsole(void) const;
+   void Dump(FILE *f) const;
    bool IsNull(void) const { return card.IsNull(); }
    
    bool operator==(const SolutionStep &that) const;

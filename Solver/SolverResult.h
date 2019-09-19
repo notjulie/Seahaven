@@ -10,6 +10,7 @@ class SolverResult
 public:
    Solution CreateSolution(void) const;
 
+   void DumpToFile(FILE* file) const;
    int GetSize(void) const { return resultStack.GetSize(); }
 
    void SetResultStack(const SolverStack& stack) { resultStack = stack; }

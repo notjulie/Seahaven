@@ -29,6 +29,7 @@ public:
    LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
    LinkedCard GetColumnBottomCard(int column) const { return cards.GetColumnCard(column, columnCounts.Get(column)); }
    ProblemCard GetBottomColumnCardDetails(int column) const;
+   ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation.GetLinkID()); }
    int GetEmptyColumnCount(void) const;
    int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }

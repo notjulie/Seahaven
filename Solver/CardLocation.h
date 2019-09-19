@@ -16,6 +16,17 @@ public:
    int GetColumnIndex(void) const;
    Suit GetSuit(void) const;
 
+   inline static CardLocation GetColumnCard(int column, int row) {
+      CardLocation result;
+      result.linkID = (LinkID)((uint8_t)LinkID::FIRST_COLUMN_LINK + 5 * column + row);
+      return result;
+   }
+   inline static CardLocation GetTower(int tower) {
+      CardLocation result;
+      result.linkID = (LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + tower);
+      return result;
+   }
+
 private:
    LinkID linkID;
 };

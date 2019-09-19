@@ -26,11 +26,11 @@ void Solution::AddStep(const SolutionStep &step)
    steps.push_back(step);
 }
 
-void Solution::DumpToConsole(void) const
+void Solution::Dump(FILE *f) const
 {
-   printf(success ? "Solved!\r\n" : "Not solved.\r\n");
+   fprintf(f, success ? "Solved!\r\n" : "Not solved.\r\n");
    for (int i=0; i<steps.size(); ++i)
-      steps[i].DumpToConsole();
+      steps[i].Dump(f);
 }
 
 

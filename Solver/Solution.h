@@ -17,7 +17,9 @@ public:
        );
 
     void AddStep(const SolutionStep &step);
-    void DumpToConsole(void) const;
+    void Dump(FILE *f) const;
+    SolutionStep GetStep(int i) const { return steps[i]; }
+    int GetStepCount(void) const { return (int)steps.size(); }
 
 public:
    bool operator==(const Solution&) const;

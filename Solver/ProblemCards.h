@@ -26,7 +26,7 @@ public:
             );
 
     void Append(const ProblemCard& card) { cards.push_back(card); }
-    void Dump(void);
+    void Dump(FILE *f);
     ProblemCard   GetCard(uint8_t index) const;
     uint8_t       GetCount(void) const {
        return (uint8_t)cards.size();
