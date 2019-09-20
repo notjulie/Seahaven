@@ -206,7 +206,12 @@ bool SolverState::DoFreeMoves(void)
       if (canMoveToHigher)
       {
          cards.MoveToHigher(CardLocation::Towers[i]);
-         didFreeMoves = true;
+
+         // Note that our "didFreeMoves" result is an indication of whether or not
+         // we did something that helped the situation.  Combining two towers is just
+         // a cleanup for our accounting... it doesn't really improve anything.
+         if (!tower.toHigher.IsTower())
+            didFreeMoves = true;
       }
    }
 

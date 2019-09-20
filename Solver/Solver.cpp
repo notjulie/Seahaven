@@ -319,14 +319,16 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int colum
          if (stackPointer->GetEmptyColumnCount() <= 0)
             return false;
    }
-   else
+   else if (card.toHigher.IsOnColumn())
    {
       // else we can only do this if the higher card is the bottom card on a column
       int column = card.toHigher.GetColumnIndex();
-      if (column < 0)
-         return false;
       if (stackPointer->GetColumnCardCount(column) != card.toHigher.GetRowIndex() + 1)
          return false;
+   }
+   else
+   {
+      return false;
    }
 
    // move

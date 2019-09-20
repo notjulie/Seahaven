@@ -38,6 +38,14 @@ void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution
 }
 
 
+void TestSolver::TestScottsProblem(void)
+{
+   Solver   solver;
+   Solution solution = solver.Solve(scottsProblem);
+   if (solution.IsFailure())
+      throw SolverException("TestSolver::TestScottsProblem: expected success");
+}
+
 void TestSolver::TestCache(void)
 {
    // run once normally

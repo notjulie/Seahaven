@@ -20,6 +20,7 @@ public:
     void Dump(FILE *f) const;
     SolutionStep GetStep(int i) const { return steps[i]; }
     int GetStepCount(void) const { return (int)steps.size(); }
+    bool IsFailure(void) const { return !success; }
 
 public:
    bool operator==(const Solution&) const;

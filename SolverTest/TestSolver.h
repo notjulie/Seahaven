@@ -20,7 +20,7 @@ public:
    void TestRandomCase(void);
    void testSingleColumnToColumnProblem() { doSolverTestCase(singleColumnToColumnProblem, singleColumnToColumnSolution); }
    void testSingleColumnToTowerProblem() { doSolverTestCase(singleColumnToTowerProblem, singleColumnToTowerSolution); }
-   void TestScottsProblem(void) { doSolverTestCase(scottsProblem, Solution::Fail()); }
+   void TestScottsProblem(void);
    void TestSlowProblem(void);
    void testZeroMoveProblem() { doSolverTestCase(zeroMoveProblem, zeroMoveSolution); }
    void TestCombineTowersProblem(void) { doSolverTestCase(combineTowersProblem, Solution::Fail()); }
