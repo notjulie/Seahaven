@@ -66,11 +66,6 @@ LinkedCard LinkedCards::GetThrone(Suit suit) const
    return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit.GetIndex())]);
 }
 
-LinkedCard LinkedCards::GetColumnCard(int column, int row) const
-{
-   return LinkedCard(links[GetColumnLinkID(column, row)]);
-}
-
 ProblemCard LinkedCards::GetCardDetails(LinkID link) const
 {
    int   rank = 0;
@@ -148,7 +143,7 @@ void LinkedCards::MoveToLower(LinkID link)
    links[link] = CompressedLink::Null;
 }
 
-void LinkedCards::MoveToOpenTower(LinkID link)
+void LinkedCards::MoveToOpenTower(CardLocation cardLocation)
 {
    // find an open tower... we assume we have one
    LinkID tower = LinkID::FIRST_TOWER_LINK;
@@ -161,7 +156,7 @@ void LinkedCards::MoveToOpenTower(LinkID link)
    }
    
    // get the card
-   LinkedCard card(links[link]);
+   LinkedCard card(links[cardLocation.GetLinkID()]);
    
    // link the lower to the tower
    LinkedCard lower(links[card.toLower.GetLinkID()]);
@@ -174,8 +169,8 @@ void LinkedCards::MoveToOpenTower(LinkID link)
    links[card.toHigher.GetLinkID()] = higher;
    
    // move the card to the tower
-   links[tower] = links[link];
-   links[link] = CompressedLink::Null;
+   links[tower] = links[cardLocation.GetLinkID()];
+   links[cardLocation.GetLinkID()] = CompressedLink::Null;
 }
 
 void LinkedCards::SetAceSizes(void)

@@ -270,7 +270,7 @@ bool Solver::TryPushColumnToTowerMove(StackPointer &stackPointer, int sourceColu
 void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
    // find the source column
-   LinkedCard targetCard = stackPointer->GetColumnBottomCard(targetColumn);
+   LinkedCard targetCard = stackPointer->GetCard(stackPointer->EndOfColumn(targetColumn));
    int sourceColumn = targetCard.toLower.GetColumnIndex();
    if (sourceColumn < 0)
       return;
@@ -300,7 +300,7 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int column)
 {
    // get the card
-   LinkedCard card = stackPointer->GetColumnBottomCard(column);
+   LinkedCard card = stackPointer->GetCard(stackPointer->EndOfColumn(column));
 
    // we need to have enough towers
    if (card.size > stackPointer->GetFreeTowers() + 1)

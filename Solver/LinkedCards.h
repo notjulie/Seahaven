@@ -87,25 +87,18 @@ public:
    int CountKingsOnTowers(void) const;
    LinkedCard GetAce(Suit suit) const;
    LinkedCard GetCard(CardLocation cardLocation) const { return links[cardLocation.GetLinkID()]; }
-   LinkedCard GetColumnCard(int column, int row) const;
    int GetEmptyTowers(void) const;
    LinkedCard GetThrone(Suit suit) const;
    int GetThroneOccupationMask(void) const;
    LinkedCard GetTower(int i) const;
    bool IsKing(LinkedCard card) const;
-   void MoveToOpenTower(LinkID link);
+   void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
    void MoveToLower(LinkID link);
    void SetAceSizes(void);
    void SetCard(CardLocation cardLocation, LinkedCard card);
    ProblemCard GetCardDetails(LinkID link) const;
    
-public:
-   static inline LinkID GetColumnLinkID(uint8_t column, uint8_t index) {
-      return (LinkID)((uint8_t)LinkID::FIRST_COLUMN_LINK + 5*column + index); }
-   static inline LinkID GetTowerLinkID(uint8_t tower) {
-      return (LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + tower); }
-
 private:
    LinksArray links;
 };

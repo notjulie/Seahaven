@@ -35,7 +35,7 @@ void TestCardOverlap(void)
    // create a state from the problem
    SolverState state(testCardOverlapTestCase);
 
-   LinkedCard sevenOfDiamonds = state.GetColumnBottomCard(5);
+   LinkedCard sevenOfDiamonds = state.GetCard(state.EndOfColumn(5));
    if (sevenOfDiamonds.size != 3)
       throw SolverException("TestCardOverlap: failed to get seven of diamonds");
 

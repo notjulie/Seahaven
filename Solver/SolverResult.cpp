@@ -18,7 +18,7 @@ Solution SolverResult::CreateSolution(void) const
       {
       case SolverMoveType::FromColumnToHigherCard:
       case SolverMoveType::FromColumnToTower:
-         solution.AddStep(resultStack[i - 1].GetBottomColumnCardDetails(move.column));
+         solution.AddStep(resultStack[i - 1].GetCardDetails(resultStack[i - 1].EndOfColumn(move.column)));
          break;
 
       case SolverMoveType::FromTowerToEmptyThrone:

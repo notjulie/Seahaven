@@ -25,10 +25,9 @@ public:
    bool  CanMoveColumnToTower(int columnIndex) const;
    int CountKingsOnTowers(void) const { return cards.CountKingsOnTowers(); }
    bool  DoFreeMoves(void);
+   CardLocation EndOfColumn(int column) const { return CardLocation::Columns[column][columnCounts.Get(column)-1]; }
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
    LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
-   LinkedCard GetColumnBottomCard(int column) const;
-   ProblemCard GetBottomColumnCardDetails(int column) const;
    ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation.GetLinkID()); }
    int GetEmptyColumnCount(void) const;
    int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }

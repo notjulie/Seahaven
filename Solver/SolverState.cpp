@@ -86,7 +86,7 @@ bool SolverState::CanMoveColumnToTower(int columnIndex) const
       return false;
    
    // get the card on the bottom of the column
-   LinkedCard  card = cards.GetColumnCard(columnIndex, columnCounts.Get(columnIndex) - 1);
+   LinkedCard  card = cards.GetCard(CardLocation::Columns[columnIndex][columnCounts.Get(columnIndex) - 1]);
    
    // all good as long as we have the tower space
    return card.size <= cards.GetEmptyTowers();
@@ -132,20 +132,13 @@ void SolverState::MoveColumnToTower(int columnIndex)
 {
    // move it and decrement the column count
    columnCounts.Decrement(columnIndex);
-   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex));
-   cards.MoveToOpenTower(link);
+   cards.MoveToOpenTower(CardLocation::Columns[columnIndex][columnCounts.Get(columnIndex)]);
 }
 
 void SolverState::MoveTowerToThrone(Suit suit)
 {
    // just move the tower's lower to it
    cards.MoveToHigher(cards.GetThrone(suit).toLower);
-}
-
-ProblemCard SolverState::GetBottomColumnCardDetails(int columnIndex) const
-{
-   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex)-1);
-   return cards.GetCardDetails(link);
 }
 
 
@@ -320,13 +313,4 @@ void SolverState::LockThrone(Suit suit)
    throw SolverException("SolverState::LockThrone: not implemented");
 }
 
-
-LinkedCard SolverState::GetColumnBottomCard(int column) const
-{
-   int row = columnCounts.Get(column) - 1;
-   if (row >= 0)
-      return cards.GetColumnCard(column, row);
-   else
-      return LinkedCard::Null;
-}
 
