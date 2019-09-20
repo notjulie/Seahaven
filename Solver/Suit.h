@@ -8,7 +8,6 @@
 #ifndef SUIT_H
 #define	SUIT_H
 
-#include "LinkID.h"
 
 class Suit {
 public:
