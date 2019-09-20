@@ -103,10 +103,10 @@ bool LinkedCards::IsKing(LinkedCard card) const
    return card.toHigher.IsThrone();
 }
 
-void LinkedCards::MoveToHigher(LinkID link)
+void LinkedCards::MoveToHigher(CardLocation cardLocation)
 {
    // get the card
-   LinkedCard card(links[link]);
+   LinkedCard card(links[cardLocation.GetLinkID()]);
    
    // link the lower to the higher
    LinkedCard lower(links[card.toLower.GetLinkID()]);
@@ -121,7 +121,7 @@ void LinkedCards::MoveToHigher(LinkID link)
    links[card.toHigher.GetLinkID()] = higher;
    
    // make the card being moved go away
-   links[link] = CompressedLink::Null;
+   links[cardLocation.GetLinkID()] = CompressedLink::Null;
 }
 
 void LinkedCards::MoveToLower(LinkID link)

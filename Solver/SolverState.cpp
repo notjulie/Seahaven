@@ -124,8 +124,7 @@ void SolverState::MoveColumnToColumnOrThrone(int columnIndex)
 {
    // move it and decrement the column count
    columnCounts.Decrement(columnIndex);
-   LinkID   link = cards.GetColumnLinkID(columnIndex, columnCounts.Get(columnIndex));
-   cards.MoveToHigher(link);
+   cards.MoveToHigher(CardLocation::Columns[columnIndex][columnCounts.Get(columnIndex)]);
 }
 
 
@@ -139,11 +138,8 @@ void SolverState::MoveColumnToTower(int columnIndex)
 
 void SolverState::MoveTowerToThrone(Suit suit)
 {
-   // get the throne
-   LinkedCard throne = cards.GetThrone(suit);
-
-   // and just move its lower to it
-   cards.MoveToHigher(throne.toLower.GetLinkID());
+   // just move the tower's lower to it
+   cards.MoveToHigher(cards.GetThrone(suit).toLower);
 }
 
 ProblemCard SolverState::GetBottomColumnCardDetails(int columnIndex) const
@@ -216,7 +212,7 @@ bool SolverState::DoFreeMoves(void)
       // combine with the next higher card if we can
       if (canMoveToHigher)
       {
-         cards.MoveToHigher(LinkedCards::GetTowerLinkID(i));
+         cards.MoveToHigher(CardLocation::Towers[i]);
          didFreeMoves = true;
       }
    }
@@ -239,7 +235,7 @@ bool SolverState::DoFreeMoves(void)
       // if it is the only card on the column, move it to the throne
       if (columnCounts.Get(column) == 1)
       {
-         cards.MoveToHigher(kingLocation.GetLinkID());
+         cards.MoveToHigher(kingLocation);
          columnCounts.Decrement(column);
          didFreeMoves = true;
       }
@@ -257,7 +253,7 @@ bool SolverState::DoFreeMoves(void)
          {
             if (throne.toLower.IsTower())
             {
-               cards.MoveToHigher(throne.toLower.GetLinkID());
+               cards.MoveToHigher(throne.toLower);
                didFreeMoves = true;
             }
          }

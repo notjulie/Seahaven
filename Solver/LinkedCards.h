@@ -94,7 +94,7 @@ public:
    LinkedCard GetTower(int i) const;
    bool IsKing(LinkedCard card) const;
    void MoveToOpenTower(LinkID link);
-   void MoveToHigher(LinkID link);
+   void MoveToHigher(CardLocation link);
    void MoveToLower(LinkID link);
    void SetAceSizes(void);
    void SetCard(CardLocation cardLocation, LinkedCard card);
