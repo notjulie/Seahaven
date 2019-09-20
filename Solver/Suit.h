@@ -13,8 +13,6 @@
 class Suit {
 public:
    inline uint8_t GetIndex(void) const { return index; }
-   inline LinkID GetAceLinkID(void) const { return (LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + index); }
-   inline LinkID GetThroneLinkID(void) const { return (LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + index); }
 
    inline bool operator<=(Suit suit) const { return index <= suit.index; }
    inline bool operator==(Suit suit) const { return index == suit.index; }

@@ -21,7 +21,9 @@ public:
    inline bool operator!=(CardLocation card) { return card.linkID != linkID; }
 
 public:
+   static const CardLocation Aces[4];
    static const CardLocation Columns[10][5];
+   static const CardLocation Thrones[4];
    static const CardLocation Towers[4];
 
 private:

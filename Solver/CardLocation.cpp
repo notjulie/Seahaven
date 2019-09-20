@@ -30,6 +30,21 @@ CardLocation CardLocation::FromLinkID(LinkID linkID)
    return result;
 }
 
+
+const CardLocation CardLocation::Aces[4] = {
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 0)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 1)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 2)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 3))
+};
+
+const CardLocation CardLocation::Thrones[4] = {
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 0)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 1)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 2)),
+   CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3))
+};
+
 const CardLocation CardLocation::Towers[4] = {
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 0)),
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 1)),

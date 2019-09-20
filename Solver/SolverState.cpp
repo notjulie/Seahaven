@@ -32,18 +32,18 @@ SolverState::SolverState(const SeahavenProblem &problem) {
       for (int j=0; j<compactedCards.size(); ++j)
       {
          // get the links
-         LinkID highLink = problem.GetCardLinkID(
+         CardLocation highLink = problem.GetCardLocation(
             compactedCards[j].topCard.GetSuit(),
             compactedCards[j].topCard.GetRank() + 1
             );
-         LinkID lowLink = problem.GetCardLinkID(
+         CardLocation lowLink = problem.GetCardLocation(
             compactedCards[j].topCard.GetSuit(),
             compactedCards[j].topCard.GetRank() - compactedCards[j].cardCount
             );
          
          // add it
-         linkedCard.toLower.SetLinkID(lowLink);
-         linkedCard.toHigher.SetLinkID(highLink);
+         linkedCard.toLower = lowLink;
+         linkedCard.toHigher = highLink;
          linkedCard.size = compactedCards[j].cardCount;
          cards.SetCard(CardLocation::Columns[columnIndex][j], linkedCard);
          columnCounts.Increment(columnIndex);
@@ -56,18 +56,18 @@ SolverState::SolverState(const SeahavenProblem &problem) {
       ProblemCard tower = problem.GetTower(i);
       if (!tower.IsNull())
       {
-         LinkID highLink = problem.GetCardLinkID(
+         CardLocation highLink = problem.GetCardLocation(
             tower.GetSuit(),
             tower.GetRank() + 1
             );
-         LinkID lowLink = problem.GetCardLinkID(
+         CardLocation lowLink = problem.GetCardLocation(
             tower.GetSuit(),
             tower.GetRank() - 1
             );
          
          // add it
-         linkedCard.toLower.SetLinkID(lowLink);
-         linkedCard.toHigher.SetLinkID(highLink);
+         linkedCard.toLower = lowLink;
+         linkedCard.toHigher = highLink;
          linkedCard.size = 1;
          cards.SetCard(CardLocation::Towers[i], linkedCard);
       }
