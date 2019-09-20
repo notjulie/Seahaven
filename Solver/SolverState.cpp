@@ -313,9 +313,3 @@ SolverHashCode SolverState::GetHashValue(void) const
 }
 
 
-void SolverState::LockThrone(Suit suit)
-{
-   throw SolverException("SolverState::LockThrone: not implemented");
-}
-
-
