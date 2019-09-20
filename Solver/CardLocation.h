@@ -27,6 +27,16 @@ public:
       return result;
    }
 
+   inline bool operator==(CardLocation card) { return card.linkID == linkID; }
+   inline bool operator!=(CardLocation card) { return card.linkID != linkID; }
+
+public:
+   static const CardLocation Columns[10][5];
+   static const CardLocation Towers[4];
+
+private:
+   static CardLocation FromLinkID(LinkID linkID);
+
 private:
    LinkID linkID;
 };

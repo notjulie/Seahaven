@@ -41,7 +41,7 @@ SolverState::SolverState(const SeahavenProblem &problem) {
          
          // add it
          cards.SetCard(
-            cards.GetColumnLinkID(columnIndex, j),
+            CardLocation::Columns[columnIndex][j],
             lowLink,
             highLink,
             compactedCards[j].cardCount
@@ -67,7 +67,7 @@ SolverState::SolverState(const SeahavenProblem &problem) {
          
          // add it
          cards.SetCard(
-            cards.GetTowerLinkID(i),
+            CardLocation::Towers[i],
             lowLink,
             highLink,
             1
