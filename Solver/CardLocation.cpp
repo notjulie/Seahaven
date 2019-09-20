@@ -30,6 +30,7 @@ CardLocation CardLocation::FromLinkID(LinkID linkID)
    return result;
 }
 
+const CardLocation CardLocation::Null = CardLocation::FromLinkID(LinkID::NO_LINK);
 
 const CardLocation CardLocation::Aces[4] = {
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 0)),
@@ -125,4 +126,3 @@ const CardLocation CardLocation::Columns[10][5] = {
       CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_COLUMN_LINK + 49))
    }
 };
-static const CardLocation Towers[4];

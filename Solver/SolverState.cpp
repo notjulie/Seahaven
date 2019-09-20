@@ -330,11 +330,7 @@ LinkedCard SolverState::GetColumnBottomCard(int column) const
    int row = columnCounts.Get(column) - 1;
    if (row >= 0)
       return cards.GetColumnCard(column, row);
-
-   LinkedCard result;
-   result.size = 0;
-   result.toHigher.SetLinkID(LinkID::NO_LINK);
-   result.toLower.SetLinkID(LinkID::NO_LINK);
-   return result;
+   else
+      return LinkedCard::Null;
 }
 

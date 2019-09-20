@@ -14,6 +14,7 @@
 
 
 const CompressedLink CompressedLink::Null = CompressedLink::Create(LinkID::NO_LINK, LinkID::NO_LINK, 0);
+const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 };
 
 
 // ==============================================================

@@ -18,6 +18,9 @@ public:
    CardLocation toHigher;
    CardLocation toLower;
    uint8_t size;
+
+public:
+   static const LinkedCard Null;
 };
 
 
