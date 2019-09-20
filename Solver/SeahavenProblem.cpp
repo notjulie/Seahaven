@@ -39,33 +39,6 @@ SeahavenProblem::SeahavenProblem(const SolverState& state)
       AddCardToCollection(state, towers, CardLocation::GetTower(i));
 }
 
-SeahavenProblem::SeahavenProblem(
-        const ProblemCards &column0,
-        const ProblemCards &column1,
-        const ProblemCards &column2,
-        const ProblemCards &column3,
-        const ProblemCards &column4,
-        const ProblemCards &column5,
-        const ProblemCards &column6,
-        const ProblemCards &column7,
-        const ProblemCards &column8,
-        const ProblemCards &column9,
-        const ProblemCards &_towers
-        )
-{
-    towers = _towers;
-    columns.push_back(column0);
-    columns.push_back(column1);
-    columns.push_back(column2);
-    columns.push_back(column3);
-    columns.push_back(column4);
-    columns.push_back(column5);
-    columns.push_back(column6);
-    columns.push_back(column7);
-    columns.push_back(column8);
-    columns.push_back(column9);
-}
-
 SeahavenProblem::~SeahavenProblem() {
 }
 

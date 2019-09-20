@@ -11,18 +11,18 @@
 #include "SeahavenProblem.h"
 #include "Solution.h"
 
-extern const SeahavenProblem cacheTestProblem;
-extern const SeahavenProblem slowTestProblem;
+extern const ProblemDefinition cacheTestProblem;
+extern const ProblemDefinition slowTestProblem;
 extern const ProblemDefinition scottsProblem;
-extern const SeahavenProblem combineTowersProblem;
+extern const ProblemDefinition combineTowersProblem;
 
-extern const SeahavenProblem zeroMoveProblem;
+extern const ProblemDefinition zeroMoveProblem;
 extern const Solution zeroMoveSolution;
 
-extern const SeahavenProblem singleColumnToColumnProblem;
+extern const ProblemDefinition singleColumnToColumnProblem;
 extern const Solution singleColumnToColumnSolution;
 
-extern const SeahavenProblem singleColumnToTowerProblem;
+extern const ProblemDefinition singleColumnToTowerProblem;
 extern const Solution singleColumnToTowerSolution;
 
 #endif	/* TESTCASES_H */

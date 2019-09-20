@@ -13,18 +13,8 @@
 
 class ProblemCards {
 public:
-    ProblemCards(
-            const ProblemCard &card0 = ProblemCard(),
-            const ProblemCard &card1 = ProblemCard(),
-            const ProblemCard &card2 = ProblemCard(),
-            const ProblemCard &card3 = ProblemCard(),
-            const ProblemCard &card4 = ProblemCard(),
-            const ProblemCard &card5 = ProblemCard(),
-            const ProblemCard &card6 = ProblemCard(),
-            const ProblemCard &card7 = ProblemCard(),
-            const ProblemCard &card8 = ProblemCard()
-            );
-    ProblemCards(const std::initializer_list<const char*> cards);
+   ProblemCards(void);
+   ProblemCards(const std::initializer_list<const char*> cards);
 
     void Append(const ProblemCard& card) { cards.push_back(card); }
     void Dump(FILE *f);

@@ -4,7 +4,26 @@
 #include "SolverState.h"
 
 
-extern SeahavenProblem testCardOverlapTestCase;
+// This was part of a solution I ran into... from this point it tried to
+// move the 7-6-5D on to the 8D, even though the 8 is covered by the 9.
+static const ProblemDefinition testCardOverlapTestCase =
+{
+   // columns
+   {
+      { "2S", "TD" },
+      { "AS", "8S", "7C", "2D", "7S", "6S" },
+      { "TC", "3C", "2C" },
+      { "QS", "JC", "5C", "KH", "QH", "JH" },
+      { "9C", "4H", "3H", "KC" },
+      { "AC", "2H", "3S", "JD", "7D", "6D", "5D" },
+      { "4D", "3D", "TS", "5S", "KD", "QD" },
+      { "8C", "AH", "6C", "TH", "8H" },
+      { "KS", "5H", "JS", "8D", "9D" },
+      { "7H", "4C", "9S", "QC", "6H" }
+   },
+   // towers
+   {"9H", "4S"}
+};
 
 
 /// <summary>
@@ -30,7 +49,3 @@ void TestCardOverlap(void)
       throw SolverException("TestCardOverlap: eight of diamonds cards in column is wrong");
 }
 
-// This was part of a solution I ran into... from this point it tried to
-// move the 7-6-5D on to the 8D, even though the 8 is covered by the 9.
-SeahavenProblem testCardOverlapTestCase(
-   ProblemCards("2S", "TD"),   ProblemCards("AS", "8S", "7C", "2D", "7S", "6S"),   ProblemCards("TC", "3C", "2C"),   ProblemCards("QS", "JC", "5C", "KH", "QH", "JH"),   ProblemCards("9C", "4H", "3H", "KC"),   ProblemCards("AC", "2H", "3S", "JD", "7D", "6D", "5D"),   ProblemCards("4D", "3D", "TS", "5S", "KD", "QD"),   ProblemCards("8C", "AH", "6C", "TH", "8H"),   ProblemCards("KS", "5H", "JS", "8D", "9D"),   ProblemCards("7H", "4C", "9S", "QC", "6H"),   ProblemCards("9H", "4S"));
