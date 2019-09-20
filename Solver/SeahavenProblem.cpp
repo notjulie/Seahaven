@@ -31,12 +31,12 @@ SeahavenProblem::SeahavenProblem(const SolverState& state)
    {
       ProblemCards column;
       for (int row = 0; row < state.GetColumnCardCount(i); ++row)
-         AddCardToCollection(state, column, CardLocation::GetColumnCard(i, row));
+         AddCardToCollection(state, column, CardLocation::Columns[i][row]);
       columns.push_back(column);
    }
 
    for (int i = 0; i < 4; ++i)
-      AddCardToCollection(state, towers, CardLocation::GetTower(i));
+      AddCardToCollection(state, towers, CardLocation::Towers[i]);
 }
 
 SeahavenProblem::~SeahavenProblem() {
