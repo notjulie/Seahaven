@@ -22,6 +22,7 @@ SeahavenProblem::SeahavenProblem(const ProblemDefinition& problemDefinition)
 {
    for (auto cards : problemDefinition.columns)
       columns.push_back(ProblemCards(cards));
+   columns.resize(10);
    towers = ProblemCards(problemDefinition.towers);
 }
 
