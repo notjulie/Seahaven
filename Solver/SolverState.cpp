@@ -20,6 +20,8 @@ SolverState::SolverState(void)
 
 
 SolverState::SolverState(const SeahavenProblem &problem) {
+   LinkedCard linkedCard;
+
    // neutral state
    Clear();
 
@@ -40,12 +42,10 @@ SolverState::SolverState(const SeahavenProblem &problem) {
             );
          
          // add it
-         cards.SetCard(
-            CardLocation::Columns[columnIndex][j],
-            lowLink,
-            highLink,
-            compactedCards[j].cardCount
-         );
+         linkedCard.toLower.SetLinkID(lowLink);
+         linkedCard.toHigher.SetLinkID(highLink);
+         linkedCard.size = compactedCards[j].cardCount;
+         cards.SetCard(CardLocation::Columns[columnIndex][j], linkedCard);
          columnCounts.Increment(columnIndex);
       }
    }
@@ -66,12 +66,10 @@ SolverState::SolverState(const SeahavenProblem &problem) {
             );
          
          // add it
-         cards.SetCard(
-            CardLocation::Towers[i],
-            lowLink,
-            highLink,
-            1
-         );
+         linkedCard.toLower.SetLinkID(lowLink);
+         linkedCard.toHigher.SetLinkID(highLink);
+         linkedCard.size = 1;
+         cards.SetCard(CardLocation::Towers[i], linkedCard);
       }
    }
 

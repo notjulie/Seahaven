@@ -94,7 +94,7 @@ public:
    void MoveToHigher(LinkID link);
    void MoveToLower(LinkID link);
    void SetAceSizes(void);
-   void SetCard(CardLocation card, LinkID toLow, LinkID toHigh, uint8_t size);
+   void SetCard(CardLocation cardLocation, LinkedCard card);
    ProblemCard GetCardDetails(LinkID link) const;
    
 public:

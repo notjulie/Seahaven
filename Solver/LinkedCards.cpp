@@ -204,37 +204,34 @@ void LinkedCards::SetAceSizes(void)
 /// this is called only in setup, so we check and verify and throw exceptions
 /// as we see fit
 /// </summary>
-void LinkedCards::SetCard(CardLocation cardLocation, LinkID toLow, LinkID toHigh, uint8_t size)
+void LinkedCards::SetCard(CardLocation cardLocation, LinkedCard card)
 {
    // update the card in question
    LinkedCard  linkedCard(links[cardLocation.GetLinkID()]);
-   if (linkedCard.toLower.GetLinkID() != LinkID::NO_LINK && linkedCard.toLower.GetLinkID() !=toLow)
+   if (linkedCard.toLower.GetLinkID() != LinkID::NO_LINK && linkedCard.toLower !=card.toLower)
       throw SolverException("LinkedCards::SetCard: rewriting link to lower");
-   if (linkedCard.toHigher.GetLinkID() != LinkID::NO_LINK && linkedCard.toHigher.GetLinkID() !=toHigh)
+   if (linkedCard.toHigher.GetLinkID() != LinkID::NO_LINK && linkedCard.toHigher !=card.toHigher)
       throw SolverException("LinkedCards::SetCard: rewriting link to higher");
-   linkedCard.toHigher.SetLinkID(toHigh);
-   linkedCard.toLower.SetLinkID(toLow);
-   linkedCard.size = size;
-   links[cardLocation.GetLinkID()] = linkedCard;
+   links[cardLocation.GetLinkID()] = card;
 
    // update the lower
-   if (toLow != LinkID::NO_LINK)
+   if (!card.toLower.IsNull())
    {
-      LinkedCard  lowerCard(links[toLow]);
+      LinkedCard  lowerCard(links[card.toLower.GetLinkID()]);
       if (lowerCard.toHigher.GetLinkID() != LinkID::NO_LINK && lowerCard.toHigher !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from lower");
       lowerCard.toHigher = cardLocation;
-      links[toLow] = lowerCard;      
+      links[card.toLower.GetLinkID()] = lowerCard;
    }
    
    // update the higher
-   if (toHigh != LinkID::NO_LINK)
+   if (!card.toHigher.IsNull())
    {
-      LinkedCard  higherCard(links[toHigh]);
+      LinkedCard  higherCard(links[card.toHigher.GetLinkID()]);
       if (higherCard.toLower.GetLinkID() != LinkID::NO_LINK && higherCard.toLower !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from higher");
       higherCard.toLower = cardLocation;
-      links[toHigh] = higherCard;
+      links[card.toHigher.GetLinkID()] = higherCard;
    }   
 }
 
