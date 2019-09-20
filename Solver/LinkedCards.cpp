@@ -165,12 +165,12 @@ void LinkedCards::MoveToOpenTower(LinkID link)
    
    // link the lower to the tower
    LinkedCard lower(links[card.toLower.GetLinkID()]);
-   lower.toHigher.SetLinkID(tower);
+   lower.toHigher = CardLocation::Links[(uint8_t)tower];
    links[card.toLower.GetLinkID()] = lower;
    
    // link the higher to the tower
    LinkedCard higher(links[card.toHigher.GetLinkID()]);
-   higher.toLower.SetLinkID(tower);
+   higher.toLower = CardLocation::Links[(uint8_t)tower];
    links[card.toHigher.GetLinkID()] = higher;
    
    // move the card to the tower

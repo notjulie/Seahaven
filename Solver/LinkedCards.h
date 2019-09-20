@@ -33,8 +33,8 @@ public:
 
    operator LinkedCard() {
       LinkedCard result;
-      result.toHigher.SetLinkID((LinkID)(link >> 10));
-      result.toLower.SetLinkID((LinkID)(0x3f & (link >> 4)));
+      result.toHigher = CardLocation::Links[link >> 10];
+      result.toLower = CardLocation::Links[0x3f & (link >> 4)];
       result.size = 0xF & link;
       return result;
    }
