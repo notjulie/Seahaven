@@ -34,7 +34,6 @@ public:
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;
    LinkedCard GetTower(int tower) const { return cards.GetTower(tower); }
-   LinkedCard GetThrone(Suit suit) const { return cards.GetThrone(suit); }
    bool  IsBottomColumnCard(CardLocation card) const;
    bool  IsVictory(void) const;
    void PerformMove(SolverMove move);

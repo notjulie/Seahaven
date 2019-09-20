@@ -35,6 +35,7 @@ private:
    };
 
 private:
+   void TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit);
    FreeMovesResult DoFreeMoves(StackPointer stackPointer);
    void DoFreeMovesAndSolve(StackPointer stackPointer);
    bool PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMove move);

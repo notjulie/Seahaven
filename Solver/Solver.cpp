@@ -58,15 +58,14 @@ void Solver::SolverStep(StackPointer stackPointer)
    // pulled down.  Note that if there were enough empty columns, DoFreeMoves will already
    // have covered that case.  Our job is to take care of arbitration when the empty
    // columns are a scarce resource.
-   int kingsOnTowers = stackPointer->CountKingsOnTowers();
-   if (kingsOnTowers > 0)
+   if (stackPointer->CountKingsOnTowers() != 0 && stackPointer->GetEmptyColumnCount() != 0)
    {
-      int emptyColumns = stackPointer->GetEmptyColumnCount();
-      if (emptyColumns > 0)
-      {
-         throw SolverException("Need to arbitrate thrones");
-         return;
-      }
+      for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+         TryTowerToThroneAndSolve(stackPointer, suit);
+
+      // that's all we can do on this branch... we aren't allowed to proceed until
+      // our towers are clean
+      return;
    }
 
    // go through all columns and try to find moves that have some evident purpose
@@ -132,6 +131,47 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
          return;
       }
    }
+}
+
+
+/// <summary>
+/// Moves the given king from a tower (if that's where it is) to its throne (if the throne is empty).
+/// </summary>
+void Solver::TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit)
+{
+   static int towersToThrone = 0;
+   ++towersToThrone;
+
+   // grab the throne
+   LinkedCard throne = stackPointer->GetCard(CardLocation::Thrones[suit.GetIndex()]);
+
+   // never mind if it already has something on it
+   if (throne.size != 0)
+      return;
+
+   // never mind if the king it points to is not on a tower
+   if (!throne.toLower.IsTower())
+      return;
+
+   // move it
+   SolverMove move;
+   move.type = SolverMoveType::FromTowerToEmptyThrone;
+   move.suit = suit;
+   if (!PushCurrentStateAndPerformMove(stackPointer, move))
+      return;
+
+   // If we still have empty columns then we need to continue down this path;
+   // note that by starting with the next suit we make sure that we don't do
+   // redundant steps (KC then KD, next time KD then KC).
+   if (stackPointer->GetEmptyColumnCount() != 0)
+   {
+      while (++suit <= Suit::Last)
+         TryTowerToThroneAndSolve(stackPointer, suit);
+      return;
+   }
+
+   // else just solve as normal
+   DoFreeMovesAndSolve(stackPointer);
 }
 
 /// <summary>
@@ -206,7 +246,7 @@ void Solver::DoFreeMovesAndSolve(StackPointer stackPointer)
 void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
 {
    // find the throne, which is the link that points downward to the king
-   LinkedCard throne = stackPointer->GetThrone(suit);
+   LinkedCard throne = stackPointer->GetCard(CardLocation::Thrones[suit.GetIndex()]);
 
    // a throne acts as a column that the king can be moved to, so if the throne's
    // size is not zero it means that this king is already on a column

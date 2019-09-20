@@ -61,11 +61,6 @@ LinkedCard LinkedCards::GetTower(int i) const
    return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + i)]);
 }
 
-LinkedCard LinkedCards::GetThrone(Suit suit) const
-{
-   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + suit.GetIndex())]);
-}
-
 ProblemCard LinkedCards::GetCardDetails(LinkID link) const
 {
    int   rank = 0;
@@ -236,7 +231,7 @@ int LinkedCards::CountKingsOnTowers(void) const
    int kingsOnTowers = 0;
    for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
    {
-      LinkedCard throne = GetThrone(suit);
+      LinkedCard throne = GetCard(CardLocation::Thrones[suit.GetIndex()]);
       if (throne.size == 0)
          if (throne.toLower.IsTower())
             ++kingsOnTowers;

@@ -10,8 +10,11 @@ int main()
 {
    TestSolver tester;
 
-   TestCardOverlap();
+   std::cout << "Starting slow problem... ";
+   tester.TestSlowProblem();
+   std::cout << "done" << std::endl;
 
+   TestCardOverlap();
 
    tester.TestCombineTowersProblem();
    tester.TestCache();
@@ -19,9 +22,6 @@ int main()
    tester.testSingleColumnToTowerProblem();
    tester.testSingleColumnToColumnProblem();
    tester.TestScottsProblem();
-   std::cout << "Starting slow problem... ";
-   tester.TestSlowProblem();
-   std::cout << "done" << std::endl;
 
    for (int i = 0; i < 1000; ++i)
    {

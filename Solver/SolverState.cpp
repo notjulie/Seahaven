@@ -138,7 +138,7 @@ void SolverState::MoveColumnToTower(int columnIndex)
 void SolverState::MoveTowerToThrone(Suit suit)
 {
    // just move the tower's lower to it
-   cards.MoveToHigher(cards.GetThrone(suit).toLower);
+   cards.MoveToHigher(cards.GetCard(CardLocation::Thrones[suit.GetIndex()]).toLower);
 }
 
 
@@ -220,7 +220,7 @@ bool SolverState::DoFreeMoves(void)
    for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
    {
       // get the throne, make sure that it's empty
-      LinkedCard throne = cards.GetThrone(suit);
+      LinkedCard throne = cards.GetCard(CardLocation::Thrones[suit.GetIndex()]);
       if (throne.size != 0)
          continue;
 
@@ -246,7 +246,7 @@ bool SolverState::DoFreeMoves(void)
    {
       for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
       {
-         LinkedCard throne = cards.GetThrone(suit);
+         LinkedCard throne = cards.GetCard(CardLocation::Thrones[suit.GetIndex()]);
          if (throne.size == 0)
          {
             if (throne.toLower.IsTower())
@@ -296,7 +296,7 @@ int SolverState::GetEmptyColumnCount(void) const
    // there's no effective difference between a king on column 1 or column 7.  So
    // subtract one from the count for any non-empty throne.
    for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
-      if (cards.GetThrone(suit).size != 0)
+      if (cards.GetCard(CardLocation::Thrones[suit.GetIndex()]).size != 0)
          --emptyColumns;
 
    // done

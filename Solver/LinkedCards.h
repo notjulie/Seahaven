@@ -88,7 +88,6 @@ public:
    LinkedCard GetAce(Suit suit) const;
    LinkedCard GetCard(CardLocation cardLocation) const { return links[cardLocation.GetLinkID()]; }
    int GetEmptyTowers(void) const;
-   LinkedCard GetThrone(Suit suit) const;
    int GetThroneOccupationMask(void) const;
    LinkedCard GetTower(int i) const;
    bool IsKing(LinkedCard card) const;
