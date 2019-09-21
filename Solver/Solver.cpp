@@ -39,7 +39,7 @@ Solution Solver::Solve(const SeahavenProblem& problem)
    }
 
    // solve recursively
-   SolverStep(stackPointer);
+   TestAllMoves(stackPointer);
 
    // return the solution
    return result.CreateSolution();
@@ -51,7 +51,7 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 /// Tries to solve (recursively) the problem at the given stack index.  On entry it is expected that
 /// auto moves have been performed.
 /// </summary>
-void Solver::SolverStep(StackPointer stackPointer)
+void Solver::TestAllMoves(StackPointer stackPointer)
 {
    // If we have kings on towers and empty columns to put them in, all we can do
    // on this go around is to rotate through the kings and see which ones should get
@@ -88,49 +88,52 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
    if (stackPointer->GetColumnCardCount(column) == 0)
       return;
 
-   // move cards off the column until we do something that seems to have a purpose
-   for (;;)
+   // if this is the last card on the column and we don't have any empty columns,
+   // then the purpose of this move is to empty a column in order to move a king
+   // to the column
+   if (stackPointer->GetColumnCardCount(column) == 1)
    {
-      // if this is the last card on the column and we don't have any empty columns,
-      // then the purpose of this move is to empty a column in order to move a king
-      // to the column
-      if (stackPointer->GetColumnCardCount(column) == 1)
-      {
-         TryMoveLastCardFromColumn(stackPointer, column);
-         return;
-      }
-
-      // if the next card on the column can move to the card a rank above it, that counts as a
-      // move that has a purpose, so we try that and exit
-      if (TryPushColumnToHigherAndSolve(stackPointer, column))
-         return;
-
-      // if the next card can't move to a tower, then we are done here
-      if (!TryPushColumnToTowerMove(stackPointer, column))
-         return;
-
-      // see if we can do any free moves
-      switch (DoFreeMoves(stackPointer))
-      {
-      case DidFreeMoves:
-         // if we did free moves that means that this move served a purpose so
-         // continue our recursive search
-         SolverStep(stackPointer);
-         return;
-
-      case DidNothing:
-         // try the branch where we move a card to this column
-         TryMovingACardToColumn(stackPointer, column);
-
-         // and after checking that branch, continue trying to move cards off this column
-         break;
-
-      case Victory:
-      case DeadEnd:
-         // in either of these cases we are done
-         return;
-      }
+      TryMoveLastCardFromColumn(stackPointer, column);
+      return;
    }
+
+   // if the next card on the column can move to the card a rank above it, that counts as a
+   // move that has a purpose, so we try that and exit
+   if (TryPushColumnToHigherAndSolve(stackPointer, column))
+      return;
+
+   // if the card can't move to a tower, then we are done here
+   if (!stackPointer->CanMoveColumnToTower(column))
+      return;
+
+   // OK, move it to tower and test that branch
+   SolverMove move;
+   move.type = SolverMoveType::FromColumnToTower;
+   move.column = column;
+   TestMove(stackPointer, move, [this, column](StackPointer stackPointer) {
+         // see if we can do any free moves
+         switch (DoFreeMoves(stackPointer))
+         {
+         case DidFreeMoves:
+            // if we did free moves that means that this move served a purpose so
+            // we test all directions from that point
+            TestAllMoves(stackPointer);
+            return;
+
+         case DidNothing:
+            // try the branch where we move a card to this column
+            TryMovingACardToColumn(stackPointer, column);
+
+            // and after checking that branch, continue trying to move cards off this column
+            TryColumnMoves(stackPointer, column);
+            break;
+
+         case Victory:
+         case DeadEnd:
+            // in either of these cases we are done
+            return;
+         }
+      });
 }
 
 
@@ -234,7 +237,7 @@ void Solver::DoFreeMovesAndSolve(StackPointer stackPointer)
    {
    case DidFreeMoves:
    case DidNothing:
-      SolverStep(stackPointer);
+      TestAllMoves(stackPointer);
       break;
 
    case Victory:
