@@ -51,6 +51,7 @@ private:
    SolverStack   stateStack;
    SolverCache cache;
    SolverResult result;
+   uint32_t totalPushesAtTimeOfResult = 0;
 };
 
 #endif	/* SOLVER_H */

@@ -211,7 +211,12 @@ Solver::FreeMovesResult Solver::DoFreeMoves(StackPointer stackPointer)
    // current stack to the result stack and be done
    if (stackPointer->IsVictory())
    {
+      // note the result
       result.SetResultStack(stateStack.GetRange(0, stackPointer.GetIndex() + 1));
+
+      // and note how hard we had to work to get it
+      totalPushesAtTimeOfResult = stateStack.GetTotalPushCount();
+
       return Victory;
    }
 
@@ -398,8 +403,17 @@ bool Solver::PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMo
       // after this move it will be
       int nextStackSize = currentStackSize + 1;
 
-      // and we insist that it be less
-      if (nextStackSize >= maxResultSize)
+      // and we insist that it be no more than that
+      if (nextStackSize > maxResultSize)
+         return false;
+
+      // Sometimes we will get a result that's good enough that we aren't likely
+      // to get a better one.  Once that happens, we can end up spinning through the
+      // problem with no hope of finding a better solution.  To prevent that, I set a
+      // cap on the number of pushes we can do before deciding to just accept the result
+      // we already have.
+      uint32_t pushesSinceLastResult = stateStack.GetTotalPushCount() - totalPushesAtTimeOfResult;
+      if (pushesSinceLastResult > 20000)
          return false;
    }
 

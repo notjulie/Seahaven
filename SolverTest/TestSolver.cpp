@@ -6,6 +6,7 @@
  */
 
 #include "SolverIncludes.h"
+#include <iostream>
 
 #include "SeahavenProblem.h"
 #include "Solver.h"
@@ -73,7 +74,11 @@ void TestSolver::TestRandomCase(void)
    Solver solver;
    SeahavenProblem problem = SeahavenProblem::CreateRandom();
    //problem.Dump();
-   solver.Solve(problem);
+   Solution solution = solver.Solve(problem);
+   if (solution.IsFailure())
+      std::cout << "Lose: ";
+   else
+      std::cout << "Win: ";
 }
 
 void TestSolver::TestSlowProblem(void)
