@@ -157,21 +157,21 @@ void Solver::TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit)
    SolverMove move;
    move.type = SolverMoveType::FromTowerToEmptyThrone;
    move.suit = suit;
-   if (!PushCurrentStateAndPerformMove(stackPointer, move))
-      return;
+   TestMove(stackPointer, move, [this, suit](StackPointer stackPointer) {
+         // If we still have empty columns then we need to continue down this path;
+         // note that by starting with the next suit we make sure that we don't do
+         // redundant steps (KC then KD, next time KD then KC).
+         if (stackPointer->GetEmptyColumnCount() != 0)
+         {
+            Suit nextSuit = suit;
+            while (++nextSuit <= Suit::Last)
+               TryTowerToThroneAndSolve(stackPointer, nextSuit);
+            return;
+         }
 
-   // If we still have empty columns then we need to continue down this path;
-   // note that by starting with the next suit we make sure that we don't do
-   // redundant steps (KC then KD, next time KD then KC).
-   if (stackPointer->GetEmptyColumnCount() != 0)
-   {
-      while (++suit <= Suit::Last)
-         TryTowerToThroneAndSolve(stackPointer, suit);
-      return;
-   }
-
-   // else just solve as normal
-   DoFreeMovesAndSolve(stackPointer);
+         // else just solve as normal
+         DoFreeMovesAndSolve(stackPointer);
+      });
 }
 
 /// <summary>
@@ -287,8 +287,9 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
       SolverMove move;
       move.type = SolverMoveType::FromTowerToEmptyThrone;
       move.suit = suit;
-      if (PushCurrentStateAndPerformMove(stackPointer, move))
-         DoFreeMovesAndSolve(stackPointer);
+      TestMove(stackPointer, move, [this](StackPointer stackPointer) {
+            DoFreeMovesAndSolve(stackPointer);
+         });
    }
 }
 
@@ -420,3 +421,50 @@ bool Solver::PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMo
    return true;
 }
 
+
+/// <summary>
+/// Standard mechanism for testing a move and all branches that come from it.  The sequence is:
+///    - push a new state onto the stack
+///    - perform the move
+///    - call the nextStep function with the new stack pointer
+/// </summary>
+/// <param name="stackPointer">current stack pointer</param>
+/// <param name="move">the move to perform</param>
+/// <param name="nextStep">the sequence to carry out after performing the move</param>
+void Solver::TestMove(StackPointer stackPointer, SolverMove move, const std::function<void(StackPointer)> nextStep)
+{
+   // if we already have a solution we aren't allowed to do any moves unless it
+   // might still result in a solution shorter than the one we already have
+   int currentResultSize = result.GetSize();
+   if (currentResultSize > 0)
+   {
+      // just so I don't get into any one-off confusion, let's do this carefully...
+      // the maximum result size that we will allow is one less than the one we already have
+      int maxResultSize = currentResultSize - 1;
+
+      // current stack size is...
+      int currentStackSize = stackPointer.GetIndex() + 1;
+
+      // after this move it will be
+      int nextStackSize = currentStackSize + 1;
+
+      // and we insist that it be no more than that
+      if (nextStackSize > maxResultSize)
+         return;
+
+      // Sometimes we will get a result that's good enough that we aren't likely
+      // to get a better one.  Once that happens, we can end up spinning through the
+      // problem with no hope of finding a better solution.  To prevent that, I set a
+      // cap on the number of pushes we can do before deciding to just accept the result
+      // we already have.
+      uint32_t pushesSinceLastResult = stateStack.GetTotalPushCount() - totalPushesAtTimeOfResult;
+      if (pushesSinceLastResult > 20000)
+         return;
+   }
+
+   // go ahead and push the move
+   stackPointer.PushCurrentStateAndPerformMove(move);
+
+   // and perform the next step on the new state
+   nextStep(stackPointer);
+}

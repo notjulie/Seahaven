@@ -8,6 +8,7 @@
 #ifndef SOLVER_H
 #define	SOLVER_H
 
+#include <functional>
 #include "Solution.h"
 #include "SolverCache.h"
 #include "SolverResult.h"
@@ -46,6 +47,8 @@ private:
    void TryColumnMoves(StackPointer stackPointer, int column);
    bool TryPushColumnToTowerMove(StackPointer& stackPointer, int column);
    bool TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column);
+
+   void TestMove(StackPointer stackPointer, SolverMove move, const std::function<void(StackPointer)> nextStep);
 
 private:
    SolverStack   stateStack;
