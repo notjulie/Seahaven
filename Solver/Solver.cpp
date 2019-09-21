@@ -341,7 +341,7 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 }
 
 
-bool Solver::TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int column)
+bool Solver::TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column)
 {
    // get the card
    LinkedCard card = stackPointer->GetCard(stackPointer->EndOfColumn(column));

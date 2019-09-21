@@ -45,7 +45,7 @@ private:
    void TryMovingACardToColumn(StackPointer stackPointer, int column);
    void TryColumnMoves(StackPointer stackPointer, int column);
    bool TryPushColumnToTowerMove(StackPointer& stackPointer, int column);
-   bool TryPushColumnToHigherAndSolve(StackPointer& stackPointer, int column);
+   bool TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column);
 
 private:
    SolverStack   stateStack;
