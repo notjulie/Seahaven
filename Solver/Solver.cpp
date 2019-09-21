@@ -189,13 +189,19 @@ void Solver::TryMoveLastCardFromColumn(StackPointer stackPointer, int column)
    if (stackPointer->GetEmptyColumnCount() != 0)
       return;
 
-   // push the card to a tower; if we can't this is as far as we can go down this road
-   if (!TryPushColumnToTowerMove(stackPointer, column))
+   // if we can't move the card to a tower then we're done
+   if (!stackPointer->CanMoveColumnToTower(column))
       return;
 
-   // try all possibilities for the next move
-   for (Suit suit : Suit::All)
-      TryMoveKingToColumn(stackPointer, suit);
+   // move
+   SolverMove move;
+   move.type = SolverMoveType::FromColumnToTower;
+   move.column = column;
+   TestMove(stackPointer, move, [this](StackPointer stackPointer) {
+         // try all possibilities for the next move
+         for (Suit suit : Suit::All)
+            TryMoveKingToColumn(stackPointer, suit);
+      });
 }
 
 /// <summary>
