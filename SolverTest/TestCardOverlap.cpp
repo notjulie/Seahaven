@@ -40,10 +40,10 @@ void TestCardOverlap(void)
       throw SolverException("TestCardOverlap: failed to get seven of diamonds");
 
    // check out our pointer to the 8 to see if it's the bottom card
-   int column = sevenOfDiamonds.toHigher.GetColumnIndex();
+   int column = sevenOfDiamonds.toHigher.column;
    if (column != 8)
       throw SolverException("TestCardOverlap: eight of diamonds column is wrong");
-   if (sevenOfDiamonds.toHigher.GetRowIndex() != 3)
+   if (sevenOfDiamonds.toHigher.row != 3)
       throw SolverException("TestCardOverlap: eight of diamonds row is wrong");
    if (state.GetColumnCardCount(column) != 5)
       throw SolverException("TestCardOverlap: eight of diamonds cards in column is wrong");

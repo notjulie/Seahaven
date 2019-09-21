@@ -10,6 +10,9 @@ int main()
 {
    TestSolver tester;
 
+   tester.testSingleColumnToTowerProblem();
+   tester.testSingleColumnToColumnProblem();
+
    std::cout << "Starting slow problem... ";
    tester.TestSlowProblem2();
    std::cout << "done" << std::endl;
@@ -20,8 +23,6 @@ int main()
    tester.TestCombineTowersProblem();
    tester.TestCache();
    tester.testZeroMoveProblem();
-   tester.testSingleColumnToTowerProblem();
-   tester.testSingleColumnToColumnProblem();
    tester.TestScottsProblem();
 
    double slowestProblemTime = 0;

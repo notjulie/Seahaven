@@ -3,30 +3,37 @@
 #include "CardLocation.h"
 
 
-
-int CardLocation::GetColumnIndex(void) const
-{
-   int column = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
-   if (column >= 10)
-      return -1;
-   else
-      return column;
-}
-
-
-Suit CardLocation::GetSuit(void) const
-{
-   int suitIndex = (uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK;
-   if (suitIndex<0 || suitIndex>=4)
-      suitIndex = (uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK;
-   return Suit::FromIndex(suitIndex);
-}
-
-
 CardLocation CardLocation::FromLinkID(LinkID linkID)
 {
    CardLocation result;
    result.linkID = linkID;
+   result.onColumn = false;
+   result.isThrone = false;
+   result.isTower = false;
+   result.isAce = false;
+   result.row = 0;
+
+   if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_COLUMN_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK < 50)
+   {
+      result.onColumn = true;
+      result.row = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
+      result.column = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_THRONE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK <= 3)
+   {
+      result.isThrone = true;
+      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK);
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_ACE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK <= 3)
+   {
+      result.isAce = true;
+      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK);
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_TOWER_LINK <= 3)
+   {
+      result.isTower = true;
+   }
+
    return result;
 }
 

@@ -13,7 +13,7 @@
 #include "SolverException.h"
 #include "Suit.h"
 
-struct LinkedCard {
+struct alignas(8) LinkedCard {
 public:
    CardLocation toHigher;
    CardLocation toLower;
@@ -22,6 +22,7 @@ public:
 public:
    static const LinkedCard Null;
 };
+static_assert(sizeof(LinkedCard) <= 8, "LinkedCard is getting chubby");
 
 
 class LinkedCards {

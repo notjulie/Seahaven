@@ -154,21 +154,20 @@ bool SolverState::DoFreeMoves(void)
       {
          LinkedCard ace = cards.GetCard(CardLocation::Aces[suit.GetIndex()]);
          CardLocation nextAceCard = ace.toHigher;
-         if (nextAceCard.IsTower() || nextAceCard.IsThrone())
+         if (nextAceCard.isTower || nextAceCard.isThrone)
          {
             cards.MoveToLower(nextAceCard);
             acesMoved = true;
             continue;
          }
          
-         int column = nextAceCard.GetColumnIndex();
-         if (column>=0 && column<=9)
+         if (nextAceCard.onColumn)
          {
-            int row = nextAceCard.GetRowIndex();
-            if (row+1 == columnCounts.Get(column))
+            int row = nextAceCard.row;
+            if (row+1 == columnCounts.Get(nextAceCard.column))
             {
                cards.MoveToLower(nextAceCard);
-               columnCounts.Decrement(column);
+               columnCounts.Decrement(nextAceCard.column);
                acesMoved = true;
             }
          }
@@ -194,12 +193,12 @@ bool SolverState::DoFreeMoves(void)
 
       // if its higher link is a non-empty throne (i.e. a king that has been put on
       // an empty column) we can likewise move it there
-      if (tower.toHigher.IsThrone())
+      if (tower.toHigher.isThrone)
          if (GetCard(tower.toHigher).size != 0)
             canMoveToHigher = true;
 
       // and if its higher is on a tower we can also combine the tower cards
-      if (tower.toHigher.IsTower())
+      if (tower.toHigher.isTower)
          canMoveToHigher = true;
 
       // combine with the next higher card if we can
@@ -210,7 +209,7 @@ bool SolverState::DoFreeMoves(void)
          // Note that our "didFreeMoves" result is an indication of whether or not
          // we did something that helped the situation.  Combining two towers is just
          // a cleanup for our accounting... it doesn't really improve anything.
-         if (!tower.toHigher.IsTower())
+         if (!tower.toHigher.isTower)
             didFreeMoves = true;
       }
    }
@@ -226,15 +225,14 @@ bool SolverState::DoFreeMoves(void)
 
       // get the king, make sure that it's on a column
       CardLocation kingLocation = throne.toLower;
-      int column = kingLocation.GetColumnIndex();
-      if (column < 0)
+      if (!kingLocation.onColumn)
          continue;
 
       // if it is the only card on the column, move it to the throne
-      if (columnCounts.Get(column) == 1)
+      if (columnCounts.Get(kingLocation.column) == 1)
       {
          cards.MoveToHigher(kingLocation);
-         columnCounts.Decrement(column);
+         columnCounts.Decrement(kingLocation.column);
          didFreeMoves = true;
       }
    }
@@ -249,7 +247,7 @@ bool SolverState::DoFreeMoves(void)
          LinkedCard throne = cards.GetCard(CardLocation::Thrones[suit.GetIndex()]);
          if (throne.size == 0)
          {
-            if (throne.toLower.IsTower())
+            if (throne.toLower.isTower)
             {
                cards.MoveToHigher(throne.toLower);
                didFreeMoves = true;
@@ -263,11 +261,10 @@ bool SolverState::DoFreeMoves(void)
 
 bool SolverState::IsBottomColumnCard(CardLocation cardLocation) const
 {
-   int column = cardLocation.GetColumnIndex();
-   if (column<0 || column>9)
+   if (!cardLocation.onColumn)
       return false;
-   int row = cardLocation.GetRowIndex();
-   return (row+1 == columnCounts.Get(column));
+   int row = cardLocation.row;
+   return (row+1 == columnCounts.Get(cardLocation.column));
 }
 
 bool SolverState::IsVictory(void) const

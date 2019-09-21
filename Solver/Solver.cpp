@@ -150,7 +150,7 @@ void Solver::TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit)
       return;
 
    // never mind if the king it points to is not on a tower
-   if (!throne.toLower.IsTower())
+   if (!throne.toLower.isTower)
       return;
 
    // move it
@@ -262,28 +262,27 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
    CardLocation kingLocation = throne.toLower;
 
    // handle the case where the king is on a column 
-   int columnIndex = kingLocation.GetColumnIndex();
-   if (columnIndex >= 0)
+   if (kingLocation.onColumn)
    {
       // we are trying to move the king to an empty column; if it's already
       // the top card in the column that it's in there's no benefit to moving it
       // to a different column
-      int rowIndex = kingLocation.GetRowIndex();
+      int rowIndex = kingLocation.row;
       if (rowIndex == 0)
          return;
 
       // push any cards on top of the king to a tower
-      while (stackPointer->GetColumnCardCount(columnIndex) > rowIndex + 1)
-         if (!TryPushColumnToTowerMove(stackPointer, columnIndex))
+      while (stackPointer->GetColumnCardCount(kingLocation.column) > rowIndex + 1)
+         if (!TryPushColumnToTowerMove(stackPointer, kingLocation.column))
             return;
 
       // try the move
-      TryPushColumnToHigherAndSolve(stackPointer, columnIndex);
+      TryPushColumnToHigherAndSolve(stackPointer, kingLocation.column);
       return;
    }
 
    // if the king is currently on a tower then moving it to a column/throne is easy
-   if (kingLocation.IsTower())
+   if (kingLocation.isTower)
    {
       SolverMove move;
       move.type = SolverMoveType::FromTowerToEmptyThrone;
@@ -315,10 +314,10 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
    // find the source column
    LinkedCard targetCard = stackPointer->GetCard(stackPointer->EndOfColumn(targetColumn));
-   int sourceColumn = targetCard.toLower.GetColumnIndex();
-   if (sourceColumn < 0)
+   if (!targetCard.toLower.onColumn)
       return;
-   int sourceRow = targetCard.toLower.GetRowIndex();
+   int sourceRow = targetCard.toLower.row;
+   int sourceColumn = targetCard.toLower.column;
 
    // move cards off the column until we move the source card or something
    // we disapprove of happens
@@ -351,7 +350,7 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column
       return false;
 
    // check if we can do the move
-   if (card.toHigher.IsThrone())
+   if (card.toHigher.isThrone)
    {
       LinkedCard throne = stackPointer->GetCard(card.toHigher);
 
@@ -363,11 +362,10 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column
          if (stackPointer->GetEmptyColumnCount() <= 0)
             return false;
    }
-   else if (card.toHigher.IsOnColumn())
+   else if (card.toHigher.onColumn)
    {
       // else we can only do this if the higher card is the bottom card on a column
-      int column = card.toHigher.GetColumnIndex();
-      if (stackPointer->GetColumnCardCount(column) != card.toHigher.GetRowIndex() + 1)
+      if (stackPointer->GetColumnCardCount(card.toHigher.column) != card.toHigher.row + 1)
          return false;
    }
    else

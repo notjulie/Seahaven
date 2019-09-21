@@ -50,7 +50,7 @@ ProblemCard LinkedCards::GetCardDetails(CardLocation cardLocation) const
       
       if (card.toLower == CardLocation::Null)
          return ProblemCard(
-            cardLocation.GetSuit(),
+            cardLocation.suit,
             rank
             );
       
@@ -207,7 +207,7 @@ int LinkedCards::CountKingsOnTowers(void) const
    {
       LinkedCard throne = GetCard(CardLocation::Thrones[suit.GetIndex()]);
       if (throne.size == 0)
-         if (throne.toLower.IsTower())
+         if (throne.toLower.isTower)
             ++kingsOnTowers;
    }
    return kingsOnTowers;
