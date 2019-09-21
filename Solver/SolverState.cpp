@@ -156,7 +156,7 @@ bool SolverState::DoFreeMoves(void)
          CardLocation nextAceCard = ace.toHigher;
          if (nextAceCard.IsTower() || nextAceCard.IsThrone())
          {
-            cards.MoveToLower(nextAceCard.GetLinkID());
+            cards.MoveToLower(nextAceCard);
             acesMoved = true;
             continue;
          }
@@ -167,7 +167,7 @@ bool SolverState::DoFreeMoves(void)
             int row = nextAceCard.GetRowIndex();
             if (row+1 == columnCounts.Get(column))
             {
-               cards.MoveToLower(nextAceCard.GetLinkID());
+               cards.MoveToLower(nextAceCard);
                columnCounts.Decrement(column);
                acesMoved = true;
             }

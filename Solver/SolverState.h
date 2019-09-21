@@ -28,7 +28,7 @@ public:
    CardLocation EndOfColumn(int column) const { return CardLocation::Columns[column][columnCounts.Get(column)-1]; }
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
    LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
-   ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation.GetLinkID()); }
+   ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation); }
    int GetEmptyColumnCount(void) const;
    int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }

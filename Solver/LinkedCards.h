@@ -26,7 +26,7 @@ public:
 
 class LinkedCards {
 public:
-   LinkedCards();
+   LinkedCards(void);
 
    inline LinkedCard GetCard(CardLocation cardLocation) const { return links[(int)cardLocation.GetLinkID()]; }
 
@@ -36,10 +36,10 @@ public:
    int GetThroneOccupationMask(void) const;
    void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
-   void MoveToLower(LinkID link);
+   void MoveToLower(CardLocation link);
    void SetAceSizes(void);
    void SetCard(CardLocation cardLocation, LinkedCard card);
-   ProblemCard GetCardDetails(LinkID link) const;
+   ProblemCard GetCardDetails(CardLocation link) const;
    
 private:
    LinkedCard links[(uint8_t)LinkID::LINK_COUNT];
