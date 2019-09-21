@@ -69,7 +69,7 @@ void TestSolver::TestCache(void)
       throw SolverException("TestSolver::TestCache: cacheing didn't help");
 }
 
-void TestSolver::TestRandomCase(void)
+SeahavenProblem TestSolver::TestRandomCase(void)
 {
    Solver solver;
    SeahavenProblem problem = SeahavenProblem::CreateRandom();
@@ -79,6 +79,8 @@ void TestSolver::TestRandomCase(void)
       std::cout << "Lose: ";
    else
       std::cout << "Win: ";
+
+   return problem;
 }
 
 void TestSolver::TestSlowProblem(void)
@@ -91,4 +93,11 @@ void TestSolver::TestSlowProblem(void)
       throw SolverException("TestSlowProblem: error opening dump file");
    solver.GetResult().DumpToFile(resultFile);
    fclose(resultFile);
+}
+
+
+void TestSolver::TestSlowProblem2(void)
+{
+   Solver   solver;
+   Solution solution = solver.Solve(slowTestProblem2);
 }

@@ -119,7 +119,9 @@ const ProblemDefinition cacheTestProblem =
 };
 
 /// <summary>
-/// a test case that takes longer than some
+/// A test case that used to take longer than some; it sped up just fine
+/// when I put a cap on how long I will search for a better solution after
+/// having found one.
 /// </summary>
 const ProblemDefinition slowTestProblem =
 {
@@ -139,5 +141,30 @@ const ProblemDefinition slowTestProblem =
    // towers
    {
       "6D", "4S"
+   }
+};
+
+
+/// <summary>
+/// a test case that takes longer than some (initially 18s on release build)
+/// </summary>
+const ProblemDefinition slowTestProblem2 =
+{
+   // columns
+   {
+      {"AD", "2D", "5D", "7D", "KS"},
+      {"3S", "3H", "9C", "5C", "8S"},
+      {"TC", "9H", "4S", "5S", "7H"},
+      {"KD", "AH", "QH", "7S", "4D"},
+      {"2H", "KC", "8D", "8C", "6H"},
+      {"3D", "5H", "QD", "JD", "AC"},
+      {"2S", "9S", "QC", "6S", "2C"},
+      {"JH", "7C", "TD", "9D", "6D"},
+      {"JS", "QS", "4C", "6C", "AS"},
+      {"4H", "3C", "JC", "8H", "TS"}
+   },
+   // towers
+   {
+      "KH", "TH"
    }
 };

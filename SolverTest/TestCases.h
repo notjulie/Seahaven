@@ -13,6 +13,7 @@
 
 extern const ProblemDefinition cacheTestProblem;
 extern const ProblemDefinition slowTestProblem;
+extern const ProblemDefinition slowTestProblem2;
 extern const ProblemDefinition scottsProblem;
 extern const ProblemDefinition combineTowersProblem;
 
