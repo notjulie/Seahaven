@@ -24,59 +24,19 @@ public:
 };
 
 
-class alignas(2) CompressedLink {
-public:
-   inline CompressedLink& operator=(const LinkedCard & card) {
-      link = CalculateLink(card.toLower.GetLinkID(), card.toHigher.GetLinkID(), card.size);
-      return *this;
-   }
-
-   operator LinkedCard() {
-      LinkedCard result;
-      result.toHigher = CardLocation::Links[link >> 10];
-      result.toLower = CardLocation::Links[0x3f & (link >> 4)];
-      result.size = 0xF & link;
-      return result;
-   }
-
-   static CompressedLink Create(LinkID toLower, LinkID toHigher, uint8_t size) {
-      CompressedLink result;
-      result.link = CalculateLink(toLower, toHigher, size);
-      return result;
-   }
-
-public:
-   static const CompressedLink Null;
-
-private:
-   inline static uint16_t CalculateLink(LinkID toLower, LinkID toHigher, uint8_t size) {
-      return
-         size +
-         ((uint8_t)toLower << 4) +
-         ((uint8_t)toHigher << 10);
-   }
-
-private:
-   uint16_t link;
-};
-static_assert(sizeof(CompressedLink) == 2, "CompressedLink length is not 2");
-
-
 class LinksArray {
 public:
    void Clear(void);
 
-   inline CompressedLink& operator[](LinkID linkID) {
-      if (linkID >= LinkID::LINK_COUNT) throw SolverException("LinksArray: index out of bounds");
+   inline LinkedCard& operator[](LinkID linkID) {
       return links[(uint8_t)linkID]; 
    }
-   inline CompressedLink operator[](LinkID linkID) const { 
-      if (linkID >= LinkID::LINK_COUNT) throw SolverException("LinksArray: index out of bounds");
+   inline LinkedCard operator[](LinkID linkID) const { 
       return links[(uint8_t)linkID];
    }
 
 private:
-   CompressedLink links[(uint8_t)LinkID::LINK_COUNT];
+   LinkedCard links[(uint8_t)LinkID::LINK_COUNT];
 };
 
 class LinkedCards {

@@ -13,7 +13,6 @@
 #include "LinkedCards.h"
 
 
-const CompressedLink CompressedLink::Null = CompressedLink::Create(LinkID::NO_LINK, LinkID::NO_LINK, 0);
 const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 };
 
 
@@ -24,7 +23,7 @@ const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 
 void LinksArray::Clear(void)
 {
    for (int i = 0; i < (uint8_t)LinkID::LINK_COUNT; ++i)
-      links[i] = CompressedLink::Null;
+      links[i] = LinkedCard::Null;
 }
 
 
@@ -111,7 +110,7 @@ void LinkedCards::MoveToHigher(CardLocation cardLocation)
    links[card.toHigher.GetLinkID()] = higher;
    
    // make the card being moved go away
-   links[cardLocation.GetLinkID()] = CompressedLink::Null;
+   links[cardLocation.GetLinkID()] = LinkedCard::Null;
 }
 
 void LinkedCards::MoveToLower(LinkID link)
@@ -135,7 +134,7 @@ void LinkedCards::MoveToLower(LinkID link)
    links[card.toLower.GetLinkID()] = lower;
    
    // make the card being moved go away
-   links[link] = CompressedLink::Null;
+   links[link] = LinkedCard::Null;
 }
 
 void LinkedCards::MoveToOpenTower(CardLocation cardLocation)
@@ -165,7 +164,7 @@ void LinkedCards::MoveToOpenTower(CardLocation cardLocation)
    
    // move the card to the tower
    links[tower] = links[cardLocation.GetLinkID()];
-   links[cardLocation.GetLinkID()] = CompressedLink::Null;
+   links[cardLocation.GetLinkID()] = LinkedCard::Null;
 }
 
 void LinkedCards::SetAceSizes(void)
