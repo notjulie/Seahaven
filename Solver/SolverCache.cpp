@@ -16,7 +16,7 @@
 // each block is about 35KBytes (unless I go and change the format of the
 // hash code)... 200 would be 7MB, and that's probably a good place
 // to stop
-#define MAX_BLOCK_COUNT 200
+#define MAX_BLOCK_COUNT 2000
 
 
 
