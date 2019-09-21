@@ -150,7 +150,7 @@ bool SolverState::DoFreeMoves(void)
    for (;;)
    {
       bool acesMoved = false;
-      for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
+      for (Suit suit : Suit::All)
       {
          LinkedCard ace = cards.GetCard(CardLocation::Aces[suit.GetIndex()]);
          CardLocation nextAceCard = ace.toHigher;
@@ -217,7 +217,7 @@ bool SolverState::DoFreeMoves(void)
 
    // any kings that are the only card on a column get moved to their throne, since
    // the thrones are invented for exactly that purpose
-   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+   for (Suit suit : Suit::All)
    {
       // get the throne, make sure that it's empty
       LinkedCard throne = cards.GetCard(CardLocation::Thrones[suit.GetIndex()]);
@@ -244,7 +244,7 @@ bool SolverState::DoFreeMoves(void)
    int kingsOnTowers = cards.CountKingsOnTowers();
    if (kingsOnTowers > 0 && GetEmptyColumnCount() >= kingsOnTowers)
    {
-      for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+      for (Suit suit : Suit::All)
       {
          LinkedCard throne = cards.GetCard(CardLocation::Thrones[suit.GetIndex()]);
          if (throne.size == 0)
@@ -295,7 +295,7 @@ int SolverState::GetEmptyColumnCount(void) const
    // Thrones are basically places that kings sit when there are empty columns, since
    // there's no effective difference between a king on column 1 or column 7.  So
    // subtract one from the count for any non-empty throne.
-   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+   for (Suit suit : Suit::All)
       if (cards.GetCard(CardLocation::Thrones[suit.GetIndex()]).size != 0)
          --emptyColumns;
 

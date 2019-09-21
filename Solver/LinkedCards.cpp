@@ -203,7 +203,7 @@ void LinkedCards::SetCard(CardLocation cardLocation, LinkedCard card)
 int LinkedCards::CountKingsOnTowers(void) const
 {
    int kingsOnTowers = 0;
-   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+   for (Suit suit : Suit::All)
    {
       LinkedCard throne = GetCard(CardLocation::Thrones[suit.GetIndex()]);
       if (throne.size == 0)

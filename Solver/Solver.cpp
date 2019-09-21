@@ -60,7 +60,7 @@ void Solver::SolverStep(StackPointer stackPointer)
    // columns are a scarce resource.
    if (stackPointer->CountKingsOnTowers() != 0 && stackPointer->GetEmptyColumnCount() != 0)
    {
-      for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+      for (Suit suit: Suit::All)
          TryTowerToThroneAndSolve(stackPointer, suit);
 
       // that's all we can do on this branch... we aren't allowed to proceed until
@@ -191,7 +191,7 @@ void Solver::TryMoveLastCardFromColumn(StackPointer stackPointer, int column)
       return;
 
    // try all possibilities for the next move
-   for (Suit suit = Suit::First; suit <= Suit::Last; ++suit)
+   for (Suit suit : Suit::All)
       TryMoveKingToColumn(stackPointer, suit);
 }
 
