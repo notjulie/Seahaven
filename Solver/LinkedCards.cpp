@@ -67,11 +67,6 @@ int LinkedCards::GetThroneOccupationMask(void) const
       (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
 }
 
-bool LinkedCards::IsKing(LinkedCard card) const
-{
-   return card.toHigher.IsThrone();
-}
-
 void LinkedCards::MoveToHigher(CardLocation cardLocation)
 {
    // get the card

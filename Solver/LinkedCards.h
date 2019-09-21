@@ -34,7 +34,6 @@ public:
    int CountKingsOnTowers(void) const;
    int GetEmptyTowers(void) const;
    int GetThroneOccupationMask(void) const;
-   bool IsKing(LinkedCard card) const;
    void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
    void MoveToLower(LinkID link);
