@@ -33,7 +33,6 @@ public:
    int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
    SolverHashCode GetHashValue(void) const;
-   LinkedCard GetTower(int tower) const { return cards.GetTower(tower); }
    bool  IsBottomColumnCard(CardLocation card) const;
    bool  IsVictory(void) const;
    void PerformMove(SolverMove move);

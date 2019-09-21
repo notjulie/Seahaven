@@ -152,7 +152,7 @@ bool SolverState::DoFreeMoves(void)
       bool acesMoved = false;
       for (Suit suit=Suit::First; suit<=Suit::Last; ++suit)
       {
-         LinkedCard ace = cards.GetAce(suit);
+         LinkedCard ace = cards.GetCard(CardLocation::Aces[suit.GetIndex()]);
          CardLocation nextAceCard = ace.toHigher;
          if (nextAceCard.IsTower() || nextAceCard.IsThrone())
          {
@@ -183,7 +183,7 @@ bool SolverState::DoFreeMoves(void)
    for (int i=0; i<4; ++i)
    {
       // grab the tower
-      LinkedCard tower = cards.GetTower(i);
+      LinkedCard tower = cards.GetCard(CardLocation::Towers[i]);
       if (tower.size == 0)
          continue;
 

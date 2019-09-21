@@ -24,32 +24,16 @@ public:
 };
 
 
-class LinksArray {
-public:
-   void Clear(void);
-
-   inline LinkedCard& operator[](LinkID linkID) {
-      return links[(uint8_t)linkID]; 
-   }
-   inline LinkedCard operator[](LinkID linkID) const { 
-      return links[(uint8_t)linkID];
-   }
-
-private:
-   LinkedCard links[(uint8_t)LinkID::LINK_COUNT];
-};
-
 class LinkedCards {
 public:
    LinkedCards();
 
+   inline LinkedCard GetCard(CardLocation cardLocation) const { return links[(int)cardLocation.GetLinkID()]; }
+
    void Clear(void);
    int CountKingsOnTowers(void) const;
-   LinkedCard GetAce(Suit suit) const;
-   LinkedCard GetCard(CardLocation cardLocation) const { return links[cardLocation.GetLinkID()]; }
    int GetEmptyTowers(void) const;
    int GetThroneOccupationMask(void) const;
-   LinkedCard GetTower(int i) const;
    bool IsKing(LinkedCard card) const;
    void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
@@ -59,7 +43,7 @@ public:
    ProblemCard GetCardDetails(LinkID link) const;
    
 private:
-   LinksArray links;
+   LinkedCard links[(uint8_t)LinkID::LINK_COUNT];
 };
 
 #endif	/* LINKEDCARDS_H */

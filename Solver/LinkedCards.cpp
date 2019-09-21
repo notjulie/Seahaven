@@ -17,17 +17,6 @@ const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 
 
 
 // ==============================================================
-//    class LinksArray
-// ==============================================================
-
-void LinksArray::Clear(void)
-{
-   for (int i = 0; i < (uint8_t)LinkID::LINK_COUNT; ++i)
-      links[i] = LinkedCard::Null;
-}
-
-
-// ==============================================================
 //    class LinkedCards
 // ==============================================================
 
@@ -37,27 +26,18 @@ LinkedCards::LinkedCards() {
 
 void LinkedCards::Clear(void)
 {
-   links.Clear();
-}
-
-LinkedCard LinkedCards::GetAce(Suit suit) const
-{
-   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + suit.GetIndex())]);
+   for (int i = 0; i < (uint8_t)LinkID::LINK_COUNT; ++i)
+      links[i] = LinkedCard::Null;
 }
 
 int LinkedCards::GetEmptyTowers(void) const
 {
    return
       4 -
-      LinkedCard(links[LinkID::FIRST_TOWER_LINK]).size -
-      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 1)]).size -
-      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 2)]).size -
-      LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 3)]).size;
-}
-
-LinkedCard LinkedCards::GetTower(int i) const
-{
-   return LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + i)]);
+      LinkedCard(links[(int)LinkID::FIRST_TOWER_LINK]).size -
+      LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 1)]).size -
+      LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 2)]).size -
+      LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 3)]).size;
 }
 
 ProblemCard LinkedCards::GetCardDetails(LinkID link) const
@@ -65,7 +45,7 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
    int   rank = 0;
    for (;;)
    {
-      LinkedCard  card(links[link]);
+      LinkedCard  card(links[(int)link]);
       rank += card.size;
       
       if (card.toLower.GetLinkID() == LinkID::NO_LINK)
@@ -81,10 +61,10 @@ ProblemCard LinkedCards::GetCardDetails(LinkID link) const
 int LinkedCards::GetThroneOccupationMask(void) const
 {
    return
-      (LinkedCard(links[LinkID::FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
-      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
-      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
-      (LinkedCard(links[(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
+      (LinkedCard(links[(int)LinkID::FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
+      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
+      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
+      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
 }
 
 bool LinkedCards::IsKing(LinkedCard card) const
@@ -95,46 +75,46 @@ bool LinkedCards::IsKing(LinkedCard card) const
 void LinkedCards::MoveToHigher(CardLocation cardLocation)
 {
    // get the card
-   LinkedCard card(links[cardLocation.GetLinkID()]);
+   LinkedCard card(links[(int)cardLocation.GetLinkID()]);
    
    // link the lower to the higher
-   LinkedCard lower(links[card.toLower.GetLinkID()]);
+   LinkedCard lower(links[(int)card.toLower.GetLinkID()]);
    lower.toHigher = card.toHigher;
-   links[card.toLower.GetLinkID()] = lower;
+   links[(int)card.toLower.GetLinkID()] = lower;
    
    // link the higher to the lower and add the size of the card
    // being moved
-   LinkedCard higher(links[card.toHigher.GetLinkID()]);
+   LinkedCard higher(links[(int)card.toHigher.GetLinkID()]);
    higher.toLower = card.toLower;
    higher.size += card.size;
-   links[card.toHigher.GetLinkID()] = higher;
+   links[(int)card.toHigher.GetLinkID()] = higher;
    
    // make the card being moved go away
-   links[cardLocation.GetLinkID()] = LinkedCard::Null;
+   links[(int)cardLocation.GetLinkID()] = LinkedCard::Null;
 }
 
 void LinkedCards::MoveToLower(LinkID link)
 {
    // get the card
-   LinkedCard card(links[link]);
+   LinkedCard card(links[(int)link]);
    
    // link the higher to the lower
    if (card.toHigher.GetLinkID() != LinkID::NO_LINK)
    {
-      LinkedCard higher(links[card.toHigher.GetLinkID()]);
+      LinkedCard higher(links[(int)card.toHigher.GetLinkID()]);
       higher.toLower = card.toLower;
-      links[card.toHigher.GetLinkID()] = higher;
+      links[(int)card.toHigher.GetLinkID()] = higher;
    }
    
    // link the lower to the higher and add the size of the card
    // being moved
-   LinkedCard lower(links[card.toLower.GetLinkID()]);
+   LinkedCard lower(links[(int)card.toLower.GetLinkID()]);
    lower.toHigher = card.toHigher;
    lower.size += card.size;
-   links[card.toLower.GetLinkID()] = lower;
+   links[(int)card.toLower.GetLinkID()] = lower;
    
    // make the card being moved go away
-   links[link] = LinkedCard::Null;
+   links[(int)link] = LinkedCard::Null;
 }
 
 void LinkedCards::MoveToOpenTower(CardLocation cardLocation)
@@ -143,28 +123,28 @@ void LinkedCards::MoveToOpenTower(CardLocation cardLocation)
    LinkID tower = LinkID::FIRST_TOWER_LINK;
    for (;;)
    {
-      LinkedCard t(links[tower]);
+      LinkedCard t(links[(int)tower]);
       if (t.size == 0)
          break;
       tower = (LinkID)((uint8_t)tower + 1);
    }
    
    // get the card
-   LinkedCard card(links[cardLocation.GetLinkID()]);
+   LinkedCard card(links[(int)cardLocation.GetLinkID()]);
    
    // link the lower to the tower
-   LinkedCard lower(links[card.toLower.GetLinkID()]);
+   LinkedCard lower(links[(int)card.toLower.GetLinkID()]);
    lower.toHigher = CardLocation::Links[(uint8_t)tower];
-   links[card.toLower.GetLinkID()] = lower;
+   links[(int)card.toLower.GetLinkID()] = lower;
    
    // link the higher to the tower
-   LinkedCard higher(links[card.toHigher.GetLinkID()]);
+   LinkedCard higher(links[(int)card.toHigher.GetLinkID()]);
    higher.toLower = CardLocation::Links[(uint8_t)tower];
-   links[card.toHigher.GetLinkID()] = higher;
+   links[(int)card.toHigher.GetLinkID()] = higher;
    
    // move the card to the tower
-   links[tower] = links[cardLocation.GetLinkID()];
-   links[cardLocation.GetLinkID()] = LinkedCard::Null;
+   links[(int)tower] = links[(int)cardLocation.GetLinkID()];
+   links[(int)cardLocation.GetLinkID()] = LinkedCard::Null;
 }
 
 void LinkedCards::SetAceSizes(void)
@@ -173,18 +153,18 @@ void LinkedCards::SetAceSizes(void)
    // aces must be 13 - all other cards in the suit's chain
    for (int i=0; i<4; ++i)
    {
-      LinkedCard  ace(links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)]);
+      LinkedCard  ace(links[(int)(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)]);
       
       int totalCards = 0;
       LinkedCard  card = ace;
       while (card.toHigher.GetLinkID() != LinkID::NO_LINK)
       {
-         card = LinkedCard(links[card.toHigher.GetLinkID()]);
+         card = LinkedCard(links[(int)card.toHigher.GetLinkID()]);
          totalCards += card.size;
       }
       
       ace.size = 13 - totalCards;
-      links[(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)] = ace;
+      links[(int)(LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + i)] = ace;
    }
 }
 
@@ -197,31 +177,31 @@ void LinkedCards::SetAceSizes(void)
 void LinkedCards::SetCard(CardLocation cardLocation, LinkedCard card)
 {
    // update the card in question
-   LinkedCard  linkedCard(links[cardLocation.GetLinkID()]);
+   LinkedCard  linkedCard(links[(int)cardLocation.GetLinkID()]);
    if (linkedCard.toLower.GetLinkID() != LinkID::NO_LINK && linkedCard.toLower !=card.toLower)
       throw SolverException("LinkedCards::SetCard: rewriting link to lower");
    if (linkedCard.toHigher.GetLinkID() != LinkID::NO_LINK && linkedCard.toHigher !=card.toHigher)
       throw SolverException("LinkedCards::SetCard: rewriting link to higher");
-   links[cardLocation.GetLinkID()] = card;
+   links[(int)cardLocation.GetLinkID()] = card;
 
    // update the lower
    if (!card.toLower.IsNull())
    {
-      LinkedCard  lowerCard(links[card.toLower.GetLinkID()]);
+      LinkedCard  lowerCard(links[(int)card.toLower.GetLinkID()]);
       if (lowerCard.toHigher.GetLinkID() != LinkID::NO_LINK && lowerCard.toHigher !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from lower");
       lowerCard.toHigher = cardLocation;
-      links[card.toLower.GetLinkID()] = lowerCard;
+      links[(int)card.toLower.GetLinkID()] = lowerCard;
    }
    
    // update the higher
    if (!card.toHigher.IsNull())
    {
-      LinkedCard  higherCard(links[card.toHigher.GetLinkID()]);
+      LinkedCard  higherCard(links[(int)card.toHigher.GetLinkID()]);
       if (higherCard.toLower.GetLinkID() != LinkID::NO_LINK && higherCard.toLower !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from higher");
       higherCard.toLower = cardLocation;
-      links[card.toHigher.GetLinkID()] = higherCard;
+      links[(int)card.toHigher.GetLinkID()] = higherCard;
    }   
 }
 
