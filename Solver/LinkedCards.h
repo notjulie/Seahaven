@@ -28,7 +28,7 @@ class LinkedCards {
 public:
    LinkedCards(void);
 
-   inline LinkedCard GetCard(CardLocation cardLocation) const { return links[(int)cardLocation.GetLinkID()]; }
+   inline LinkedCard GetCard(CardLocation cardLocation) const { return links[(int)cardLocation.linkID]; }
 
    void Clear(void);
    int CountKingsOnTowers(void) const;
