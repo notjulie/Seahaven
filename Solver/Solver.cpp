@@ -315,23 +315,6 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
    }
 }
 
-/// <summary>
-/// Attempts to move the bottom card on the given column to a tower; if it
-/// can it will push a new state onto the stack
-/// </summary>
-bool Solver::TryPushColumnToTowerMove(StackPointer &stackPointer, int sourceColumn)
-{
-   // else we just blast the card to a tower... if we can't then we're done
-   if (!stackPointer->CanMoveColumnToTower(sourceColumn))
-      return false;
-
-   // move
-   SolverMove move;
-   move.type = SolverMoveType::FromColumnToTower;
-   move.column = sourceColumn;
-   return PushCurrentStateAndPerformMove(stackPointer, move);
-}
-
 
 void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
 {
@@ -342,24 +325,27 @@ void Solver::TryMovingACardToColumn(StackPointer stackPointer, int targetColumn)
    int sourceRow = targetCard.toLower.row;
    int sourceColumn = targetCard.toLower.column;
 
-   // move cards off the column until we move the source card or something
-   // we disapprove of happens
-   for (;;)
+   // if the card we are looking for is at the bottom of the column we just do
+   // the column to column move that we intended to do
+   if (stackPointer->GetColumnCardCount(sourceColumn) == sourceRow + 1)
    {
-      // if the card we are looking for is at the bottom of the column we just do
-      // the column to column move that we intended to do
-      if (stackPointer->GetColumnCardCount(sourceColumn) == sourceRow + 1)
-      {
-         TryPushColumnToHigherAndSolve(stackPointer, sourceColumn);
-         return;
-      }
-
-      // else we just blast the card to a tower... if we can't then we're done
-      if (!TryPushColumnToTowerMove(stackPointer, sourceColumn))
-         return;
-
-      // continue until we get to the card we wanted
+      TryPushColumnToHigherAndSolve(stackPointer, sourceColumn);
+      return;
    }
+
+   // else we need to blast a card from the source column to a tower... 
+   // if we can't then we're done
+   if (!stackPointer->CanMoveColumnToTower(sourceColumn))
+      return;
+
+   // move from the source column to the tower and call ourself back
+   // recursively to finish the sequence
+   SolverMove move;
+   move.type = SolverMoveType::FromColumnToTower;
+   move.column = sourceColumn;
+   TestMove(stackPointer, move, [this, targetColumn](StackPointer stackPointer) {
+         TryMovingACardToColumn(stackPointer, targetColumn);
+      });
 }
 
 
@@ -400,46 +386,9 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column
    SolverMove move;
    move.type = SolverMoveType::FromColumnToHigherCard;
    move.column = column;
-   if (!PushCurrentStateAndPerformMove(stackPointer, move))
-      return false;
-   DoFreeMovesAndSolve(stackPointer);
-   return true;
-}
-
-
-bool Solver::PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMove move)
-{
-   // if we already have a solution we aren't allowed to do any moves unless it
-   // might still result in a solution shorter than the one we already have
-   int currentResultSize = result.GetSize();
-   if (currentResultSize > 0)
-   {
-      // just so I don't get into any one-off confusion, let's do this carefully...
-      // the maximum result size that we will allow is one less than the one we already have
-      int maxResultSize = currentResultSize - 1;
-
-      // current stack size is...
-      int currentStackSize = stackPointer.GetIndex() + 1;
-
-      // after this move it will be
-      int nextStackSize = currentStackSize + 1;
-
-      // and we insist that it be no more than that
-      if (nextStackSize > maxResultSize)
-         return false;
-
-      // Sometimes we will get a result that's good enough that we aren't likely
-      // to get a better one.  Once that happens, we can end up spinning through the
-      // problem with no hope of finding a better solution.  To prevent that, I set a
-      // cap on the number of pushes we can do before deciding to just accept the result
-      // we already have.
-      uint32_t pushesSinceLastResult = stateStack.GetTotalPushCount() - totalPushesAtTimeOfResult;
-      if (pushesSinceLastResult > 20000)
-         return false;
-   }
-
-   // go ahead and do the move
-   stackPointer.PushCurrentStateAndPerformMove(move);
+   TestMove(stackPointer, move, [this, column](StackPointer stackPointer) {
+         DoFreeMovesAndSolve(stackPointer);
+      });
    return true;
 }
 

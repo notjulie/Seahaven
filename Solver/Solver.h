@@ -39,13 +39,11 @@ private:
    void TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit);
    FreeMovesResult DoFreeMoves(StackPointer stackPointer);
    void DoFreeMovesAndSolve(StackPointer stackPointer);
-   bool PushCurrentStateAndPerformMove(StackPointer &stackPointer, SolverMove move);
    void TestAllMoves(StackPointer stackPointer);
    void TryMoveKingToColumn(StackPointer stackPointer, Suit suit);
    void TryMoveLastCardFromColumn(StackPointer stackPointer, int column);
    void TryMovingACardToColumn(StackPointer stackPointer, int column);
    void TryColumnMoves(StackPointer stackPointer, int column);
-   bool TryPushColumnToTowerMove(StackPointer& stackPointer, int column);
    bool TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column);
 
    void TestMove(StackPointer stackPointer, SolverMove move, const std::function<void(StackPointer)> nextStep);
