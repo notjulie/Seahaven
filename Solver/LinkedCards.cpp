@@ -16,20 +16,28 @@
 const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 };
 
 
-// ==============================================================
-//    class LinkedCards
-// ==============================================================
-
-LinkedCards::LinkedCards() {
+/// <summary>
+/// Initializes a new instance of class LinkedCards
+/// </summary>
+LinkedCards::LinkedCards(void)
+{
    Clear();
 }
 
+/// <summary>
+/// Resets the object to an empty state
+/// </summary>
 void LinkedCards::Clear(void)
 {
    for (int i = 0; i < (uint8_t)LinkID::LINK_COUNT; ++i)
       links[i] = LinkedCard::Null;
+   for (int i = 0; i < 4; ++i)
+      isThroneLocked[i] = false;
 }
 
+/// <summary>
+/// Gets a count of the empty towers
+/// </summary>
 int LinkedCards::GetEmptyTowers(void) const
 {
    return
@@ -40,6 +48,11 @@ int LinkedCards::GetEmptyTowers(void) const
       LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_TOWER_LINK + 3)]).size;
 }
 
+/// <summary>
+/// Converts the LinkedCard at the given location to an actual suit and
+/// rank... this is not used during solving, but is necessary for converting
+/// the solution back to something understandable.
+/// </summary>
 ProblemCard LinkedCards::GetCardDetails(CardLocation cardLocation) const
 {
    int   rank = 0;
@@ -58,13 +71,31 @@ ProblemCard LinkedCards::GetCardDetails(CardLocation cardLocation) const
    }
 }
 
-int LinkedCards::GetThroneOccupationMask(void) const
+/// <summary>
+/// Calculates a value that represents the state of the thrones.  This is used
+/// by the solver's cache to represent each state of the game as a unique value.
+/// </summary>
+int LinkedCards::GetThroneHashValue(void) const
 {
-   return
-      (LinkedCard(links[(int)LinkID::FIRST_THRONE_LINK]).size != 0 ? 1 : 0) +
-      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 1)]).size != 0 ? 2 : 0) +
-      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 2)]).size != 0 ? 4 : 0) +
-      (LinkedCard(links[(int)(LinkID)((uint8_t)LinkID::FIRST_THRONE_LINK + 3)]).size != 0 ? 8 : 0);
+   int result = 0;
+   for (int i = 0; i < 4; ++i)
+   {
+      result *= 3;
+
+      // we calculate a state for each throne as:
+      //  0: unoccupied
+      //  1: occupied, unlocked
+      //  2: occupied, locked
+      if (links[(int)((uint8_t)LinkID::FIRST_THRONE_LINK + i)].size != 0)
+      {
+         if (isThroneLocked[i])
+            result += 2;
+         else
+            result += 1;
+      }
+   }
+
+   return result;
 }
 
 void LinkedCards::MoveToHigher(CardLocation cardLocation)

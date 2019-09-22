@@ -11,10 +11,10 @@
 
 #include "SolverHashCode.h"
 
-SolverHashCode::SolverHashCode(const uint8_t *columnCounts, uint8_t kingsOnColumnsMask) {
-   // calculate a block number from the kings on columns masks and the count of cards
+SolverHashCode::SolverHashCode(const uint8_t *columnCounts, uint8_t throneHashValue) {
+   // calculate a block number from the throne hash and the count of cards
    // on columns 7, 8 and 9
-   blockNumber = kingsOnColumnsMask;
+   blockNumber = throneHashValue;
    for (int i=7; i<10; ++i)
       blockNumber = blockNumber*6 + columnCounts[i];
    

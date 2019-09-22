@@ -8,9 +8,8 @@
 #ifndef SOLVERHASHCODE_H
 #define	SOLVERHASHCODE_H
 
+#include "LinkedCards.h"
 
-#define HASH_CODE_BLOCK_NUMBER_RANGE (16*6*6*6)
-#define HASH_CODE_BYTE_OFFSET_RANGE (6*6*6*6*6*6*6/8)
 
 class SolverHashCode {
 public:
@@ -20,6 +19,10 @@ public:
    uint16_t GetBlockNumber(void) const { return blockNumber; }
    uint16_t GetByteOffset(void) const { return byteOffset; }
    
+public:
+   static const int BlockNumberRange = (LinkedCards::ThroneHashRange * 6 * 6 * 6);
+   static const int ByteOffsetRange = (6 * 6 * 6 * 6 * 6 * 6 * 6 / 8);
+
 private:
    uint16_t blockNumber;
    uint16_t byteOffset;

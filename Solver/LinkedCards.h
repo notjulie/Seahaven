@@ -34,16 +34,20 @@ public:
    void Clear(void);
    int CountKingsOnTowers(void) const;
    int GetEmptyTowers(void) const;
-   int GetThroneOccupationMask(void) const;
+   int GetThroneHashValue(void) const;
    void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
    void MoveToLower(CardLocation link);
    void SetAceSizes(void);
    void SetCard(CardLocation cardLocation, LinkedCard card);
    ProblemCard GetCardDetails(CardLocation link) const;
-   
+
+public:
+   static const int ThroneHashRange = 3 * 3 * 3 * 3;
+
 private:
    LinkedCard links[(uint8_t)LinkID::LINK_COUNT];
+   bool isThroneLocked[4];
 };
 
 #endif	/* LINKEDCARDS_H */

@@ -30,7 +30,7 @@ void SolverCache::Clear(void)
    nextBlockIndex = 0;
    
    // clear the block indexes to -1
-   blockIndexes.resize(HASH_CODE_BLOCK_NUMBER_RANGE);
+   blockIndexes.resize(SolverHashCode::BlockNumberRange);
    for (int i=0; i<blockIndexes.size(); ++i)
       blockIndexes[i] = -1;
 
@@ -57,8 +57,8 @@ bool SolverCache::TestAndSet(const SolverHashCode &hashCode)
       
       blockIndex = nextBlockIndex++;
       blockIndexes[hashCode.GetBlockNumber()] = blockIndex;
-      blocks[blockIndex].resize(HASH_CODE_BYTE_OFFSET_RANGE);
-      memset(&blocks[blockIndex][0], 0, HASH_CODE_BYTE_OFFSET_RANGE);
+      blocks[blockIndex].resize(SolverHashCode::ByteOffsetRange);
+      memset(&blocks[blockIndex][0], 0, blocks[blockIndex].size());
    }
    
    // test and set

@@ -305,7 +305,7 @@ SolverHashCode SolverState::GetHashValue(void) const
 {
    return SolverHashCode(
       columnCounts.GetPointer(),
-      cards.GetThroneOccupationMask()
+      cards.GetThroneHashValue()
       );
 }
 
