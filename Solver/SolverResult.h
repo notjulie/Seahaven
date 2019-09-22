@@ -12,6 +12,7 @@ public:
 
    void DumpToFile(FILE* file) const;
    int GetSize(void) const { return resultStack.GetSize(); }
+   int GetNumberOfThroneToTowerMoves(void) const;
 
    void SetResultStack(const SolverStack& stack) { resultStack = stack; }
 

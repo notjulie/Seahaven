@@ -61,3 +61,19 @@ void SolverResult::DumpToFile(FILE* file) const
       }
    }
 }
+
+
+int SolverResult::GetNumberOfThroneToTowerMoves(void) const
+{
+   int result = 0;
+
+   for (int i = 1; i < resultStack.GetSize(); ++i)
+   {
+      SolverMove move = resultStack[i].GetMoveThatWasPerformed();
+      if (move.type == SolverMoveType::FromThroneToTower)
+         ++result;
+   }
+
+   return result;
+}
+

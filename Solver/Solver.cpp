@@ -52,7 +52,6 @@ Solution Solver::Solve(const SeahavenProblem& problem)
 
    // return the solution
    return result.CreateSolution();
-
 }
 
 
@@ -82,8 +81,11 @@ void Solver::TestAllMoves(StackPointer stackPointer)
       TryColumnMoves(stackPointer, column);
 
    // try moving kings from columns to towers
-   for (Suit suit : Suit::All)
-      TryMoveFromThroneToTowerAndSolve(stackPointer, suit);
+   if (isThroneToTowerAllowed)
+   {
+      for (Suit suit : Suit::All)
+         TryMoveFromThroneToTowerAndSolve(stackPointer, suit);
+   }
 }
 
 

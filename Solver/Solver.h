@@ -22,6 +22,7 @@ public:
    Solver(void);
 
    void DisableCacheing(void) { cache.Disable(); }
+   void DisableMovingKingsFromEmptyColumnsToTowers(void) { isThroneToTowerAllowed = false; }
    const SolverResult& GetResult(void) const { return result; }
    int GetTotalBranchesTested(void) { return stateStack.GetTotalPushCount(); }
 
@@ -55,6 +56,7 @@ private:
    SolverCache cache;
    SolverResult result;
    uint32_t totalPushesAtTimeOfResult = 0;
+   bool isThroneToTowerAllowed = true;
 };
 
 #endif	/* SOLVER_H */

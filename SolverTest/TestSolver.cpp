@@ -80,6 +80,8 @@ SeahavenProblem TestSolver::TestRandomCase(void)
    else
       std::cout << "Win: ";
 
+   //std::cout << solver.GetResult().GetNumberOfThroneToTowerMoves() << " ";
+
    return problem;
 }
 

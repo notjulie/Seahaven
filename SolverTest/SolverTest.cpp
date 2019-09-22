@@ -3,6 +3,8 @@
 
 #include <chrono>
 #include <iostream>
+#include "SolverIncludes.h"
+#include "Solver.h"
 #include "TestCardOverlap.h"
 #include "TestSolver.h"
 
@@ -24,6 +26,32 @@ int main()
    tester.TestCache();
    tester.testZeroMoveProblem();
    tester.TestScottsProblem();
+
+#if 0
+   // try to find problems that require the ability to move thrones to towers
+   int failureCount = 0;
+   for (;;)
+   {
+      SeahavenProblem problem = SeahavenProblem::CreateRandom();
+
+      Solver solverWithoutThroneMoves;
+      solverWithoutThroneMoves.DisableMovingKingsFromEmptyColumnsToTowers();
+      Solution solutionWithoutThroneMoves = solverWithoutThroneMoves.Solve(problem);
+
+      if (solutionWithoutThroneMoves.IsFailure())
+      {
+         std::cout << ++failureCount;
+         std::cout << ": Failure without throne moves... ";
+         Solver solverWithThroneMoves;
+         Solution solutionWithThroneMoves = solverWithThroneMoves.Solve(problem);
+         if (solutionWithThroneMoves.IsFailure())
+            std::cout << "Failure with throne moves.";
+         else
+            std::cout << "SUCCESS WITH THRONE MOVES!!!";
+         std::cout << std::endl;
+      }
+   }
+#endif
 
    double slowestProblemTime = 0;
    SeahavenProblem slowestProblem;
