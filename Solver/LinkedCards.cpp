@@ -101,22 +101,29 @@ int LinkedCards::GetThroneHashValue(void) const
 void LinkedCards::MoveToHigher(CardLocation cardLocation)
 {
    // get the card
-   LinkedCard card(links[(int)cardLocation.linkID]);
+   LinkedCard card = links[(int)cardLocation.linkID];
    
+   // if the destination is a throne, we can unlock it if it has been
+   // locked
+   if (card.toHigher.isThrone)
+      isThroneLocked[card.toHigher.suit.GetIndex()] = false;
+
    // link the lower to the higher
-   LinkedCard lower(links[(int)card.toLower.linkID]);
+   LinkedCard lower = links[(int)card.toLower.linkID];
    lower.toHigher = card.toHigher;
    links[(int)card.toLower.linkID] = lower;
    
    // link the higher to the lower and add the size of the card
    // being moved
-   LinkedCard higher(links[(int)card.toHigher.linkID]);
+   LinkedCard higher = links[(int)card.toHigher.linkID];
    higher.toLower = card.toLower;
    higher.size += card.size;
    links[(int)card.toHigher.linkID] = higher;
    
    // make the card being moved go away
    links[(int)cardLocation.linkID] = LinkedCard::Null;
+
+
 }
 
 void LinkedCards::MoveToLower(CardLocation link)

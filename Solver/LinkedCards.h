@@ -35,6 +35,8 @@ public:
    int CountKingsOnTowers(void) const;
    int GetEmptyTowers(void) const;
    int GetThroneHashValue(void) const;
+   bool IsThroneLocked(Suit suit) const { return isThroneLocked[suit.GetIndex()]; }
+   void LockThrone(Suit suit) { isThroneLocked[suit.GetIndex()] = true; }
    void MoveToOpenTower(CardLocation cardLocation);
    void MoveToHigher(CardLocation link);
    void MoveToLower(CardLocation link);

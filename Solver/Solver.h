@@ -36,11 +36,13 @@ private:
    };
 
 private:
+   void TryMoveKingFromTowerToColumnVacatedByADifferentKingAndSolve(StackPointer stackPointer, Suit suit, int otherKingSize);
+   void TryMoveFromThroneToTowerAndSolve(StackPointer stackPointer, Suit suit);
    void TryTowerToThroneAndSolve(StackPointer stackPointer, Suit suit);
    FreeMovesResult DoFreeMoves(StackPointer stackPointer);
    void DoFreeMovesAndSolve(StackPointer stackPointer);
    void TestAllMoves(StackPointer stackPointer);
-   void TryMoveKingToColumn(StackPointer stackPointer, Suit suit);
+   void TryMoveKingToColumnAndSolve(StackPointer stackPointer, Suit suit);
    void TryMoveLastCardFromColumn(StackPointer stackPointer, int column);
    void TryMovingACardToColumn(StackPointer stackPointer, int column);
    void TryColumnMoves(StackPointer stackPointer, int column);

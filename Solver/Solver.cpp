@@ -14,10 +14,17 @@
 #include "Solver.h"
 
 
-Solver::Solver(void) 
+/// <summary>
+/// Initializes a new instance of class Solver.
+/// </summary>
+Solver::Solver(void)
 {
 }
 
+
+/// <summary>
+/// Solve... it's what we do.
+/// </summary>
 Solution Solver::Solve(const SeahavenProblem& problem)
 {
    // allocate the stack
@@ -74,7 +81,9 @@ void Solver::TestAllMoves(StackPointer stackPointer)
    for (int column = 0; column < 10; ++column)
       TryColumnMoves(stackPointer, column);
 
-   // TODO... try moving kings from columns to towers
+   // try moving kings from columns to towers
+   for (Suit suit : Suit::All)
+      TryMoveFromThroneToTowerAndSolve(stackPointer, suit);
 }
 
 
@@ -135,6 +144,94 @@ void Solver::TryColumnMoves(StackPointer stackPointer, int column)
             // in either of these cases we are done
             return;
          }
+      });
+}
+
+
+void Solver::TryMoveFromThroneToTowerAndSolve(StackPointer stackPointer, Suit suit)
+{
+   // get the throne
+   LinkedCard throne = stackPointer->GetCard(CardLocation::Thrones[suit.GetIndex()]);
+   int vacatingKingSize = throne.size;
+
+   // a throne is a special column reserved for a specific king; if it's empty we don't
+   // have a king to move
+   if (vacatingKingSize == 0)
+      return;
+
+   // We're not allowed to do this if the throne is locked.  This is a mechanism that
+   // I use to prevent the infinite loop of moving the KC to the tower so that the
+   // KD can be moved to its throne, reverse, repeat.  After such a move I lock the
+   // throne until it is involved in some move that required it to be on the throne.
+   if (stackPointer->IsThroneLocked(suit))
+      return;
+
+   // and of course we need enough tower space
+   if (stackPointer->GetFreeTowers() < throne.size)
+      return;
+
+   // OK, we can do this
+   SolverMove move;
+   move.type = SolverMoveType::FromThroneToTower;
+   move.suit = suit;
+   TestMove(stackPointer, move, [this, suit, vacatingKingSize](StackPointer stackPointer) {
+         // OK, the only reason to move the king we just moved from its throne to a
+         // tower is to make room for another king.  So loop through the kings and see
+         // if we can do that.
+         for (Suit followUpMoveSuit : Suit::All)
+         {
+            // never mind if this is the king we just moved
+            if (followUpMoveSuit == suit)
+               continue;
+
+            // grab the king's throne
+            LinkedCard throne = stackPointer->GetCard(CardLocation::Thrones[followUpMoveSuit.GetIndex()]);
+
+            // we want to move a king to the throne... never mind if it's already there
+            if (throne.size != 0)
+               continue;
+
+            // if the king is on a column then we already have a function for handling that
+            if (throne.toLower.onColumn)
+            {
+               TryMoveKingToColumnAndSolve(stackPointer, followUpMoveSuit);
+               continue;
+            }
+
+            // if the king is on a tower then call this function, which deals with all the trickery
+            // involved with that
+            if (throne.toLower.isTower)
+            {
+               TryMoveKingFromTowerToColumnVacatedByADifferentKingAndSolve(stackPointer, followUpMoveSuit, vacatingKingSize);
+               continue;
+            }
+         }
+      });
+}
+
+
+/// <summary>
+/// Called after a king is moved from an empty column to a tower.
+/// </summary>
+void Solver::TryMoveKingFromTowerToColumnVacatedByADifferentKingAndSolve(StackPointer stackPointer, Suit suit, int otherKingSize)
+{
+   // request the move
+   SolverMove move;
+   move.type = SolverMoveType::FromTowerToEmptyThrone;
+   move.suit = suit;
+   TestMove(stackPointer, move, [this, suit, otherKingSize](StackPointer stackPointer) {
+         // Following the move, we need to lock the throne if its size is less than or equal to
+         // the size of the king that we just moved to the tower.  The reason for this is that
+         // like always we are interested only in moves that serve a purpose.  Moving a king
+         // to a tower to make room for a king and a queen serves a purpose.  Moving a king to
+         // a tower to make room for a king only serves a purpose if we intend to put a card on
+         // that king.
+         LinkedCard targetThrone = stackPointer->GetCard(CardLocation::Thrones[suit.GetIndex()]);
+         if (targetThrone.size <= otherKingSize)
+            stackPointer->LockThrone(suit);
+
+         // and from that point we can do any move we want to
+         DoFreeMovesAndSolve(stackPointer);
       });
 }
 
@@ -202,7 +299,7 @@ void Solver::TryMoveLastCardFromColumn(StackPointer stackPointer, int column)
    TestMove(stackPointer, move, [this](StackPointer stackPointer) {
          // try all possibilities for the next move
          for (Suit suit : Suit::All)
-            TryMoveKingToColumn(stackPointer, suit);
+            TryMoveKingToColumnAndSolve(stackPointer, suit);
       });
 }
 
@@ -265,7 +362,7 @@ void Solver::DoFreeMovesAndSolve(StackPointer stackPointer)
 /// Called immediately after removing the last card from a column, our job is to
 /// find the given king and move it to the column.
 /// </summary>
-void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
+void Solver::TryMoveKingToColumnAndSolve(StackPointer stackPointer, Suit suit)
 {
    // find the throne, which is the link that points downward to the king
    LinkedCard throne = stackPointer->GetCard(CardLocation::Thrones[suit.GetIndex()]);
@@ -301,7 +398,7 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
          move.type = SolverMoveType::FromColumnToTower;
          move.column = kingLocation.column;
          TestMove(stackPointer, move, [this, suit](StackPointer stackPointer) {
-               TryMoveKingToColumn(stackPointer, suit);
+               TryMoveKingToColumnAndSolve(stackPointer, suit);
             });
          return;
       }

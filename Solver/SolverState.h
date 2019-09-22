@@ -23,12 +23,9 @@ public:
    SolverState(const SeahavenProblem &problem);
 
    bool  CanMoveColumnToTower(int columnIndex) const;
-   int CountKingsOnTowers(void) const { return cards.CountKingsOnTowers(); }
    bool  DoFreeMoves(void);
    CardLocation EndOfColumn(int column) const { return CardLocation::Columns[column][columnCounts.Get(column)-1]; }
    uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
-   LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
-   ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation); }
    int GetEmptyColumnCount(void) const;
    int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }
    SolverMove   GetMoveThatWasPerformed(void) const { return movePerformed; }
@@ -36,7 +33,14 @@ public:
    bool  IsBottomColumnCard(CardLocation card) const;
    bool  IsVictory(void) const;
    void PerformMove(SolverMove move);
-   
+
+   // simple dispatches to LinkedCards methods
+   int CountKingsOnTowers(void) const { return cards.CountKingsOnTowers(); }
+   LinkedCard GetCard(CardLocation cardLocation) const { return cards.GetCard(cardLocation); }
+   ProblemCard GetCardDetails(CardLocation cardLocation) const { return cards.GetCardDetails(cardLocation); }
+   bool IsThroneLocked(Suit suit) const { return cards.IsThroneLocked(suit); }
+   void LockThrone(Suit suit) { cards.LockThrone(suit); }
+
 private:
    void Clear(void);
    void MoveColumnToColumnOrThrone(int columnIndex);

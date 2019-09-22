@@ -108,6 +108,10 @@ void SolverState::PerformMove(SolverMove move)
       MoveColumnToTower(move.column);
       break;
 
+   case SolverMoveType::FromThroneToTower:
+      cards.MoveToOpenTower(CardLocation::Thrones[move.suit.GetIndex()]);
+      break;
+
    case SolverMoveType::FromTowerToEmptyThrone:
       MoveTowerToThrone(move.suit);
       break;

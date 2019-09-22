@@ -23,6 +23,11 @@ enum class SolverMoveType {
    FromColumnToTower,
 
    /// <summary>
+   /// Move a king from an empty column to a tower
+   /// </summary>
+   FromThroneToTower,
+
+   /// <summary>
    /// Moves a king from the tower to the corresponding empty throne
    /// </summary>
    FromTowerToEmptyThrone

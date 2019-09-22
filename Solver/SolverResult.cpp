@@ -22,6 +22,7 @@ Solution SolverResult::CreateSolution(void) const
          break;
 
       case SolverMoveType::FromTowerToEmptyThrone:
+      case SolverMoveType::FromThroneToTower:
          solution.AddStep(ProblemCard(move.suit, 13));
          break;
 
