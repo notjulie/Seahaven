@@ -15,8 +15,6 @@ public:
    inline SolverState& operator[](int i) { return stack[i]; }
    inline const SolverState& operator[](int i) const { return stack[i]; }
 
-   SolverStack GetRange(int first, int size);
-
 private:
    std::vector<SolverState>   stack;
    int totalPushes = 0;
@@ -29,8 +27,9 @@ public:
    {
    }
 
+   inline bool CanPush(void) const { return index < stack.GetSize() - 1; }
    int GetIndex(void) const { return index; }
-   void PushCurrentStateAndPerformMove(SolverMove move);
+   void PushCurrentState(void);
 
    inline SolverState& operator*(void) { return stack[index]; }
    inline SolverState* operator->(void) { return &stack[index]; }

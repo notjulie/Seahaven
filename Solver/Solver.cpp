@@ -13,7 +13,9 @@
 
 #include "Solver.h"
 
-Solver::Solver() {
+
+Solver::Solver(void) 
+{
 }
 
 Solution Solver::Solve(const SeahavenProblem& problem)
@@ -220,8 +222,14 @@ Solver::FreeMovesResult Solver::DoFreeMoves(StackPointer stackPointer)
    // current stack to the result stack and be done
    if (stackPointer->IsVictory())
    {
-      // note the result
-      result.SetResultStack(stateStack.GetRange(0, stackPointer.GetIndex() + 1));
+      // Truncate the size of the stack and copy it to the result
+      stateStack.SetSize(stackPointer.GetIndex() + 1);
+      result.SetResultStack(stateStack);
+
+      // truncate it one more position... we are going to continue to look for
+      // other solutions, but we are only interested in solutions that are shorter than
+      // the one we already found.
+      stateStack.SetSize(stackPointer.GetIndex());
 
       // and note how hard we had to work to get it
       totalPushesAtTimeOfResult = stateStack.GetTotalPushCount();
@@ -404,25 +412,10 @@ bool Solver::TryPushColumnToHigherAndSolve(StackPointer stackPointer, int column
 /// <param name="nextStep">the sequence to carry out after performing the move</param>
 void Solver::TestMove(StackPointer stackPointer, SolverMove move, const std::function<void(StackPointer)> nextStep)
 {
-   // if we already have a solution we aren't allowed to do any moves unless it
-   // might still result in a solution shorter than the one we already have
+   // if we already have a solution...
    int currentResultSize = result.GetSize();
    if (currentResultSize > 0)
    {
-      // just so I don't get into any one-off confusion, let's do this carefully...
-      // the maximum result size that we will allow is one less than the one we already have
-      int maxResultSize = currentResultSize - 1;
-
-      // current stack size is...
-      int currentStackSize = stackPointer.GetIndex() + 1;
-
-      // after this move it will be
-      int nextStackSize = currentStackSize + 1;
-
-      // and we insist that it be no more than that
-      if (nextStackSize > maxResultSize)
-         return;
-
       // Sometimes we will get a result that's good enough that we aren't likely
       // to get a better one.  Once that happens, we can end up spinning through the
       // problem with no hope of finding a better solution.  To prevent that, I set a
@@ -433,8 +426,17 @@ void Solver::TestMove(StackPointer stackPointer, SolverMove move, const std::fun
          return;
    }
 
-   // go ahead and push the move
-   stackPointer.PushCurrentStateAndPerformMove(move);
+   // If we don't have space on the stack just give up... this generally just means that
+   // we already found a solution and are only interested in seeing if we can find one that's
+   // shorter than the one we already found.
+   if (!stackPointer.CanPush())
+      return;
+
+   // go ahead and push the state
+   stackPointer.PushCurrentState();
+
+   // perform the move
+   stackPointer->PerformMove(move);
 
    // and perform the next step on the new state
    nextStep(stackPointer);

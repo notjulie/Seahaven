@@ -4,25 +4,14 @@
 
 
 /// <summary>
-/// Pushes the current state on to the stack and performs the given move
+/// Pushes a copy of the current state on to the top of the stack
 /// </summary>
-void StackPointer::PushCurrentStateAndPerformMove(SolverMove move)
+void StackPointer::PushCurrentState(void)
 {
    // push
    stack[index + 1] = stack[index];
    ++index;
    stack.IncrementPushCount();
-
-   // perform the move
-   stack[index].PerformMove(move);
 }
 
 
-SolverStack SolverStack::GetRange(int first, int size)
-{
-   SolverStack result;
-   result.SetSize(size);
-   for (int i = 0; i < size; ++i)
-      result[i] = (*this)[first + i];
-   return result;
-}
