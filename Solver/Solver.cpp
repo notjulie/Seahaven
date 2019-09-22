@@ -280,10 +280,23 @@ void Solver::TryMoveKingToColumn(StackPointer stackPointer, Suit suit)
       if (rowIndex == 0)
          return;
 
-      // push any cards on top of the king to a tower
-      while (stackPointer->GetColumnCardCount(kingLocation.column) > rowIndex + 1)
-         if (!TryPushColumnToTowerMove(stackPointer, kingLocation.column))
+      // if this is not the bottom card on the column we need to remove a card and
+      // try again
+      if (stackPointer->GetColumnCardCount(kingLocation.column) > rowIndex + 1)
+      {
+         // just blast the card to a tower... if we can't then we're done
+         if (!stackPointer->CanMoveColumnToTower(kingLocation.column))
             return;
+
+         // move
+         SolverMove move;
+         move.type = SolverMoveType::FromColumnToTower;
+         move.column = kingLocation.column;
+         TestMove(stackPointer, move, [this, suit](StackPointer stackPointer) {
+               TryMoveKingToColumn(stackPointer, suit);
+            });
+         return;
+      }
 
       // try the move
       TryPushColumnToHigherAndSolve(stackPointer, kingLocation.column);
