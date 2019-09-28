@@ -3,14 +3,16 @@
 #include "SolverStack.h"
 
 
-/// <summary>
-/// Pushes a copy of the current state on to the top of the stack
-/// </summary>
-void StackPointer::PushCurrentState(void)
+StackPointer::StackPointer(SolverState* valueToPush, StackPointer* previousStackPointer)
 {
-   // push
-   stack[index + 1] = stack[index];
-   ++index;
+   this->previousStackPointer = previousStackPointer;
+   this->topValue = valueToPush;
 }
 
-
+const SolverState& StackPointer::GetStackEntry(int i) const
+{
+   if (GetIndex() == i)
+      return *this->topValue;
+   else
+      return previousStackPointer->GetStackEntry(i);
+}

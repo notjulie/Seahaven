@@ -27,13 +27,11 @@ Solver::Solver(void)
 /// </summary>
 Solution Solver::Solve(const SeahavenProblem& problem)
 {
-   // allocate the stack
-   SolverStack stateStack;
-   stateStack.SetSize(100);
-
    // create the initial state
-   StackPointer stackPointer = StackPointer(stateStack);
-   *stackPointer = SolverState(problem);
+   SolverState initialState(problem);
+
+   // create a stack from it
+   StackPointer stackPointer(&initialState, nullptr);
 
    // and make sure that it's a clean state with no free moves waiting to be
    // done
@@ -528,13 +526,14 @@ void Solver::TestMove(StackPointer stackPointer, SolverMove move, const std::fun
          return;
    }
 
-   // go ahead and push the state
-   stackPointer.PushCurrentState();
+   // perform the move
+   SolverState newState = *stackPointer;
+   newState.PerformMove(move);
+
+   // push to the top of the stack
+   StackPointer newStackPointer(&newState, &stackPointer);
    ++totalPushCount;
 
-   // perform the move
-   stackPointer->PerformMove(move);
-
-   // and perform the next step on the new state
-   nextStep(stackPointer);
+   // and perform the next step on the new top of the stack
+   nextStep(newStackPointer);
 }

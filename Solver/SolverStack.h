@@ -19,22 +19,18 @@ private:
 
 class StackPointer {
 public:
-   StackPointer(SolverStack& _stack)
-      : stack(_stack)
-   {
-   }
+   StackPointer(SolverState *valueToPush, StackPointer * previousStackPointer);
 
-   int GetIndex(void) const { return index; }
-   void PushCurrentState(void);
+   int GetIndex(void) const { return previousStackPointer != nullptr ? 1 + previousStackPointer->GetIndex() : 0; }
 
-   inline SolverState& operator*(void) { return stack[index]; }
-   inline SolverState* operator->(void) { return &stack[index]; }
+   inline SolverState& operator*(void) { return *topValue; }
+   inline SolverState* operator->(void) { return topValue; }
 
-   const SolverState& GetStackEntry(int i) const { return stack[i]; }
+   const SolverState& GetStackEntry(int i) const;
 
 private:
-   SolverStack& stack;
-   int index = 0;
+   const StackPointer *previousStackPointer;
+   SolverState *topValue;
 };
 
 
