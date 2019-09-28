@@ -6,12 +6,12 @@
 Solution SolverResult::CreateSolution(void) const
 {
    // if no solution was found...
-   if (resultStack.IsEmpty())
+   if (resultStack.size() == 0)
       return Solution::Fail();
 
    // else put together a solution from the changing states
    Solution solution;
-   for (int i = 1; i < resultStack.GetSize(); ++i)
+   for (int i = 1; i < resultStack.size(); ++i)
    {
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       switch (move.type)
@@ -42,7 +42,7 @@ void SolverResult::DumpToFile(FILE* file) const
    Solution solution = CreateSolution();
 
    // loop through every state in the result and dump it to the file
-   for (int i = 0; i < resultStack.GetSize(); ++i)
+   for (int i = 0; i < resultStack.size(); ++i)
    {
       if (i != 0)
          fprintf(file, "======================================================\r\n");
@@ -67,7 +67,7 @@ int SolverResult::GetNumberOfThroneToTowerMoves(void) const
 {
    int result = 0;
 
-   for (int i = 1; i < resultStack.GetSize(); ++i)
+   for (int i = 1; i < resultStack.size(); ++i)
    {
       SolverMove move = resultStack[i].GetMoveThatWasPerformed();
       if (move.type == SolverMoveType::FromThroneToTower)
@@ -78,12 +78,10 @@ int SolverResult::GetNumberOfThroneToTowerMoves(void) const
 }
 
 
-void SolverResult::CopyFromStack(StackPointer stackPointer)
+void SolverResult::CopyFromStack(solver::StackPointer stackPointer)
 {
-   SolverStack stack;
-   stack.SetSize(stackPointer.GetIndex() + 1);
+   this->resultStack.resize(0);
    for (int i = 0; i <= stackPointer.GetIndex(); ++i)
-      stack[i] = stackPointer.GetStackEntry(i);
-   this->resultStack = stack;
+      this->resultStack.push_back(stackPointer.GetStackEntry(i));
 }
 

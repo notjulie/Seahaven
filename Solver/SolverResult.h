@@ -3,7 +3,7 @@
 #define SOLVERRESULT_H
 
 #include "Solution.h"
-#include "SolverStack.h"
+#include "StackPointer.h"
 
 class SolverResult
 {
@@ -11,13 +11,13 @@ public:
    Solution CreateSolution(void) const;
 
    void DumpToFile(FILE* file) const;
-   int GetSize(void) const { return resultStack.GetSize(); }
+   int GetSize(void) const { return (int)resultStack.size(); }
    int GetNumberOfThroneToTowerMoves(void) const;
 
-   void CopyFromStack(StackPointer stackPointer);
+   void CopyFromStack(solver::StackPointer stackPointer);
 
 private:
-   SolverStack resultStack;
+   std::vector<SolverState> resultStack;
 };
 
 

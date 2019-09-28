@@ -33,9 +33,6 @@
     <ClInclude Include="Suit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolverStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SolverResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Solver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackPointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,10 +92,10 @@
     <ClCompile Include="ColumnCounts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolverStack.cpp">
+    <ClCompile Include="SolverResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolverResult.cpp">
+    <ClCompile Include="StackPointer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

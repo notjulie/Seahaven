@@ -23,7 +23,7 @@ TestSolver::~TestSolver() {
 
 void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution &expectedResult)
 {
-   Solver   solver;
+   solver::Solver   solver;
    Solution solution = solver.Solve(problem);
    if (solution != expectedResult)
    {
@@ -41,7 +41,7 @@ void TestSolver::doSolverTestCase(const SeahavenProblem &problem, const Solution
 
 void TestSolver::TestScottsProblem(void)
 {
-   Solver   solver;
+   solver::Solver   solver;
    Solution solution = solver.Solve(scottsProblem);
    if (solution.IsFailure())
       throw SolverException("TestSolver::TestScottsProblem: expected success");
@@ -50,11 +50,11 @@ void TestSolver::TestScottsProblem(void)
 void TestSolver::TestCache(void)
 {
    // run once normally
-   Solver solverWithCacheing;
+   solver::Solver solverWithCacheing;
    Solution solutionWithCacheing = solverWithCacheing.Solve(cacheTestProblem);
 
    // run once witch cacheing disabled
-   Solver solverWithoutCacheing;
+   solver::Solver solverWithoutCacheing;
    solverWithoutCacheing.DisableCacheing();
    Solution solutionWithoutCacheing = solverWithoutCacheing.Solve(cacheTestProblem);
 
@@ -71,7 +71,7 @@ void TestSolver::TestCache(void)
 
 SeahavenProblem TestSolver::TestRandomCase(void)
 {
-   Solver solver;
+   solver::Solver solver;
    SeahavenProblem problem = SeahavenProblem::CreateRandom();
    //problem.Dump();
    Solution solution = solver.Solve(problem);
@@ -87,7 +87,7 @@ SeahavenProblem TestSolver::TestRandomCase(void)
 
 void TestSolver::TestSlowProblem(void)
 {
-   Solver   solver;
+   solver::Solver   solver;
    Solution solution = solver.Solve(slowTestProblem);
 
    FILE* resultFile = std::fopen("TestSlowProblem.txt", "wt");
@@ -100,6 +100,6 @@ void TestSolver::TestSlowProblem(void)
 
 void TestSolver::TestSlowProblem2(void)
 {
-   Solver   solver;
+   solver::Solver   solver;
    Solution solution = solver.Solve(slowTestProblem2);
 }

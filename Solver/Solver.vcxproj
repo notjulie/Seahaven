@@ -161,7 +161,7 @@
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverMove.h" />
     <ClInclude Include="SolverResult.h" />
-    <ClInclude Include="SolverStack.h" />
+    <ClInclude Include="StackPointer.h" />
     <ClInclude Include="Suit.h" />
   </ItemGroup>
   <ItemGroup>
@@ -187,7 +187,7 @@
     </ClCompile>
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="SolverResult.cpp" />
-    <ClCompile Include="SolverStack.cpp" />
+    <ClCompile Include="StackPointer.cpp" />
     <ClCompile Include="SolverState.cpp" />
     <ClCompile Include="Suit.cpp" />
   </ItemGroup>
