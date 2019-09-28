@@ -28,6 +28,7 @@ Solver::Solver(void)
 Solution Solver::Solve(const SeahavenProblem& problem)
 {
    // allocate the stack
+   SolverStack stateStack;
    stateStack.SetSize(100);
 
    // create the initial state
@@ -322,16 +323,10 @@ Solver::FreeMovesResult Solver::DoFreeMoves(StackPointer stackPointer)
    if (stackPointer->IsVictory())
    {
       // Truncate the size of the stack and copy it to the result
-      stateStack.SetSize(stackPointer.GetIndex() + 1);
-      result.SetResultStack(stateStack);
-
-      // truncate it one more position... we are going to continue to look for
-      // other solutions, but we are only interested in solutions that are shorter than
-      // the one we already found.
-      stateStack.SetSize(stackPointer.GetIndex());
+      result.CopyFromStack(stackPointer);
 
       // and note how hard we had to work to get it
-      totalPushesAtTimeOfResult = stateStack.GetTotalPushCount();
+      totalPushesAtTimeOfResult = totalPushCount;
 
       return Victory;
    }
@@ -520,19 +515,22 @@ void Solver::TestMove(StackPointer stackPointer, SolverMove move, const std::fun
       // problem with no hope of finding a better solution.  To prevent that, I set a
       // cap on the number of pushes we can do before deciding to just accept the result
       // we already have.
-      uint32_t pushesSinceLastResult = stateStack.GetTotalPushCount() - totalPushesAtTimeOfResult;
+      uint32_t pushesSinceLastResult = this->totalPushCount - totalPushesAtTimeOfResult;
       if (pushesSinceLastResult > 20000)
+         return;
+
+      // If we don't have space on the stack just give up... this generally just means that
+      // we already found a solution and are only interested in seeing if we can find one that's
+      // shorter than the one we already found.
+      int maxStackSize = currentResultSize - 1;
+      int currentStackSize = stackPointer.GetIndex() + 1;
+      if (currentStackSize + 1 > maxStackSize)
          return;
    }
 
-   // If we don't have space on the stack just give up... this generally just means that
-   // we already found a solution and are only interested in seeing if we can find one that's
-   // shorter than the one we already found.
-   if (!stackPointer.CanPush())
-      return;
-
    // go ahead and push the state
    stackPointer.PushCurrentState();
+   ++totalPushCount;
 
    // perform the move
    stackPointer->PerformMove(move);

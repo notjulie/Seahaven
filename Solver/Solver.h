@@ -24,7 +24,7 @@ public:
    void DisableCacheing(void) { cache.Disable(); }
    void DisableMovingKingsFromEmptyColumnsToTowers(void) { isThroneToTowerAllowed = false; }
    const SolverResult& GetResult(void) const { return result; }
-   int GetTotalBranchesTested(void) { return stateStack.GetTotalPushCount(); }
+   uint32_t GetTotalBranchesTested(void) { return totalPushCount; }
 
    Solution Solve(const SeahavenProblem& problem);
 
@@ -52,9 +52,9 @@ private:
    void TestMove(StackPointer stackPointer, SolverMove move, const std::function<void(StackPointer)> nextStep);
 
 private:
-   SolverStack   stateStack;
    SolverCache cache;
    SolverResult result;
+   uint32_t totalPushCount = 0;
    uint32_t totalPushesAtTimeOfResult = 0;
    bool isThroneToTowerAllowed = true;
 };

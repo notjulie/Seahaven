@@ -14,7 +14,7 @@ public:
    int GetSize(void) const { return resultStack.GetSize(); }
    int GetNumberOfThroneToTowerMoves(void) const;
 
-   void SetResultStack(const SolverStack& stack) { resultStack = stack; }
+   void CopyFromStack(StackPointer stackPointer);
 
 private:
    SolverStack resultStack;

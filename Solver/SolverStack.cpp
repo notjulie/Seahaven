@@ -11,7 +11,6 @@ void StackPointer::PushCurrentState(void)
    // push
    stack[index + 1] = stack[index];
    ++index;
-   stack.IncrementPushCount();
 }
 
 

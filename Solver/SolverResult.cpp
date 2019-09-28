@@ -77,3 +77,13 @@ int SolverResult::GetNumberOfThroneToTowerMoves(void) const
    return result;
 }
 
+
+void SolverResult::CopyFromStack(StackPointer stackPointer)
+{
+   SolverStack stack;
+   stack.SetSize(stackPointer.GetIndex() + 1);
+   for (int i = 0; i <= stackPointer.GetIndex(); ++i)
+      stack[i] = stackPointer.GetStackEntry(i);
+   this->resultStack = stack;
+}
+
