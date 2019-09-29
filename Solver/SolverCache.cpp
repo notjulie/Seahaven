@@ -16,7 +16,7 @@
 // each block is about 35KBytes (unless I go and change the format of the
 // hash code)... 200 would be 7MB, and that's probably a good place
 // to stop
-#define MAX_BLOCK_COUNT 2000
+#define MAX_BLOCK_COUNT 1000
 
 
 
@@ -30,7 +30,7 @@ void SolverCache::Clear(void)
    nextBlockIndex = 0;
    
    // clear the block indexes to -1
-   blockIndexes.resize(SolverHashCode::BlockNumberRange);
+   blockIndexes.resize(SolverHashCode::MaxBlockNumber + 1);
    for (int i=0; i<blockIndexes.size(); ++i)
       blockIndexes[i] = -1;
 
@@ -50,19 +50,27 @@ bool SolverCache::TestAndSet(const SolverHashCode &hashCode)
    // if we haven't yet allocated a block for this value do so now
    if (blockIndex < 0)
    {
-      // the best thing we can do if we fill up the cache is clear it
-      // and commence refilling it
-      if (nextBlockIndex >= MAX_BLOCK_COUNT)
-         Clear();
-      
-      blockIndex = nextBlockIndex++;
+      // get the next block's index
+      if (++nextBlockIndex >= MAX_BLOCK_COUNT)
+         nextBlockIndex = 0;
+      blockIndex = nextBlockIndex;
+
+      // unassign it if it was assigned
+      if (blocks[blockIndex].blockNumber != SolverHashCode::InvalidBlockNumber)
+      {
+         blockIndexes[blocks[blockIndex].blockNumber] = -1;
+         blocks[blockIndex].blockNumber = SolverHashCode::InvalidBlockNumber;
+      }
+
       blockIndexes[hashCode.GetBlockNumber()] = blockIndex;
-      blocks[blockIndex].resize(SolverHashCode::ByteOffsetRange);
-      memset(&blocks[blockIndex][0], 0, blocks[blockIndex].size());
+      blocks[blockIndex].bitSet.resize(SolverHashCode::ByteOffsetRange);
+      memset(&blocks[blockIndex].bitSet[0], 0, blocks[blockIndex].bitSet.size());
+
+      blocks[blockIndex].blockNumber = hashCode.GetBlockNumber();
    }
    
    // test and set
-   uint8_t *bp = &blocks[blockIndex][hashCode.GetByteOffset()];
+   uint8_t *bp = &blocks[blockIndex].bitSet[hashCode.GetByteOffset()];
    uint8_t mask = 1<<hashCode.GetBitNumber();
    bool result = ((*bp) & mask) != 0;
    *bp |= mask;

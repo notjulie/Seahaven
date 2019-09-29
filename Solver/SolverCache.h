@@ -8,18 +8,22 @@
 #ifndef SOLVERCACHE_H
 #define	SOLVERCACHE_H
 
-class SolverHashCode;
+#include "SolverHashCode.h"
+
 
 class SolverCache {
 public:
-   SolverCache();
+   SolverCache(void);
 
    void  Clear(void);
    void  Disable(void) { disabled = true; }
    bool  TestAndSet(const SolverHashCode &hashCode);
    
 private:
-   typedef std::vector<uint8_t> Block;
+   struct Block {
+      std::vector<uint8_t> bitSet;
+      SolverHashCode::BlockNumber blockNumber = SolverHashCode::InvalidBlockNumber;
+   };
    
 private:
    std::vector<int16_t>  blockIndexes;

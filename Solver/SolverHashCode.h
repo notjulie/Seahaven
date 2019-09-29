@@ -20,11 +20,17 @@ public:
    uint16_t GetByteOffset(void) const { return byteOffset; }
    
 public:
-   static const int BlockNumberRange = (LinkedCards::ThroneHashRange * 6 * 6 * 6);
+   typedef uint16_t BlockNumber;
+
+public:
+   static const BlockNumber MaxBlockNumber = (LinkedCards::ThroneHashRange * 6 * 6 * 6) - 1;
+   static const BlockNumber InvalidBlockNumber = MaxBlockNumber + 1;
    static const int ByteOffsetRange = (6 * 6 * 6 * 6 * 6 * 6 * 6 / 8);
 
+   static_assert(std::numeric_limits<BlockNumber>::max() >= InvalidBlockNumber, "BlockNumber type not big enough");
+
 private:
-   uint16_t blockNumber;
+   BlockNumber blockNumber;
    uint16_t byteOffset;
    uint8_t  bitNumber;
 };
