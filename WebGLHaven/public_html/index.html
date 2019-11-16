@@ -8,14 +8,14 @@
     <title>Three.js - Fundamentals 3 cubes</title>
   </head>
   <body>
-    <canvas id="c"></canvas>
+      <canvas id="c" width="800" height="800"/>
   </body>
 <script type="module">
 import * as THREE from './three.module.js';
 
 function main() {
   const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas});
+  const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
 
   const fov = 75;
   const aspect = 2;  // the canvas default
@@ -38,7 +38,9 @@ function main() {
   const boxHeight = 1;
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
+  
+  const planeGeometry = new THREE.PlaneGeometry(1, 2);
+  
   function makeInstance(geometry, color, x) {
     const material = new THREE.MeshPhongMaterial({color});
 
@@ -50,11 +52,36 @@ function main() {
     return cube;
   }
 
-  const cubes = [
-    makeInstance(geometry, 0x44aa88,  0),
-    makeInstance(geometry, 0x8844aa, -2),
+  var cubes = [
+    /*makeInstance(planeGeometry, 0x44aa88,  0)*/,
+    makeInstance(planeGeometry, 0x8844aa, -2),
     makeInstance(geometry, 0xaa8844,  2),
   ];
+
+  var loader = new THREE.FontLoader();
+  loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+            var textGeometry = new THREE.TextGeometry( 'Hello three.js!', {
+                    font: font,
+                    size: 80,
+                    height: 5,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 10,
+                    bevelSize: 8,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+            } );
+            textGeometry.computeBoundingBox();
+            
+
+            textGeometry.center();
+            textGeometry.scale(0.002, 0.002, 0.002);
+            const material = new THREE.MeshPhongMaterial(0x44aa88);
+
+            const cube = new THREE.Mesh(textGeometry, material);
+            scene.add(cube);
+            cubes[0] = cube;
+  } );
 
   function render(time) {
     time *= 0.001;  // convert time to seconds
