@@ -28,6 +28,17 @@ function createCardShape(width, height, cornerRadius) {
     return shape;
 }
 
+function createDiamondShape(width, height) {
+    var shape = new THREE.Shape();
+
+    shape.moveTo(width/2, 0);
+    shape.lineTo(width, height/2);
+    shape.lineTo(width/2, height);
+    shape.lineTo(0, height/2);
+
+    return shape;
+}
+
 function main() {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
@@ -73,45 +84,40 @@ function main() {
         /*makeInstance(geometry, 0xaa8844,  2)*/,
       ];
 
+var cardMesh;
 {
     var cardShape = createCardShape(100, 150, 10);
-
     var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-
     var cardGeometry = new THREE.ExtrudeGeometry( cardShape, extrudeSettings );
     cardGeometry.scale(0.004, 0.004, 0.001);
  
     var mesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
-    scene.add(mesh);
-    cubes[2] = mesh;
+    //scene.add(mesh);
+    //cubes[2] = mesh;
+    cardMesh = mesh;
  }
  
+var diamondMesh;
+{
+    var diamondShape = createDiamondShape(100, 150);
+    var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+    var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
+    diamondGeometry.scale(0.004, 0.004, 0.001);
+ 
+    var mesh = new THREE.Mesh( diamondGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
+    //scene.add(mesh);
+    //cubes[0] = mesh;
+    diamondMesh = mesh;
+ }
+ 
+ var group = new THREE.Group();
+ group.add(cardMesh);
+ group.add(diamondMesh);
+ diamondMesh.position.z=0.001;
+ scene.add(group);
+ cubes[0] = group;
+
       
-  var loader = new THREE.FontLoader();
-  loader.load( 'fonts/gentilis_regular.typeface.json', function ( font ) {
-            var textGeometry = new THREE.TextGeometry( 'A\u2665', {
-                    font: font,
-                    size: 80,
-                    height: 5,
-                    curveSegments: 12,
-                    bevelEnabled: true,
-                    bevelThickness: 10,
-                    bevelSize: 8,
-                    bevelOffset: 0,
-                    bevelSegments: 5
-            } );
-            textGeometry.computeBoundingBox();
-            
-
-            textGeometry.center();
-            textGeometry.scale(0.00002, 0.00002, 0.000005);
-            const material = new THREE.MeshPhongMaterial(0x44aa88);
-
-            const cube = new THREE.Mesh(textGeometry, material);
-            scene.add(cube);
-            cubes[0] = cube;
-  } );
-
   function render(time) {
     time *= 0.001;  // convert time to seconds
 
