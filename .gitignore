@@ -340,3 +340,6 @@ ASALocalRun/
 healthchecksdb
 *.txt
 *.csv
+
+# MAC OS system files
+.DS_Store
