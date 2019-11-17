@@ -18,6 +18,8 @@
 <!-- Three.js WebGL main rendering loop -->
 <script type="text/javascript">
 
+var deckOfCards = new DeckOfCards();
+
 function main() {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
@@ -65,7 +67,7 @@ function main() {
 
 var cardMesh;
 {
-    var cardShape = createCardShape(100, 150, 10);
+    var cardShape = deckOfCards.createCardShape(100, 150, 10);
     var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
     var cardGeometry = new THREE.ExtrudeGeometry( cardShape, extrudeSettings );
     cardGeometry.scale(0.004, 0.004, 0.001);
@@ -78,7 +80,7 @@ var cardMesh;
  
 var diamondMesh;
 {
-    var diamondShape = createDiamondShape(100, 150);
+    var diamondShape = deckOfCards.createDiamondShape(100, 150);
     var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
     var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
     diamondGeometry.scale(0.004, 0.004, 0.001);
