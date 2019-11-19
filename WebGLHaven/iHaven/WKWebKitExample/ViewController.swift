@@ -39,11 +39,11 @@ class ViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         webViewContainter.addSubview(webView)
         webViewContainter.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[webView]|",
-                                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                                            metrics: nil,
                                                                            views: ["webView": webView]))
         webViewContainter.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|",
-                                                                           options: NSLayoutFormatOptions(rawValue: 0),
+                                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                                            metrics: nil,
                                                                            views: ["webView": webView]))
         

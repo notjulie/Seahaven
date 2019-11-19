@@ -29,7 +29,7 @@
 		E25898C21F823B6B009EA5D6 /* filterTowns.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = filterTowns.js; sourceTree = "<group>"; };
 		E25898C51F8240CB009EA5D6 /* changeCSS.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = changeCSS.js; sourceTree = "<group>"; };
 		E25898C71F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
-		E294C1AC1F80FC67002DD38A /* WKWebKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WKWebKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E294C1AC1F80FC67002DD38A /* iHaven.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iHaven.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E294C1AF1F80FC68002DD38A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E294C1B11F80FC68002DD38A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E294C1B41F80FC68002DD38A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 		E294C1AD1F80FC67002DD38A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E294C1AC1F80FC67002DD38A /* WKWebKitExample.app */,
+				E294C1AC1F80FC67002DD38A /* iHaven.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,9 +118,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E294C1AB1F80FC67002DD38A /* WKWebKitExample */ = {
+		E294C1AB1F80FC67002DD38A /* iHaven */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E294C1BE1F80FC68002DD38A /* Build configuration list for PBXNativeTarget "WKWebKitExample" */;
+			buildConfigurationList = E294C1BE1F80FC68002DD38A /* Build configuration list for PBXNativeTarget "iHaven" */;
 			buildPhases = (
 				E294C1A81F80FC67002DD38A /* Sources */,
 				E294C1A91F80FC67002DD38A /* Frameworks */,
@@ -130,9 +130,9 @@
 			);
 			dependencies = (
 			);
-			name = WKWebKitExample;
+			name = iHaven;
 			productName = WKWebKitExample;
-			productReference = E294C1AC1F80FC67002DD38A /* WKWebKitExample.app */;
+			productReference = E294C1AC1F80FC67002DD38A /* iHaven.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -142,16 +142,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Anti-M";
 				TargetAttributes = {
 					E294C1AB1F80FC67002DD38A = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = E294C1A71F80FC67002DD38A /* Build configuration list for PBXProject "WKWebKitExample" */;
+			buildConfigurationList = E294C1A71F80FC67002DD38A /* Build configuration list for PBXProject "iHaven" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -164,7 +165,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E294C1AB1F80FC67002DD38A /* WKWebKitExample */,
+				E294C1AB1F80FC67002DD38A /* iHaven */,
 			);
 		};
 /* End PBXProject section */
@@ -237,6 +238,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -244,6 +246,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -294,6 +297,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -301,6 +305,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -339,8 +344,8 @@
 				INFOPLIST_FILE = WKWebKitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tralfaz.iHaven;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PRODUCT_NAME = iHaven;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -354,8 +359,8 @@
 				INFOPLIST_FILE = WKWebKitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tralfaz.iHaven;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PRODUCT_NAME = iHaven;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -363,7 +368,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E294C1A71F80FC67002DD38A /* Build configuration list for PBXProject "WKWebKitExample" */ = {
+		E294C1A71F80FC67002DD38A /* Build configuration list for PBXProject "iHaven" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E294C1BC1F80FC68002DD38A /* Debug */,
@@ -372,7 +377,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E294C1BE1F80FC68002DD38A /* Build configuration list for PBXNativeTarget "WKWebKitExample" */ = {
+		E294C1BE1F80FC68002DD38A /* Build configuration list for PBXNativeTarget "iHaven" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E294C1BF1F80FC68002DD38A /* Debug */,
