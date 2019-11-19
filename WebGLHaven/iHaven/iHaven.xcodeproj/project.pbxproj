@@ -7,27 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E22916451F82B6D700DC731E /* india-map.png in Resources */ = {isa = PBXBuildFile; fileRef = E22916441F82B6D700DC731E /* india-map.png */; };
+		027F632F2383A13A00714E9F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 027F632E2383A13A00714E9F /* index.html */; };
+		027F63322383A24700714E9F /* three.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63302383A24700714E9F /* three.js */; };
+		027F63332383A24700714E9F /* DeckOfCards.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63312383A24700714E9F /* DeckOfCards.js */; };
 		E22916471F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */; };
-		E25898C31F823B6B009EA5D6 /* filterTowns.js in Resources */ = {isa = PBXBuildFile; fileRef = E25898C21F823B6B009EA5D6 /* filterTowns.js */; };
-		E25898C61F8240CB009EA5D6 /* changeCSS.js in Resources */ = {isa = PBXBuildFile; fileRef = E25898C51F8240CB009EA5D6 /* changeCSS.js */; };
 		E25898C81F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25898C71F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift */; };
 		E294C1B01F80FC68002DD38A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294C1AF1F80FC68002DD38A /* AppDelegate.swift */; };
 		E294C1B21F80FC68002DD38A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294C1B11F80FC68002DD38A /* ViewController.swift */; };
 		E294C1B51F80FC68002DD38A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E294C1B31F80FC68002DD38A /* Main.storyboard */; };
 		E294C1B71F80FC68002DD38A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E294C1B61F80FC68002DD38A /* Assets.xcassets */; };
 		E294C1BA1F80FC68002DD38A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E294C1B81F80FC68002DD38A /* LaunchScreen.storyboard */; };
-		E294C1C31F8102DE002DD38A /* cities.html in Resources */ = {isa = PBXBuildFile; fileRef = E294C1C21F8102DE002DD38A /* cities.html */; };
 		E294C1C51F8110BC002DD38A /* ViewController+WKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294C1C41F8110BC002DD38A /* ViewController+WKNavigationDelegate.swift */; };
 		E294C1C71F811127002DD38A /* ViewController+WKUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E294C1C61F811127002DD38A /* ViewController+WKUIDelegate.swift */; };
 		E2BEC8D31F82744100C916D2 /* ViewController+WKScriptMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC8D21F82744100C916D2 /* ViewController+WKScriptMessageHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E22916441F82B6D700DC731E /* india-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "india-map.png"; sourceTree = "<group>"; };
+		027F632E2383A13A00714E9F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		027F63302383A24700714E9F /* three.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = three.js; sourceTree = "<group>"; };
+		027F63312383A24700714E9F /* DeckOfCards.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = DeckOfCards.js; sourceTree = "<group>"; };
 		E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKURLSchemeHandler.swift"; sourceTree = "<group>"; };
-		E25898C21F823B6B009EA5D6 /* filterTowns.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = filterTowns.js; sourceTree = "<group>"; };
-		E25898C51F8240CB009EA5D6 /* changeCSS.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = changeCSS.js; sourceTree = "<group>"; };
 		E25898C71F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		E294C1AC1F80FC67002DD38A /* iHaven.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iHaven.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E294C1AF1F80FC68002DD38A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,7 +35,6 @@
 		E294C1B61F80FC68002DD38A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E294C1B91F80FC68002DD38A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E294C1BB1F80FC68002DD38A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E294C1C21F8102DE002DD38A /* cities.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = cities.html; sourceTree = "<group>"; };
 		E294C1C41F8110BC002DD38A /* ViewController+WKNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKNavigationDelegate.swift"; sourceTree = "<group>"; };
 		E294C1C61F811127002DD38A /* ViewController+WKUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKUIDelegate.swift"; sourceTree = "<group>"; };
 		E2BEC8D21F82744100C916D2 /* ViewController+WKScriptMessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKScriptMessageHandler.swift"; sourceTree = "<group>"; };
@@ -53,22 +51,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E22916431F82B6C600DC731E /* images */ = {
+		027F632D23839FFE00714E9F /* public_html */ = {
 			isa = PBXGroup;
 			children = (
-				E22916441F82B6D700DC731E /* india-map.png */,
+				027F63312383A24700714E9F /* DeckOfCards.js */,
+				027F63302383A24700714E9F /* three.js */,
+				027F632E2383A13A00714E9F /* index.html */,
 			);
-			path = images;
-			sourceTree = "<group>";
-		};
-		E25898C11F823B35009EA5D6 /* javascript */ = {
-			isa = PBXGroup;
-			children = (
-				E25898C21F823B6B009EA5D6 /* filterTowns.js */,
-				E25898C51F8240CB009EA5D6 /* changeCSS.js */,
-			);
-			path = javascript;
-			sourceTree = "<group>";
+			name = public_html;
+			path = ../public_html;
+			sourceTree = SOURCE_ROOT;
 		};
 		E294C1A31F80FC67002DD38A = {
 			isa = PBXGroup;
@@ -89,9 +81,7 @@
 		E294C1AE1F80FC67002DD38A /* WKWebKitExample */ = {
 			isa = PBXGroup;
 			children = (
-				E22916431F82B6C600DC731E /* images */,
-				E25898C11F823B35009EA5D6 /* javascript */,
-				E294C1C11F8102DE002DD38A /* html */,
+				027F632D23839FFE00714E9F /* public_html */,
 				E294C1AF1F80FC68002DD38A /* AppDelegate.swift */,
 				E294C1B11F80FC68002DD38A /* ViewController.swift */,
 				E294C1C61F811127002DD38A /* ViewController+WKUIDelegate.swift */,
@@ -105,14 +95,6 @@
 				E294C1BB1F80FC68002DD38A /* Info.plist */,
 			);
 			path = WKWebKitExample;
-			sourceTree = "<group>";
-		};
-		E294C1C11F8102DE002DD38A /* html */ = {
-			isa = PBXGroup;
-			children = (
-				E294C1C21F8102DE002DD38A /* cities.html */,
-			);
-			path = html;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,12 +158,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E294C1BA1F80FC68002DD38A /* LaunchScreen.storyboard in Resources */,
-				E22916451F82B6D700DC731E /* india-map.png in Resources */,
-				E25898C31F823B6B009EA5D6 /* filterTowns.js in Resources */,
 				E294C1B71F80FC68002DD38A /* Assets.xcassets in Resources */,
 				E294C1B51F80FC68002DD38A /* Main.storyboard in Resources */,
-				E25898C61F8240CB009EA5D6 /* changeCSS.js in Resources */,
-				E294C1C31F8102DE002DD38A /* cities.html in Resources */,
+				027F63322383A24700714E9F /* three.js in Resources */,
+				027F632F2383A13A00714E9F /* index.html in Resources */,
+				027F63332383A24700714E9F /* DeckOfCards.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

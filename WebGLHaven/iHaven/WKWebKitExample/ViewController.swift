@@ -48,14 +48,14 @@ class ViewController: UIViewController {
                                                                            views: ["webView": webView]))
         
         // Load the initial file
-        let url = URL(string: "dr-bundle-file:///cities.html")!
+        let url = URL(string: "dr-bundle-file:///index.html")!
         initialLoadAction = webView.load(URLRequest(url:url))
     }
     
     /// Load the custom script file from the bundle and add them to the
     /// WKWebViewConfiguration content controller.
     private func loadScripts(config: WKWebViewConfiguration) {
-
+      /*
         // Get the paths for the two custom script files.
         guard let changeCSSFilePath = Bundle.main.path(forResource: "changeCSS", ofType: "js"),
             let filterTownsFilePath = Bundle.main.path(forResource: "filterTowns", ofType: "js")else {
@@ -81,7 +81,7 @@ class ViewController: UIViewController {
             config.userContentController.add(self, name: "populationHasChanged")
         } catch {
             fatalError("Something went wrong: \(error)")
-        }
+        }*/
     }
     
     /// Register custom url scheme with the WKWebViewConfiguration.
