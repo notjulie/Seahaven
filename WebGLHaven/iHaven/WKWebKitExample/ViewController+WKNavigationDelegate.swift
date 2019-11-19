@@ -40,7 +40,7 @@ extension ViewController: WKNavigationDelegate {
     /// Call the filter JavaScript within the page.
     func webView(_: WKWebView, didFinish: WKNavigation!) {
         guard didFinish == initialLoadAction else { return }
-        self.filterTowns(filter: searchField.text ?? "")
+        //self.filterTowns(filter: searchField.text ?? "")
     }
 }
 

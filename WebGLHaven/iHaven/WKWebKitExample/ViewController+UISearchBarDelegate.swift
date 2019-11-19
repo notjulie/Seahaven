@@ -13,12 +13,12 @@ extension ViewController: UISearchBarDelegate {
     /// When the text changes in the UISearchBar refilter the HTML
     func searchBar(_ searchBar: UISearchBar,
                    textDidChange searchText: String) {
-        filterTowns(filter: searchText)
+        //filterTowns(filter: searchText)
     }
     
     /// Call the filter JavaScript function in the page
     /// using the passed filter as its filter parameter
-    func filterTowns(filter: String) {
+    /*func filterTowns(filter: String) {
         let js = "filter(\"\(filter)\");"
         webView.evaluateJavaScript(js) { (count, error) in
             if let error = error {
@@ -34,7 +34,7 @@ extension ViewController: UISearchBarDelegate {
                 }
             }
         }
-    }
+    }*/
     
     /// For any errors simply show a UIAlert.
     private func processJSError(_ error: Error) {
