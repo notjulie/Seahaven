@@ -40,7 +40,7 @@ playground.xcworkspace
 # Package.resolved
 .build/
 
-# General 
+# General
 .DS_Store
 
 # CocoaPods
@@ -69,3 +69,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
+
+iHaven.xcodeproj/xcuserdata/**
