@@ -59,43 +59,15 @@ function main() {
   }
 
       var cubes = [
-        /*makeInstance(planeGeometry, 0x44aa88,  0)*/,
+        deckOfCards.createCard3D(),
         makeInstance(planeGeometry, 0x8844aa, -2),
-        /*makeInstance(geometry, 0xaa8844,  2)*/,
+        deckOfCards.createCard3D(),
       ];
 
-var cardMesh;
-{
-    var cardShape = deckOfCards.createCardShape(100, 150, 10);
-    var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-    var cardGeometry = new THREE.ExtrudeGeometry( cardShape, extrudeSettings );
-    cardGeometry.scale(0.004, 0.004, 0.001);
- 
-    var mesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
-    //scene.add(mesh);
-    //cubes[2] = mesh;
-    cardMesh = mesh;
- }
- 
-var diamondMesh;
-{
-    var diamondShape = deckOfCards.createDiamondShape(100, 150);
-    var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-    var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
-    diamondGeometry.scale(0.004, 0.004, 0.001);
- 
-    var mesh = new THREE.Mesh( diamondGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
-    //scene.add(mesh);
-    //cubes[0] = mesh;
-    diamondMesh = mesh;
- }
- 
- var group = new THREE.Group();
- group.add(cardMesh);
- group.add(diamondMesh);
- diamondMesh.position.z=0.001;
- scene.add(group);
- cubes[0] = group;
+    cubes[0].position.x = 0;
+    scene.add(cubes[0]);
+    cubes[2].position.x = 2;
+    scene.add(cubes[2]);
 
       
   function render(time) {
