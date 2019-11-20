@@ -64,10 +64,17 @@ function main() {
         deckOfCards.createCard3D(),
       ];
 
-    cubes[0].position.x = 0;
-    scene.add(cubes[0]);
-    cubes[2].position.x = 2;
-    scene.add(cubes[2]);
+    // initialize our deck of cards; on completion add cards to the scene
+    deckOfCards.initialize(function(){
+        cubes[0] = deckOfCards.createCard3D();
+        cubes[0].position.x = 0;
+        scene.add(cubes[0]);
+
+        cubes[2] = deckOfCards.createCard3D();
+        cubes[2].position.x = 2;
+        scene.add(cubes[2]);
+    });
+
 
       
   function render(time) {

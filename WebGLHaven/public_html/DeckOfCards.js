@@ -35,6 +35,11 @@ function DeckOfCards() {
         return shape;
     }
     
+    this.initialize = function(loadCompleteCallback) {
+        // for now just call the callback synchronously
+        loadCompleteCallback();
+    }
+    
     this.createCard3D = function() {
         var cardMesh;
         {
@@ -67,6 +72,6 @@ function DeckOfCards() {
          group.add(diamondMesh);
          diamondMesh.position.z=0.001;
          return group;
-    }
+    }    
 }
 
