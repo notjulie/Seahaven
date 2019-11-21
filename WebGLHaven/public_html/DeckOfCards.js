@@ -6,26 +6,45 @@
  */
 
 
+function createCardShape(width, height, cornerRadius) {
+    var shape = new THREE.Shape();
+
+    shape.moveTo(0, height-cornerRadius);
+    shape.arc(cornerRadius, 0, cornerRadius, Math.PI, Math.PI/2, true);
+    shape.lineTo(width - cornerRadius, height);
+    shape.arc(0, -cornerRadius, cornerRadius, Math.PI/2, 0, true);
+    shape.lineTo(width, cornerRadius);
+    shape.arc(-cornerRadius, 0, cornerRadius, 0, -Math.PI/2, true);
+    shape.lineTo(cornerRadius, 0);
+    shape.arc(0, cornerRadius, cornerRadius, -Math.PI/2, -Math.PI, true);
+
+    return shape;
+}
 
 
-function DeckOfCards() {
+function DeckOfCards(attributes) {
     // private data
     var rankGeometries = new Array();
+    var cardWidth = 0.5;
+    var cardHeight = 1.0;
+    var cardCornerRadius = 0.01;
+
+    // process the attributes
+    if (attributes.width) cardWidth = attributes.width;
+    if (attributes.height) cardHeight = attributes.height;
+    if (attributes.cornerRadius) cardCornerRadius = attributes.cornerRadius;
     
-    function createCardShape(width, height, cornerRadius) {
-        var shape = new THREE.Shape();
+    // create our card shape... upscale it to a height of 100 so that it
+    // renders well, because that seems to matter
+    var cardShapeScale = 100.0 / cardHeight;
+    var cardShape = createCardShape(cardShapeScale*cardWidth, cardShapeScale*cardHeight, cardShapeScale*cardCornerRadius);
 
-        shape.moveTo(0, height-cornerRadius);
-        shape.arc(cornerRadius, 0, cornerRadius, Math.PI, Math.PI/2, true);
-        shape.lineTo(width - cornerRadius, height);
-        shape.arc(0, -cornerRadius, cornerRadius, Math.PI/2, 0, true);
-        shape.lineTo(width, cornerRadius);
-        shape.arc(-cornerRadius, 0, cornerRadius, 0, -Math.PI/2, true);
-        shape.lineTo(cornerRadius, 0);
-        shape.arc(0, cornerRadius, cornerRadius, -Math.PI/2, -Math.PI, true);
-
-        return shape;
-    }
+    // create our card geometry... we only need one ever
+    var cardGeometry = new THREE.ExtrudeGeometry(
+        cardShape,
+        { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
+        );
+    cardGeometry.scale(1/cardShapeScale, 1/cardShapeScale, 0.001);
 
     function createDiamondShape (width, height) {
         var shape = new THREE.Shape();
@@ -80,18 +99,7 @@ function DeckOfCards() {
     }
     
     this.createCard3D = function() {
-        var cardMesh;
-        {
-            var cardShape = createCardShape(100, 150, 10);
-            var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-            var cardGeometry = new THREE.ExtrudeGeometry( cardShape, extrudeSettings );
-            cardGeometry.scale(0.004, 0.004, 0.001);
-
-            var mesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
-            //scene.add(mesh);
-            //cubes[2] = mesh;
-            cardMesh = mesh;
-         }
+        var cardMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
 
         var diamondMesh;
         {

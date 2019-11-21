@@ -33,83 +33,83 @@
 
 <!-- Three.js WebGL main rendering loop -->
 <script type="text/javascript">
-var deckOfCards = new DeckOfCards();
+    var deckOfCards = new DeckOfCards({width:0.43, height:1.0, cornerRadius:0.04});
 
-function main() {
-  const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
+    function main() {
+      const canvas = document.querySelector('#c');
+      const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
 
-  const fov = 75;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 5;
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.z = 2;
+      const fov = 75;
+      const aspect = 2;  // the canvas default
+      const near = 0.1;
+      const far = 5;
+      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+      camera.position.z = 2;
 
-  const scene = new THREE.Scene();
+      const scene = new THREE.Scene();
 
-  {
-    const color = 0xFFFFFF;
-    const intensity = 1;
-    const light = new THREE.DirectionalLight(color, intensity);
-    light.position.set(-1, 2, 4);
-    scene.add(light);
-  }
+      {
+        const color = 0xFFFFFF;
+        const intensity = 1;
+        const light = new THREE.DirectionalLight(color, intensity);
+        light.position.set(-1, 2, 4);
+        scene.add(light);
+      }
 
-  const boxWidth = 1;
-  const boxHeight = 1;
-  const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-  
-  const planeGeometry = new THREE.PlaneGeometry(1, 2);
-  
-  function makeInstance(geometry, color, x) {
-    const material = new THREE.MeshPhongMaterial({color});
+      const boxWidth = 1;
+      const boxHeight = 1;
+      const boxDepth = 1;
+      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+      const planeGeometry = new THREE.PlaneGeometry(1, 2);
 
-    cube.position.x = x;
+      function makeInstance(geometry, color, x) {
+        const material = new THREE.MeshPhongMaterial({color});
 
-    return cube;
-  }
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
 
-      var cubes = [
-        deckOfCards.createCard3D(),
-        makeInstance(planeGeometry, 0x8844aa, -2),
-        deckOfCards.createCard3D(),
-      ];
+        cube.position.x = x;
 
-    // initialize our deck of cards; on completion add cards to the scene
-    deckOfCards.initialize(function(){
-        cubes[0] = deckOfCards.createCard3D();
-        cubes[0].position.x = 0;
-        scene.add(cubes[0]);
+        return cube;
+      }
 
-        cubes[2] = deckOfCards.createCard3D();
-        cubes[2].position.x = 2;
-        scene.add(cubes[2]);
-    });
+          var cubes = [
+            deckOfCards.createCard3D(),
+            makeInstance(planeGeometry, 0x8844aa, -2),
+            deckOfCards.createCard3D(),
+          ];
+
+        // initialize our deck of cards; on completion add cards to the scene
+        deckOfCards.initialize(function(){
+            cubes[0] = deckOfCards.createCard3D();
+            cubes[0].position.x = 0;
+            scene.add(cubes[0]);
+
+            cubes[2] = deckOfCards.createCard3D();
+            cubes[2].position.x = 2;
+            scene.add(cubes[2]);
+        });
 
 
-      
-  function render(time) {
-    time *= 0.001;  // convert time to seconds
 
-    cubes.forEach((cube, ndx) => {
-      const speed = 1 + ndx * .1;
-      const rot = time * speed;
-      cube.rotation.x = rot;
-      cube.rotation.y = rot;
-    });
+      function render(time) {
+        time *= 0.001;  // convert time to seconds
 
-    renderer.render(scene, camera);
+        cubes.forEach((cube, ndx) => {
+          const speed = 1 + ndx * .1;
+          const rot = time * speed;
+          cube.rotation.x = rot;
+          cube.rotation.y = rot;
+        });
 
-    requestAnimationFrame(render);
-  }
-  requestAnimationFrame(render);
+        renderer.render(scene, camera);
 
-}
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+
+    }
 
 main();
 </script>
