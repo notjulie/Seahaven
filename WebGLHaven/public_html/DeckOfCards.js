@@ -46,14 +46,15 @@ function DeckOfCards(attributes) {
 		font: font,
 		size: 80,
 		height: 5,
-		curveSegments: 12,
+		curveSegments: 24,
 		bevelEnabled: true,
 		bevelThickness: 10,
 		bevelSize: 8,
 		bevelOffset: 0,
 		bevelSegments: 5
 	} );
-        geometry.scale(0.004, 0.004, 0.001);
+        geometry.scale(0.001, 0.001, 0.0004);
+        geometry.computeBoundingBox();
         return geometry;
     }
     
@@ -106,17 +107,25 @@ function DeckOfCards(attributes) {
         group.add(cardBackMesh);
         
         // add the suit
-        var diamondShape = createDiamondShape(100, 150);
+        var suitShape = createDiamondShape(100, 150);
         var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-        var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
-        diamondGeometry.scale(0.004, 0.004, 0.001);
-        var suitMesh = new THREE.Mesh( diamondGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
+        var suitGeometry = new THREE.ExtrudeGeometry( suitShape, extrudeSettings );
+        suitGeometry.scale(0.001, 0.001, 0.001);
+        suitGeometry.computeBoundingBox();
+        var suitSize = new THREE.Vector3();
+        suitGeometry.boundingBox.getSize(suitSize);
+        var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
         group.add(suitMesh);
         suitMesh.position.z=0.001;
+        suitMesh.position.y=cardHeight - suitSize.y;
+        suitMesh.position.x = cardWidth - suitSize.x;
 
         // add the rank
+        var rankSize = new THREE.Vector3();
+        rankGeometries[rank].boundingBox.getSize(rankSize);
         var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:0xFF0000}) );
-        rankMesh.position.z=0.001;
+        rankMesh.position.z = cardSize.z;
+        rankMesh.position.y = cardHeight - rankSize.y;
         group.add(rankMesh);
 
         // done
