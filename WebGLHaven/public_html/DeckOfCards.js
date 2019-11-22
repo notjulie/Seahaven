@@ -6,22 +6,15 @@
  */
 
 
-function createCardShape(width, height, cornerRadius) {
-    var shape = new THREE.Shape();
 
-    shape.moveTo(0, height-cornerRadius);
-    shape.arc(cornerRadius, 0, cornerRadius, Math.PI, Math.PI/2, true);
-    shape.lineTo(width - cornerRadius, height);
-    shape.arc(0, -cornerRadius, cornerRadius, Math.PI/2, 0, true);
-    shape.lineTo(width, cornerRadius);
-    shape.arc(-cornerRadius, 0, cornerRadius, 0, -Math.PI/2, true);
-    shape.lineTo(cornerRadius, 0);
-    shape.arc(0, cornerRadius, cornerRadius, -Math.PI/2, -Math.PI, true);
-
-    return shape;
-}
-
-
+/// <summary>
+/// class DeckOfCards
+///    Represents a deck of 3D card objects
+/// construction attributes:
+///    width: width of the card; default 0.5
+///    height: height of the card; default 1.0
+///    cornerRadius: the corner radius; default 0.01
+/// </summary>
 function DeckOfCards(attributes) {
     // private data
     var rankGeometries = new Array();
@@ -45,17 +38,8 @@ function DeckOfCards(attributes) {
         { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
         );
     cardGeometry.scale(1/cardShapeScale, 1/cardShapeScale, 0.001);
+    cardGeometry.computeBoundingBox();
 
-    function createDiamondShape (width, height) {
-        var shape = new THREE.Shape();
-
-        shape.moveTo(width/2, 0);
-        shape.lineTo(width, height/2);
-        shape.lineTo(width/2, height);
-        shape.lineTo(0, height/2);
-
-        return shape;
-    }
     
     function createRankGeometry(font, text) {
 	var geometry = new THREE.TextGeometry(text, {
@@ -98,31 +82,45 @@ function DeckOfCards(attributes) {
         });
     }
     
-    this.createCard3D = function() {
-        var cardMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
+    /// <summary>
+    /// Creates a card Object3D of the given suit and rank
+    /// </summary>
+    this.createCard3D = function(suit, rank) {
+        // Our result is a Group that combines a bunch of things.  Presumably
+        // you had already guessed that is what a Group does.
+        var group = new THREE.Group();         
 
-        var diamondMesh;
-        {
-            var diamondShape = createDiamondShape(100, 150);
-            var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-            var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
-            diamondGeometry.scale(0.004, 0.004, 0.001);
+        // grab the card dimensions
+        var cardSize = new THREE.Vector3();
+        cardGeometry.boundingBox.getSize(cardSize);
 
-            var mesh = new THREE.Mesh( diamondGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
-            //scene.add(mesh);
-            //cubes[0] = mesh;
-            diamondMesh = mesh;
-         }
+        // Add the blank card face
+        var cardFaceMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
+        group.add(cardFaceMesh);
          
-         var rankMesh = new THREE.Mesh( rankGeometries[1], new THREE.MeshPhongMaterial({color:0xFF0000}) );
-         rankMesh.position.z=0.001;
+        // Add the back of the card... for now I just give the front and back
+        // the same geometry, which means that the edge of the card is half
+        // front color and half back color.  I'll probably change that.
+        var cardBackMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial({color:0x0000FF}) );
+        cardBackMesh.position.z = -cardSize.z;
+        group.add(cardBackMesh);
+        
+        // add the suit
+        var diamondShape = createDiamondShape(100, 150);
+        var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+        var diamondGeometry = new THREE.ExtrudeGeometry( diamondShape, extrudeSettings );
+        diamondGeometry.scale(0.004, 0.004, 0.001);
+        var suitMesh = new THREE.Mesh( diamondGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
+        group.add(suitMesh);
+        suitMesh.position.z=0.001;
 
-         var group = new THREE.Group();
-         group.add(cardMesh);
-         group.add(diamondMesh);
-         diamondMesh.position.z=0.001;
-         group.add(rankMesh);
-         return group;
+        // add the rank
+        var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:0xFF0000}) );
+        rankMesh.position.z=0.001;
+        group.add(rankMesh);
+
+        // done
+        return group;
     }    
 }
 

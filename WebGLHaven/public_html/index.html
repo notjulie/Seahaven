@@ -26,6 +26,7 @@
 
 <!-- Seahaven js includes -->
 <script type="text/javascript" src="DeckOfCards.js"></script>
+<script type="text/javascript" src="Shapes.js"></script>
 
 <!-- Three.js WebGL main rendering loop -->
 <script type="text/javascript">
@@ -72,18 +73,18 @@
       }
 
           var cubes = [
-            deckOfCards.createCard3D(),
+            ,
             makeInstance(planeGeometry, 0x8844aa, -2),
-            deckOfCards.createCard3D(),
+            
           ];
 
         // initialize our deck of cards; on completion add cards to the scene
         deckOfCards.initialize(function(){
-            cubes[0] = deckOfCards.createCard3D();
+            cubes[0] = deckOfCards.createCard3D(1, 1);
             cubes[0].position.x = 0;
             scene.add(cubes[0]);
 
-            cubes[2] = deckOfCards.createCard3D();
+            cubes[2] = deckOfCards.createCard3D(3, 10);
             cubes[2].position.x = 2;
             scene.add(cubes[2]);
         });
