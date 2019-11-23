@@ -16,12 +16,19 @@
 ///    cornerRadius: the corner radius; default 0.01
 /// </summary>
 function DeckOfCards(attributes) {
-    // private data
-    var rankGeometries = new Array();
-    var suitGeometries = new Array();
+    // private data... attributes
     var cardWidth = 0.5;
     var cardHeight = 1.0;
     var cardCornerRadius = 0.01;
+    
+    // private collections
+    var rankGeometries = new Array();
+    var suits = [
+        {color:0x000000},
+        {color:0xFF0000},
+        {color:0xFF0000},
+        {color:0x000000}
+    ];
 
     // process the attributes
     if (attributes.width) cardWidth = attributes.width;
@@ -93,10 +100,10 @@ function DeckOfCards(attributes) {
         });
         
         // create our suit geometries
-        suitGeometries[0] = createSuitGeometry(createClubShape(100,100));
-        suitGeometries[1] = createSuitGeometry(createDiamondShape(100,150));
-        suitGeometries[2] = createSuitGeometry(createDiamondShape(150,100));
-        suitGeometries[3] = createSuitGeometry(createDiamondShape(150,50));
+        suits[0].geometry = createSuitGeometry(createClubShape(100,100));
+        suits[1].geometry = createSuitGeometry(createDiamondShape(100,150));
+        suits[2].geometry = createSuitGeometry(createDiamondShape(150,100));
+        suits[3].geometry = createSuitGeometry(createDiamondShape(150,50));
     }
     
     /// <summary>
@@ -119,15 +126,15 @@ function DeckOfCards(attributes) {
         group.add(cardBackMesh);
         
         // add the suit
-        var suitGeometry = suitGeometries[suit];
-        var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
+        var suitGeometry = suits[suit].geometry;
+        var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:suits[suit].color}) );
         group.add(suitMesh);
         suitMesh.position.z=0.001;
         suitMesh.position.y = cardHeight - suitGeometry.boundingBox.max.y;
         suitMesh.position.x = cardWidth - suitGeometry.boundingBox.max.x;
 
         // add the rank
-        var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:0xFF0000}) );
+        var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:suits[suit].color}) );
         rankMesh.position.z = cardGeometry.boundingBox.max.z;
         rankMesh.position.y = cardHeight - rankGeometries[rank].boundingBox.max.y;
         group.add(rankMesh);
