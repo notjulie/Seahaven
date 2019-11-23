@@ -10,6 +10,7 @@
 		027F632F2383A13A00714E9F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 027F632E2383A13A00714E9F /* index.html */; };
 		027F63322383A24700714E9F /* three.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63302383A24700714E9F /* three.js */; };
 		027F63332383A24700714E9F /* DeckOfCards.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63312383A24700714E9F /* DeckOfCards.js */; };
+		0284FC1D23899CF1001F155F /* Shapes.js in Resources */ = {isa = PBXBuildFile; fileRef = 0284FC1C23899CF1001F155F /* Shapes.js */; };
 		02CC64EF2384E4C0000648EA /* gentilis_bold.typeface.json in Resources */ = {isa = PBXBuildFile; fileRef = 02CC64EE2384E4C0000648EA /* gentilis_bold.typeface.json */; };
 		E22916471F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */; };
 		E25898C81F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25898C71F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift */; };
@@ -27,6 +28,7 @@
 		027F632E2383A13A00714E9F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		027F63302383A24700714E9F /* three.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = three.js; sourceTree = "<group>"; };
 		027F63312383A24700714E9F /* DeckOfCards.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = DeckOfCards.js; sourceTree = "<group>"; };
+		0284FC1C23899CF1001F155F /* Shapes.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Shapes.js; sourceTree = "<group>"; };
 		02CC64EE2384E4C0000648EA /* gentilis_bold.typeface.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gentilis_bold.typeface.json; sourceTree = "<group>"; };
 		E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKURLSchemeHandler.swift"; sourceTree = "<group>"; };
 		E25898C71F824D4A009EA5D6 /* ViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 		027F632D23839FFE00714E9F /* public_html */ = {
 			isa = PBXGroup;
 			children = (
+				0284FC1C23899CF1001F155F /* Shapes.js */,
 				02CC64EE2384E4C0000648EA /* gentilis_bold.typeface.json */,
 				027F63312383A24700714E9F /* DeckOfCards.js */,
 				027F63302383A24700714E9F /* three.js */,
@@ -160,6 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0284FC1D23899CF1001F155F /* Shapes.js in Resources */,
 				E294C1BA1F80FC68002DD38A /* LaunchScreen.storyboard in Resources */,
 				E294C1B71F80FC68002DD38A /* Assets.xcassets in Resources */,
 				E294C1B51F80FC68002DD38A /* Main.storyboard in Resources */,
