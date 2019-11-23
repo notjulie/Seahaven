@@ -17,9 +17,9 @@
 /// </summary>
 function DeckOfCards(attributes) {
     // private data... attributes
-    var cardWidth = 0.5;
-    var cardHeight = 1.0;
-    var cardCornerRadius = 0.01;
+    const cardWidth = attributes.width ? attributes.width : 0.5;
+    const cardHeight = attributes.height ? attributes.height : 1.0;
+    const cardCornerRadius = attributes.cornerRadius ? attributes.cornerRadius : 0.01;
     
     // private collections
     var rankGeometries = new Array();
@@ -30,11 +30,6 @@ function DeckOfCards(attributes) {
         {color:0x000000}
     ];
 
-    // process the attributes
-    if (attributes.width) cardWidth = attributes.width;
-    if (attributes.height) cardHeight = attributes.height;
-    if (attributes.cornerRadius) cardCornerRadius = attributes.cornerRadius;
-    
     // create our card shape... upscale it to a height of 100 so that it
     // renders well, because that seems to matter
     var cardShapeScale = 100.0 / cardHeight;
