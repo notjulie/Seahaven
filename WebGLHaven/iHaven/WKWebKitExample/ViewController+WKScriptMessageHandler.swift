@@ -26,7 +26,7 @@ extension ViewController: WKScriptMessageHandler {
     
         // Make sure we update the UI on the main thread. 
         DispatchQueue.main.async {
-            self.populationLabel.text = "Population: \(population)"
+            //self.populationLabel.text = "Population: \(population)"
         }
     }
     

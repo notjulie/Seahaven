@@ -10,12 +10,7 @@ import UIKit
 import WebKit
 
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var webViewContainter: UIView!
-    @IBOutlet weak var searchField: UISearchBar!
-    @IBOutlet weak var countLabel: UILabel!
-    @IBOutlet weak var populationLabel: UILabel!
-    
+        
     var webView: WKWebView!
     
     var initialLoadAction: WKNavigation?
@@ -31,18 +26,18 @@ class ViewController: UIViewController {
         
 
         // Create a WKWebView and set its delegates
-        webView = WKWebView(frame: self.webViewContainter.frame, configuration: config)
+        webView = WKWebView(frame: self.view.frame, configuration: config)
         webView.navigationDelegate = self
         webView.uiDelegate = self
         
         // Set Up Auto Layout for the WKWebView
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webViewContainter.addSubview(webView)
-        webViewContainter.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[webView]|",
+        view.addSubview(webView)
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[webView]|",
                                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                                            metrics: nil,
                                                                            views: ["webView": webView]))
-        webViewContainter.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|",
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|",
                                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                                            metrics: nil,
                                                                            views: ["webView": webView]))
