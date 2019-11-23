@@ -18,6 +18,7 @@
 function DeckOfCards(attributes) {
     // private data
     var rankGeometries = new Array();
+    var suitGeometries = new Array();
     var cardWidth = 0.5;
     var cardHeight = 1.0;
     var cardCornerRadius = 0.01;
@@ -58,11 +59,20 @@ function DeckOfCards(attributes) {
         return geometry;
     }
     
+    function createSuitGeometry(suitShape) {
+        var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+        var suitGeometry = new THREE.ExtrudeGeometry( suitShape, extrudeSettings );
+        suitGeometry.scale(0.001, 0.001, 0.001);
+        suitGeometry.computeBoundingBox();
+        return suitGeometry;
+    }
+    
     /// <summary>
     /// Loads resources required by the deck of cards, calls the callback
     /// when loading completes.
     /// </summary>
     this.initialize = function(loadCompleteCallback) {
+        // start creating our rank geometries
         var fontLoader = new THREE.FontLoader();
         fontLoader.load('gentilis_bold.typeface.json', function(font){    
             rankGeometries[1] = createRankGeometry(font, 'A');
@@ -81,6 +91,12 @@ function DeckOfCards(attributes) {
 
             loadCompleteCallback();
         });
+        
+        // create our suit geometries
+        suitGeometries[0] = createSuitGeometry(createClubShape(100,100));
+        suitGeometries[1] = createSuitGeometry(createDiamondShape(100,150));
+        suitGeometries[2] = createSuitGeometry(createDiamondShape(150,100));
+        suitGeometries[3] = createSuitGeometry(createDiamondShape(150,50));
     }
     
     /// <summary>
@@ -107,11 +123,7 @@ function DeckOfCards(attributes) {
         group.add(cardBackMesh);
         
         // add the suit
-        var suitShape = createDiamondShape(100, 150);
-        var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-        var suitGeometry = new THREE.ExtrudeGeometry( suitShape, extrudeSettings );
-        suitGeometry.scale(0.001, 0.001, 0.001);
-        suitGeometry.computeBoundingBox();
+        var suitGeometry = suitGeometries[suit];
         var suitSize = new THREE.Vector3();
         suitGeometry.boundingBox.getSize(suitSize);
         var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );

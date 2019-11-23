@@ -25,6 +25,26 @@ function createCardShape(width, height, cornerRadius) {
 }
 
 /// <summary>
+/// Creates a club shape with the given parameters
+/// </summary>
+function createClubShape (width, height) {
+    var shape = new THREE.Shape();
+
+    var baseWidth = 0.3 * width;
+    shape.moveTo(width/2 - baseWidth/2, 0);
+    shape.splineThru(
+        [
+            new THREE.Vector2(width/2.0 - baseWidth/3.0, height/4.0),
+            new THREE.Vector2(width/2.0, height/2.0)
+        ]
+    );
+    shape.lineTo(width/2 + baseWidth/2, 0);
+
+    return shape;
+}
+
+
+/// <summary>
 /// Creates a diamond shape with the given parameters
 /// </summary>
 function createDiamondShape (width, height) {
