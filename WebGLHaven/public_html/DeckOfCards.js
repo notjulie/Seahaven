@@ -107,10 +107,6 @@ function DeckOfCards(attributes) {
         // you had already guessed that is what a Group does.
         var group = new THREE.Group();         
 
-        // grab the card dimensions
-        var cardSize = new THREE.Vector3();
-        cardGeometry.boundingBox.getSize(cardSize);
-
         // Add the blank card face
         var cardFaceMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
         group.add(cardFaceMesh);
@@ -119,25 +115,21 @@ function DeckOfCards(attributes) {
         // the same geometry, which means that the edge of the card is half
         // front color and half back color.  I'll probably change that.
         var cardBackMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial({color:0x0000FF}) );
-        cardBackMesh.position.z = -cardSize.z;
+        cardBackMesh.position.z = (cardGeometry.boundingBox.min.z - cardGeometry.boundingBox.max.z);
         group.add(cardBackMesh);
         
         // add the suit
         var suitGeometry = suitGeometries[suit];
-        var suitSize = new THREE.Vector3();
-        suitGeometry.boundingBox.getSize(suitSize);
         var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:0xFF0000}) );
         group.add(suitMesh);
         suitMesh.position.z=0.001;
-        suitMesh.position.y=cardHeight - suitSize.y;
-        suitMesh.position.x = cardWidth - suitSize.x;
+        suitMesh.position.y = cardHeight - suitGeometry.boundingBox.max.y;
+        suitMesh.position.x = cardWidth - suitGeometry.boundingBox.max.x;
 
         // add the rank
-        var rankSize = new THREE.Vector3();
-        rankGeometries[rank].boundingBox.getSize(rankSize);
         var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:0xFF0000}) );
-        rankMesh.position.z = cardSize.z;
-        rankMesh.position.y = cardHeight - rankSize.y;
+        rankMesh.position.z = cardGeometry.boundingBox.max.z;
+        rankMesh.position.y = cardHeight - rankGeometries[rank].boundingBox.max.y;
         group.add(rankMesh);
 
         // done
