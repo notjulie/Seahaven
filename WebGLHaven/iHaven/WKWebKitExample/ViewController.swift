@@ -1,10 +1,10 @@
-//
-//  ViewController.swift
-//  WKWebKitExample
-//
-//  Created by Scotty on 01/10/2017.
-//  Copyright © 2017 Diligent Robot. All rights reserved.
-//
+/*
+* Project: iHaven
+* Author: Randy Rasmussen
+* Copyright: None
+* Warranty: None
+*/
+
 
 import UIKit
 import WebKit
@@ -16,36 +16,31 @@ class ViewController: UIViewController {
     var initialLoadAction: WKNavigation?
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Create a configuration, load any required scripts
-        // and register custom schemes.
-        let config = WKWebViewConfiguration()
-        loadScripts(config: config)
-        setUpSchemes(config: config)
-        
+      super.viewDidLoad()
 
-        // Create a WKWebView and set its delegates
-        webView = WKWebView(frame: self.view.frame, configuration: config)
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        
-        // Set Up Auto Layout for the WKWebView
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(webView)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[webView]|",
-                                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
-                                                                           metrics: nil,
-                                                                           views: ["webView": webView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|",
-                                                                           options: NSLayoutConstraint.FormatOptions(rawValue: 0),
-                                                                           metrics: nil,
-                                                                           views: ["webView": webView]))
-        
-        // Load the initial file
-        let url = URL(string: "dr-bundle-file:///index.html")!
-        initialLoadAction = webView.load(URLRequest(url:url))
-    }
+      // Create a configuration, load any required scripts
+      // and register custom schemes.
+      let config = WKWebViewConfiguration()
+      loadScripts(config: config)
+      setUpSchemes(config: config)
+
+
+      // Create a WKWebView and set its delegates
+      webView = WKWebView(frame: self.view.frame, configuration: config)
+      webView.navigationDelegate = self
+      webView.uiDelegate = self
+
+      // Set Up Auto Layout for the WKWebView
+      webView.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview(webView)
+
+      // Load the initial file
+      let url = URL(string: "dr-bundle-file:///index.html")!
+      initialLoadAction = webView.load(URLRequest(url:url))
+
+      // do the initial layout
+      doLayout()
+   }
     
     /// Load the custom script file from the bundle and add them to the
     /// WKWebViewConfiguration content controller.
@@ -84,5 +79,21 @@ class ViewController: UIViewController {
         config.setURLSchemeHandler(self, forURLScheme: "dr-bundle-file")
     }
 
-}
+   override func viewSafeAreaInsetsDidChange() {
+      doLayout()
+   }
+   
+   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        //positionViews(to: size);
+      coordinator.animate(alongsideTransition: { (context) in
+         // During rotation
+      }) { [weak self] (context) in
+         // After rotation
+         self!.doLayout()
+      }
+   }
+    
+   private func doLayout() {
+      self.webView!.frame = self.view.safeAreaLayoutGuide.layoutFrame
+   }}
 

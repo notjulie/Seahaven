@@ -16,18 +16,21 @@ extension ViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
         
-        // Check we are processing the populationHasChanged message,
-        // That the message body is a JSON Dictionary and has the population key.
-        guard message.name == "populationHasChanged",
+       // Check we are processing the populationHasChanged message,
+       // That the message body is a JSON Dictionary and has the population key.
+       /*
+       === unused, but leaving as an example for later ===
+       
+       guard message.name == "populationHasChanged",
             let body = message.body as? [String: Any],
             let population = body["population"] as? Int else {
             return
-        }
+       }*/
     
-        // Make sure we update the UI on the main thread. 
-        DispatchQueue.main.async {
+       // Make sure we update the UI on the main thread.
+       DispatchQueue.main.async {
             //self.populationLabel.text = "Population: \(population)"
-        }
+       }
     }
     
 }
