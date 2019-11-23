@@ -97,8 +97,8 @@ function DeckOfCards(attributes) {
         // create our suit geometries
         suits[0].geometry = createSuitGeometry(createClubShape(100,100));
         suits[1].geometry = createSuitGeometry(createDiamondShape(100,150));
-        suits[2].geometry = createSuitGeometry(createDiamondShape(150,100));
-        suits[3].geometry = createSuitGeometry(createDiamondShape(150,50));
+        suits[2].geometry = createSuitGeometry(createHeartShape(100,100));
+        suits[3].geometry = createSuitGeometry(createSpadeShape(100,100));
     }
     
     /// <summary>
