@@ -23,6 +23,7 @@
 
 <!-- beautiful three.js -->
 <script type="text/javascript" src="three.js"></script>
+<script src="GLTFLoader.js"></script>
 
 <!-- Seahaven js includes -->
 <script type="text/javascript" src="CardPositioner.js"></script>
@@ -49,6 +50,7 @@
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
+    
     function main() {
       const canvas = document.querySelector('#c');
       canvas.onclick = canvasClicked;
@@ -70,6 +72,7 @@
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(-1, 2, 4);
         scene.add(light);
+        scene.background = new THREE.Color(0x80A080);
       }
 
         // initialize our deck of cards; on completion add cards to the scene
@@ -96,6 +99,40 @@
             cardPositioner.moveToTower(2, allCards[51]);
         });
 
+
+    var towers = new Array();
+    var loader = new THREE.GLTFLoader();
+
+    loader.load( 'tower/scene.gltf', function ( gltf ) {
+        var tower = gltf.scene;
+        tower.scale.x = tower.scale.y = tower.scale.z = 0.04;
+        tower.add(new THREE.SpotLight( 0xFFFFFF, 4 ));
+
+        towers[0] = tower;
+        towers[1] = tower.clone();
+        towers[2] = tower.clone();
+        towers[3] = tower.clone();
+        scene.add(towers[0]);
+        scene.add(towers[1]);
+        scene.add(towers[2]);
+        scene.add(towers[3]);
+        towers[0].position.x = -3.4;
+        towers[0].position.y = -0.7;
+        towers[0].position.z = -0.1;
+        towers[1].position.x = -3.3;
+        towers[1].position.y = -0.4;
+        towers[1].position.z = -0.3;
+        towers[2].position.x = -towers[1].position.x;
+        towers[2].position.y = towers[1].position.y;
+        towers[2].position.z = towers[1].position.z;
+        towers[3].position.x = -towers[0].position.x;
+        towers[3].position.y = towers[0].position.y;
+        towers[3].position.z = towers[0].position.z;
+    }, undefined, function ( error ) {
+
+            console.error( error );
+
+    } );
 
 
       function render(time) {
