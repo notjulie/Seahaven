@@ -117,8 +117,9 @@ function DeckOfCards(attributes) {
         // Add the back of the card... for now I just give the front and back
         // the same geometry, which means that the edge of the card is half
         // front color and half back color.  I'll probably change that.
-        var cardBackMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial({color:0x0000FF}) );
-        cardBackMesh.position.z = (cardGeometry.boundingBox.min.z - cardGeometry.boundingBox.max.z);
+        var cardBackMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial({color:0x7F7FC0}) );
+        cardBackMesh.scale.x = cardBackMesh.scale.y = 1.015;
+        cardBackMesh.position.z = (cardGeometry.boundingBox.min.z - cardGeometry.boundingBox.max.z) / 1000;
         group.add(cardBackMesh);
         
         // add the suit
