@@ -15,9 +15,17 @@ class ViewController: UIViewController {
     
     var initialLoadAction: WKNavigation?
     
-    override func viewDidLoad() {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .landscape
+        } else {
+            return .all
+        }
+    }
+   
+   override func viewDidLoad() {
       super.viewDidLoad()
-
+      
       // Create a configuration, load any required scripts
       // and register custom schemes.
       let config = WKWebViewConfiguration()
