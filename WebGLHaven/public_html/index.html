@@ -31,7 +31,12 @@
 
 <!-- Three.js WebGL main rendering loop -->
 <script type="text/javascript">
-    var deckOfCards = new DeckOfCards({width:0.43, height:0.7, cornerRadius:0.04});
+    var deckOfCards = new DeckOfCards({
+        width:0.43,
+        height:0.7,
+        cornerRadius:0.04,
+        rankHeight:0.13
+    });
     var cardPositioner = new CardPositioner({deck:deckOfCards});
     var resizeCanvas = true;
 
