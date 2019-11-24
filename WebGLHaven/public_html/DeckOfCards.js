@@ -20,6 +20,9 @@ function DeckOfCards(attributes) {
     const cardWidth = attributes.width ? attributes.width : 0.5;
     const cardHeight = attributes.height ? attributes.height : 1.0;
     const cardCornerRadius = attributes.cornerRadius ? attributes.cornerRadius : 0.01;
+    const fontName = attributes.font ? attributes.font : 'droid_serif_bold.typeface.json';
+    const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1*cardHeight;
+    const suitHeight = rankHeight;
     
     // private collections
     var rankGeometries = new Array();
@@ -48,15 +51,11 @@ function DeckOfCards(attributes) {
 	var geometry = new THREE.TextGeometry(text, {
 		font: font,
 		size: 80,
-		height: 5,
-		curveSegments: 24,
-		bevelEnabled: true,
-		bevelThickness: 10,
-		bevelSize: 8,
-		bevelOffset: 0,
-		bevelSegments: 5
+		height: 1
 	} );
-        geometry.scale(0.001, 0.001, 0.0004);
+        geometry.computeBoundingBox();
+        var heightScale = rankHeight / (geometry.boundingBox.max.y - geometry.boundingBox.min.y);
+        geometry.scale(heightScale, heightScale, 0.0001);
         geometry.computeBoundingBox();
         return geometry;
     }
@@ -64,7 +63,9 @@ function DeckOfCards(attributes) {
     function createSuitGeometry(suitShape) {
         var extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
         var suitGeometry = new THREE.ExtrudeGeometry( suitShape, extrudeSettings );
-        suitGeometry.scale(0.001, 0.001, 0.001);
+        suitGeometry.computeBoundingBox();
+        var heightScale = suitHeight / (suitGeometry.boundingBox.max.y - suitGeometry.boundingBox.min.y);
+        suitGeometry.scale(heightScale, heightScale, 0.001);
         suitGeometry.computeBoundingBox();
         return suitGeometry;
     }
@@ -76,7 +77,7 @@ function DeckOfCards(attributes) {
     this.initialize = function(loadCompleteCallback) {
         // start creating our rank geometries
         var fontLoader = new THREE.FontLoader();
-        fontLoader.load('gentilis_bold.typeface.json', function(font){    
+        fontLoader.load(fontName, function(font){    
             rankGeometries[1] = createRankGeometry(font, 'A');
             rankGeometries[2] = createRankGeometry(font, '2');
             rankGeometries[3] = createRankGeometry(font, '3');
@@ -125,13 +126,14 @@ function DeckOfCards(attributes) {
         var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color:suits[suit].color}) );
         group.add(suitMesh);
         suitMesh.position.z=0.001;
-        suitMesh.position.y = cardHeight - suitGeometry.boundingBox.max.y;
-        suitMesh.position.x = cardWidth - suitGeometry.boundingBox.max.x;
+        suitMesh.position.y = cardHeight - (1-0.707)*cardCornerRadius - suitGeometry.boundingBox.max.y;
+        suitMesh.position.x = cardWidth - (1-0.707)*cardCornerRadius - suitGeometry.boundingBox.max.x;
 
         // add the rank
         var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:suits[suit].color}) );
         rankMesh.position.z = cardGeometry.boundingBox.max.z;
-        rankMesh.position.y = cardHeight - rankGeometries[rank].boundingBox.max.y;
+        rankMesh.position.y = cardHeight - rankGeometries[rank].boundingBox.max.y - (1-0.707)*cardCornerRadius;
+        rankMesh.position.x = (1-0.707)*cardCornerRadius;
         group.add(rankMesh);
 
         // done
