@@ -23,6 +23,7 @@ function DeckOfCards(attributes) {
     const fontName = attributes.font ? attributes.font : 'droid_serif_bold.typeface.json';
     const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1*cardHeight;
     const suitHeight = rankHeight;
+    const cardFaceColor = 0xFFFFE0;
     
     // private collections
     var ranks = {
@@ -113,7 +114,7 @@ function DeckOfCards(attributes) {
         var group = new THREE.Group();         
 
         // Add the blank card face
-        var cardFaceMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
+        var cardFaceMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial({color:cardFaceColor}) );
         cardFaceMesh.clickID = ranks[rank].mnemonic + suits[suit].mnemonic;
         group.add(cardFaceMesh);
          
