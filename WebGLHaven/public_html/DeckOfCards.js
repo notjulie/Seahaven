@@ -25,12 +25,26 @@ function DeckOfCards(attributes) {
     const suitHeight = rankHeight;
     
     // private collections
-    var rankGeometries = new Array();
+    var ranks = {
+        1:{mnemonic:'A'},
+        2:{mnemonic:'2'},
+        3:{mnemonic:'3'},
+        4:{mnemonic:'4'},
+        5:{mnemonic:'5'},
+        6:{mnemonic:'6'},
+        7:{mnemonic:'7'},
+        8:{mnemonic:'8'},
+        9:{mnemonic:'9'},
+        10:{mnemonic:'10'},
+        11:{mnemonic:'J'},
+        12:{mnemonic:'Q'},
+        13:{mnemonic:'K'}
+    };
     var suits = [
-        {color:0x000000},
-        {color:0xFF0000},
-        {color:0xFF0000},
-        {color:0x000000}
+        {color:0x000000, mnemonic:'C'},
+        {color:0xFF0000, mnemonic:'D'},
+        {color:0xFF0000, mnemonic:'H'},
+        {color:0x000000, mnemonic:'S'}
     ];
 
     // create our card shape... upscale it to a height of 100 so that it
@@ -77,21 +91,9 @@ function DeckOfCards(attributes) {
     this.initialize = function(loadCompleteCallback) {
         // start creating our rank geometries
         var fontLoader = new THREE.FontLoader();
-        fontLoader.load(fontName, function(font){    
-            rankGeometries[1] = createRankGeometry(font, 'A');
-            rankGeometries[2] = createRankGeometry(font, '2');
-            rankGeometries[3] = createRankGeometry(font, '3');
-            rankGeometries[4] = createRankGeometry(font, '4');
-            rankGeometries[5] = createRankGeometry(font, '5');
-            rankGeometries[6] = createRankGeometry(font, '6');
-            rankGeometries[7] = createRankGeometry(font, '7');
-            rankGeometries[8] = createRankGeometry(font, '8');
-            rankGeometries[9] = createRankGeometry(font, '9');
-            rankGeometries[10] = createRankGeometry(font, '10');
-            rankGeometries[11] = createRankGeometry(font, 'J');
-            rankGeometries[12] = createRankGeometry(font, 'Q');
-            rankGeometries[13] = createRankGeometry(font, 'K');
-
+        fontLoader.load(fontName, function(font){
+            for (var rankNumber in ranks)
+                ranks[rankNumber].geometry = createRankGeometry(font, ranks[rankNumber].mnemonic);
             loadCompleteCallback();
         });
         
@@ -112,6 +114,7 @@ function DeckOfCards(attributes) {
 
         // Add the blank card face
         var cardFaceMesh = new THREE.Mesh( cardGeometry, new THREE.MeshPhongMaterial() );
+        cardFaceMesh.clickID = ranks[rank].mnemonic + suits[suit].mnemonic;
         group.add(cardFaceMesh);
          
         // Add the back of the card... for now I just give the front and back
@@ -131,9 +134,9 @@ function DeckOfCards(attributes) {
         suitMesh.position.x = cardWidth - (1-0.707)*cardCornerRadius - suitGeometry.boundingBox.max.x;
 
         // add the rank
-        var rankMesh = new THREE.Mesh(rankGeometries[rank], new THREE.MeshPhongMaterial({color:suits[suit].color}) );
+        var rankMesh = new THREE.Mesh(ranks[rank].geometry, new THREE.MeshPhongMaterial({color:suits[suit].color}) );
         rankMesh.position.z = cardGeometry.boundingBox.max.z;
-        rankMesh.position.y = cardHeight - rankGeometries[rank].boundingBox.max.y - (1-0.707)*cardCornerRadius;
+        rankMesh.position.y = cardHeight - ranks[rank].geometry.boundingBox.max.y - (1-0.707)*cardCornerRadius;
         rankMesh.position.x = (1-0.707)*cardCornerRadius;
         group.add(rankMesh);
 

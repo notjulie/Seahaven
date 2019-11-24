@@ -35,8 +35,19 @@
     var cardPositioner = new CardPositioner({deck:deckOfCards});
     var resizeCanvas = true;
 
+    var raycaster = new THREE.Raycaster();
+    var mouse;
+
+    function canvasClicked(event) {
+        mouse = new THREE.Vector2();
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    }
+
     function main() {
       const canvas = document.querySelector('#c');
+      canvas.onclick = canvasClicked;
+      
       const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
 
       const fov = 75;
@@ -105,6 +116,24 @@
             
             // all good now
             resizeCanvas = false;
+        }
+
+        if (mouse) {
+            // update the picking ray with the camera and mouse position
+            raycaster.setFromCamera( mouse, camera );
+
+            // calculate objects intersecting the picking ray
+            var intersects = raycaster.intersectObjects(scene.children, true);
+
+            for ( var i = 0; i < intersects.length; i++ ) {
+                if (intersects[i].object.clickID)
+                {
+                    alert(intersects[i].object.clickID);
+                    break;
+                }
+            }
+            
+            mouse = undefined;
         }
 
         renderer.render(scene, camera);
