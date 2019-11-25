@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0237E811238AF572002E73A5 /* droid_serif_bold.typeface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */; };
+		02588CFC238C9B5E00B4E4E9 /* tower in Resources */ = {isa = PBXBuildFile; fileRef = 02588CFB238C9B5E00B4E4E9 /* tower */; };
+		02588CFE238C9B6A00B4E4E9 /* GLTFLoader.js in Resources */ = {isa = PBXBuildFile; fileRef = 02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */; };
 		026451D02389F95300677BDB /* CardPositioner.js in Resources */ = {isa = PBXBuildFile; fileRef = 026451CF2389F95300677BDB /* CardPositioner.js */; };
 		027F632F2383A13A00714E9F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 027F632E2383A13A00714E9F /* index.html */; };
 		027F63322383A24700714E9F /* three.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63302383A24700714E9F /* three.js */; };
@@ -27,6 +29,8 @@
 
 /* Begin PBXFileReference section */
 		0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = droid_serif_bold.typeface.json; sourceTree = "<group>"; };
+		02588CFB238C9B5E00B4E4E9 /* tower */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tower; sourceTree = "<group>"; };
+		02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GLTFLoader.js; sourceTree = "<group>"; };
 		026451CF2389F95300677BDB /* CardPositioner.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CardPositioner.js; sourceTree = "<group>"; };
 		027F632E2383A13A00714E9F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		027F63302383A24700714E9F /* three.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = three.js; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 		027F632D23839FFE00714E9F /* public_html */ = {
 			isa = PBXGroup;
 			children = (
+				02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */,
+				02588CFB238C9B5E00B4E4E9 /* tower */,
 				0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */,
 				026451CF2389F95300677BDB /* CardPositioner.js */,
 				0284FC1C23899CF1001F155F /* Shapes.js */,
@@ -169,11 +175,13 @@
 				0284FC1D23899CF1001F155F /* Shapes.js in Resources */,
 				E294C1BA1F80FC68002DD38A /* LaunchScreen.storyboard in Resources */,
 				E294C1B71F80FC68002DD38A /* Assets.xcassets in Resources */,
+				02588CFE238C9B6A00B4E4E9 /* GLTFLoader.js in Resources */,
 				0237E811238AF572002E73A5 /* droid_serif_bold.typeface.json in Resources */,
 				E294C1B51F80FC68002DD38A /* Main.storyboard in Resources */,
 				027F63322383A24700714E9F /* three.js in Resources */,
 				027F632F2383A13A00714E9F /* index.html in Resources */,
 				027F63332383A24700714E9F /* DeckOfCards.js in Resources */,
+				02588CFC238C9B5E00B4E4E9 /* tower in Resources */,
 				026451D02389F95300677BDB /* CardPositioner.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
