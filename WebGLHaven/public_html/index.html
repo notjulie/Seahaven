@@ -25,20 +25,23 @@
 <script type="text/javascript" src="three.js"></script>
 <script src="GLTFLoader.js"></script>
 
-<!-- Seahaven js includes -->
-<script type="text/javascript" src="CardPositioner.js"></script>
+<!-- WebHaven js includes -->
 <script type="text/javascript" src="DeckOfCards.js"></script>
 <script type="text/javascript" src="Shapes.js"></script>
+<script type="text/javascript" src="World.js"></script>
+
 
 <!-- Three.js WebGL main rendering loop -->
 <script type="text/javascript">
+    // create our world geometry
+    var world = new World();
+    
     var deckOfCards = new DeckOfCards({
         width:0.43,
         height:0.7,
         cornerRadius:0.04,
         rankHeight:0.13
     });
-    var cardPositioner = new CardPositioner({deck:deckOfCards});
     var resizeCanvas = true;
 
     var raycaster = new THREE.Raycaster();
@@ -90,13 +93,23 @@
             // have the card positioner put them somewhere
             for (var column=0;column<10;++column) {
                 for (row=0;row<5; ++row) {
-                    cardPositioner.moveToColumn(column, row, allCards[5*column + row]);
+                    var position = world.getColumnPosition(column, row);
+                    var card = allCards[5*column + row];
+                    card.position.x = position.x;
+                    card.position.y = position.y;
+                    card.position.z = position.z;
                 }
             }
             
             // and put the last two on towers
-            cardPositioner.moveToTower(1, allCards[50]);
-            cardPositioner.moveToTower(2, allCards[51]);
+            var position = world.getTowerTop(1);
+            allCards[50].position.x = position.x;
+            allCards[50].position.y = position.y;
+            allCards[50].position.z = position.z;
+            position = world.getTowerTop(2);
+            allCards[51].position.x = position.x;
+            allCards[51].position.y = position.y;
+            allCards[51].position.z = position.z;
         });
 
 
@@ -105,33 +118,19 @@
 
     loader.load( 'tower/scene.gltf', function ( gltf ) {
         var tower = gltf.scene;
-        tower.scale.x = tower.scale.y = tower.scale.z = 0.04;
+        tower.scale.x = tower.scale.y = tower.scale.z = world.getTowerScale();
         tower.add(new THREE.SpotLight( 0xFFFFFF, 4 ));
 
-        towers[0] = tower;
-        towers[1] = tower.clone();
-        towers[2] = tower.clone();
-        towers[3] = tower.clone();
-        scene.add(towers[0]);
-        scene.add(towers[1]);
-        scene.add(towers[2]);
-        scene.add(towers[3]);
-        towers[0].position.x = -3.4;
-        towers[0].position.y = -0.7;
-        towers[0].position.z = -0.1;
-        towers[1].position.x = -3.3;
-        towers[1].position.y = -0.4;
-        towers[1].position.z = -0.3;
-        towers[2].position.x = -towers[1].position.x;
-        towers[2].position.y = towers[1].position.y;
-        towers[2].position.z = towers[1].position.z;
-        towers[3].position.x = -towers[0].position.x;
-        towers[3].position.y = towers[0].position.y;
-        towers[3].position.z = towers[0].position.z;
+        for (var i=0; i<4; ++i) {
+            towers[i] = tower.clone();
+            var position = world.getTowerPosition(i);
+            towers[i].position.x = position.x;
+            towers[i].position.y = position.y;
+            towers[i].position.z = position.z;
+            scene.add(towers[i]);
+        }
     }, undefined, function ( error ) {
-
-            console.error( error );
-
+        console.error( error );
     } );
 
 
