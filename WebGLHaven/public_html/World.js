@@ -17,6 +17,10 @@ function World() {
         };
     }
     
+    this.getGroundY = function() {
+        return -1.5;
+    }
+    
     this.getTowerScale = function() {
         return 0.04;
     }

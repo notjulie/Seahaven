@@ -67,17 +67,24 @@
       const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       camera.position.z = 2;
 
-      const scene = new THREE.Scene();
+        const scene = new THREE.Scene();
 
-      {
-        const color = 0xFFFFFF;
-        const intensity = 1;
-        const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(-1, 2, 4);
-        scene.add(light);
-        scene.background = new THREE.Color(0x80A080);
-      }
+        {
+          const color = 0xFFFFFF;
+          const intensity = 1;
+          const light = new THREE.DirectionalLight(color, intensity);
+          light.position.set(-1, 2, 4);
+          scene.add(light);
+          scene.background = new THREE.Color(0x80A080);
+        }
 
+        var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
+        groundGeometry.rotateX(-90*Math.PI/180);
+        var ground = new THREE.Mesh( groundGeometry, new THREE.MeshMatcapMaterial({color:0x7f4f00}) );
+        ground.position.y = world.getGroundY();
+        scene.add(ground);
+
+      
         // initialize our deck of cards; on completion add cards to the scene
         deckOfCards.initialize(function(){
             // build an array of all cards
