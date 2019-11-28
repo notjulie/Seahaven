@@ -110,26 +110,26 @@ function createDiamondShape (width, height) {
 function createHeartShape (width, height) {
     var shape = new THREE.Shape();
 
-    shape.moveTo(width/2, 0);
-    shape.splineThru(
-        [
-            new THREE.Vector2(0.2*width, 0.5*height),
-            new THREE.Vector2(0.1*width, 0.7*height),
-            new THREE.Vector2(0.3*width, 0.95*height),
-            new THREE.Vector2(0.4*width, 0.8*height),
-            new THREE.Vector2(0.5*width, 0.75*height)
-        ]
-    );
-    shape.splineThru(
-        [
-            new THREE.Vector2(0.5*width, 0.75*height),
-            new THREE.Vector2(0.6*width, 0.8*height),
-            new THREE.Vector2(0.7*width, 0.95*height),
-            new THREE.Vector2(0.9*width, 0.7*height),    
-            new THREE.Vector2(0.8*width, 0.5*height)
-        ]
-    );
+    var heartSpline = [
+       {x:0.5, y:0.0},
+       {x:0.45, y:0.15},
+       {x:0.33, y:0.3},
+       {x:0.10, y:0.6},
+       {x:0.15, y:0.85},
+       {x:0.30, y:0.95},
+       {x:0.45, y:0.85},
+       {x:0.5, y:0.65}
+    ];
+    var leftSpline = new Array();
+    var rightSpline = new Array();
+    for (var i=0; i<heartSpline.length; ++i) {
+       leftSpline[i] = new THREE.Vector2(heartSpline[i].x*width, heartSpline[i].y*height);
+       rightSpline[heartSpline.length-1-i] = new THREE.Vector2((1.0-heartSpline[i].x)*width, heartSpline[i].y*height);
+    }
 
+    shape.moveTo(width/2, 0);
+    shape.splineThru(leftSpline);
+    shape.splineThru(rightSpline);
     return shape;
 }
 
