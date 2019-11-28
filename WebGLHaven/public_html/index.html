@@ -75,7 +75,7 @@
           const light = new THREE.DirectionalLight(color, intensity);
           light.position.set(-1, 2, 4);
           scene.add(light);
-          scene.background = new THREE.Color(0x80A080);
+          scene.background = new THREE.Color(0x80A0A0);
         }
 
         var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
@@ -83,6 +83,16 @@
         var ground = new THREE.Mesh( groundGeometry, new THREE.MeshMatcapMaterial({color:0x7f4f00}) );
         ground.position.y = world.getGroundY();
         scene.add(ground);
+
+        var tableWorldGeometry = world.getTableGeometry();
+        var tableGeometry = new THREE.PlaneGeometry(tableWorldGeometry.width, tableWorldGeometry.height);
+        tableGeometry.computeBoundingBox();
+        tableGeometry.translate(0, -tableGeometry.boundingBox.min.y, 0);
+        tableGeometry.rotateX(tableWorldGeometry.xRotation);
+        var table = new THREE.Mesh( tableGeometry, new THREE.MeshMatcapMaterial({color:0x007F00}) );
+        table.position.y = tableWorldGeometry.bottomY;
+        table.position.z = tableWorldGeometry.bottomZ;
+        scene.add(table);
 
       
         // initialize our deck of cards; on completion add cards to the scene
