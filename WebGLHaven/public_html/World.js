@@ -8,18 +8,24 @@
 
 function World() {
    const towerModelNominalHeight = 25.0;
+   const cardWidth = 0.43;
+   const relativeMarginBetweenCards = 0.2;
+
+   this.getCardWidth = function() {
+      return cardWidth;
+   };
 
    this.getColumnPosition = function (column, row) {
       return {
-         x: (column - 5) * 0.5,
+         x: (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth,
          y: -row * 0.2,
          z: 0.1 * row
       };
-   }
+   };
 
    this.getGroundY = function () {
       return -1.5;
-   }
+   };
 
    this.getTableGeometry = function () {
       var dy = this.getColumnPosition(9,0).y - this.getColumnPosition(9,4).y;
@@ -31,11 +37,11 @@ function World() {
          bottomZ:this.getColumnPosition(9,4).z,
          xRotation:-Math.atan2(dz,dy)
       };
-   }
+   };
 
    this.getTowerScale = function () {
       return 0.04;
-   }
+   };
 
    this.getTowerPosition = function (tower) {
       switch (tower) {
@@ -58,11 +64,11 @@ function World() {
             result.x = -result.x;
             return result;
       }
-   }
+   };
 
    this.getTowerTop = function (tower) {
       var result = this.getTowerPosition(tower);
       result.y += towerModelNominalHeight * this.getTowerScale();
       return result;
-   }
+   };
 }

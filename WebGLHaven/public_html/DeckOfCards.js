@@ -23,7 +23,7 @@ function DeckOfCards(attributes) {
    const fontName = attributes.font ? attributes.font : 'droid_serif_bold.typeface.json';
    const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1 * cardHeight;
    const suitHeight = rankHeight;
-   const cardFaceColor = 0xFFFFE0;
+   const cardFaceColor = 0xFFFFF0;
 
    // private collections
    var ranks = {

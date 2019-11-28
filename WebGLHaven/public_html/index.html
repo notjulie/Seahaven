@@ -37,10 +37,10 @@
     var world = new World();
     
     var deckOfCards = new DeckOfCards({
-        width:0.43,
-        height:0.7,
-        cornerRadius:0.04,
-        rankHeight:0.13
+        width:world.getCardWidth(),
+        height:(0.7/0.43)*world.getCardWidth(),
+        cornerRadius:world.getCardWidth()/10,
+        rankHeight:(0.13/0.43)*world.getCardWidth()
     });
     var resizeCanvas = true;
 
@@ -120,11 +120,11 @@
             
             // and put the last two on towers
             var position = world.getTowerTop(1);
-            allCards[50].position.x = position.x;
+            allCards[50].position.x = position.x - world.getCardWidth()/2;
             allCards[50].position.y = position.y;
             allCards[50].position.z = position.z;
             position = world.getTowerTop(2);
-            allCards[51].position.x = position.x;
+            allCards[51].position.x = position.x - world.getCardWidth()/2;
             allCards[51].position.y = position.y;
             allCards[51].position.z = position.z;
         });
