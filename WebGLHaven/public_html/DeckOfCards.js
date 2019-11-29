@@ -22,7 +22,7 @@ function DeckOfCards(attributes) {
    const cardWidth = attributes.width ? attributes.width : 0.5;
    const cardHeight = attributes.height ? attributes.height : 1.0;
    const cardCornerRadius = attributes.cornerRadius ? attributes.cornerRadius : 0.01;
-   const fontName = attributes.font ? attributes.font : 'droid_serif_bold.typeface.json';
+   const fontName = attributes.font ? attributes.font : 'three/droid_serif_bold.typeface.json';
    const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1 * cardHeight;
    const suitHeight = rankHeight;
    const cardFaceColor = 0xFFFFF0;
