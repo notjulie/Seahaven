@@ -16,6 +16,8 @@
 ///    width: width of the card; default 0.5
 ///    height: height of the card; default 1.0
 ///    cornerRadius: the corner radius; default 0.01
+///    font: the path of the JSON file containing the typeface definition
+///    rankHeight: the height of the rank image
 /// </summary>
 function DeckOfCards(attributes) {
    // private data... attributes
@@ -27,8 +29,10 @@ function DeckOfCards(attributes) {
    const suitHeight = rankHeight;
    const cardFaceColor = 0xFFFFF0;
 
+   const cards = new Array();
+
    // private collections
-   var ranks = {
+   const ranks = {
       1: {mnemonic: 'A'},
       2: {mnemonic: '2'},
       3: {mnemonic: '3'},
@@ -43,7 +47,7 @@ function DeckOfCards(attributes) {
       12: {mnemonic: 'Q'},
       13: {mnemonic: 'K'}
    };
-   var suits = [
+   const suits = [
       {color: 0x000000, mnemonic: 'C'},
       {color: 0xFF0000, mnemonic: 'D'},
       {color: 0xFF0000, mnemonic: 'H'},
@@ -88,29 +92,9 @@ function DeckOfCards(attributes) {
    }
 
    /// <summary>
-   /// Loads resources required by the deck of cards, calls the callback
-   /// when loading completes.
-   /// </summary>
-   this.initialize = function (loadCompleteCallback) {
-      // start creating our rank geometries
-      var fontLoader = new THREE.FontLoader();
-      fontLoader.load(fontName, function (font) {
-         for (var rankNumber in ranks)
-            ranks[rankNumber].geometry = createRankGeometry(font, ranks[rankNumber].mnemonic);
-         loadCompleteCallback();
-      });
-
-      // create our suit geometries
-      suits[0].geometry = createSuitGeometry(createClubShape(100, 100));
-      suits[1].geometry = createSuitGeometry(createDiamondShape(100, 150));
-      suits[2].geometry = createSuitGeometry(createHeartShape(100, 100));
-      suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
-   };
-
-   /// <summary>
    /// Creates a card Object3D of the given suit and rank
    /// </summary>
-   this.createCard3D = function (suit, rank) {
+   function createCard3D(suit, rank) {
       // Our result is a Group that combines a bunch of things.  Presumably
       // you had already guessed that is what a Group does.
       var group = new Card3D(ranks[rank].mnemonic + suits[suit].mnemonic);
@@ -154,5 +138,35 @@ function DeckOfCards(attributes) {
       // done
       return group;
    };
+   
+   
+   /// <summary>
+   /// Loads resources required by the deck of cards, calls the callback
+   /// when loading completes.
+   /// </summary>
+   this.initialize = function (loadCompleteCallback) {
+      // start creating our rank geometries
+      var fontLoader = new THREE.FontLoader();
+      fontLoader.load(fontName, function (font) {
+         for (var rankNumber in ranks)
+            ranks[rankNumber].geometry = createRankGeometry(font, ranks[rankNumber].mnemonic);
+         for (var i=0; i<52; ++i)
+            cards[i] = createCard3D(Math.floor(i/13), (i%13) + 1);
+         loadCompleteCallback();
+      });
+
+      // create our suit geometries
+      suits[0].geometry = createSuitGeometry(createClubShape(100, 100));
+      suits[1].geometry = createSuitGeometry(createDiamondShape(100, 150));
+      suits[2].geometry = createSuitGeometry(createHeartShape(100, 100));
+      suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
+   };
+   
+   /// <summary>
+   /// Gets the requested card object
+   /// </summary>
+   this.getCard3D = function(suit, rank) {
+      return cards[13*suit + (rank - 1)];
+   }
 }
 

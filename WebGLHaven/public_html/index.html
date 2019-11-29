@@ -82,7 +82,7 @@
                var allCards = new Array();
                for (var suit = 0; suit < 4; ++suit) {
                   for (var rank = 1; rank <= 13; ++rank) {
-                     var card = deckOfCards.createCard3D(suit, rank);
+                     var card = deckOfCards.getCard3D(suit, rank);
                      scene.add(card);
                      allCards[allCards.length] = card;
                   }
