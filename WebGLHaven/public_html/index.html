@@ -1,211 +1,155 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WebGLHaven</title>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+      <title>WebGLHaven</title>
 
-    <style>
-        html, body {
-          width: 100%;
-          height: 100%;
-          margin: 0px;
-          border: 0;
-          overflow: hidden; /*  Disable scrollbars */
-          display: block;  /* No floating content on sides */
-        }
-    </style>
-  </head>
+      <style>
+         html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            border: 0;
+            overflow: hidden; /*  Disable scrollbars */
+            display: block;  /* No floating content on sides */
+         }
+      </style>
+   </head>
 
-  <body id="body" onresize="resizeCanvas=true">
+   <body id="body">
       <canvas id="c"></canvas>
-  </body>
+   </body>
 
-<!-- beautiful three.js -->
-<script type="text/javascript" src="three.js"></script>
-<script src="GLTFLoader.js"></script>
+   <!-- beautiful three.js -->
+   <script type="text/javascript" src="three.js"></script>
+   <script src="GLTFLoader.js"></script>
 
-<!-- WebHaven js includes -->
-<script type="text/javascript" src="DeckOfCards.js"></script>
-<script type="text/javascript" src="Shapes.js"></script>
-<script type="text/javascript" src="World.js"></script>
+   <!-- WebHaven js includes -->
+   <script type="text/javascript" src="DeckOfCards.js"></script>
+   <script type="text/javascript" src="Renderer.js"></script>
+   <script type="text/javascript" src="Shapes.js"></script>
+   <script type="text/javascript" src="World.js"></script>
 
 
-<!-- Three.js WebGL main rendering loop -->
-<script type="text/javascript">
-    // create our world geometry
-    var world = new World();
-    
-    var deckOfCards = new DeckOfCards({
-        width:world.getCardWidth(),
-        height:(0.7/0.43)*world.getCardWidth(),
-        cornerRadius:world.getCardWidth()/10,
-        rankHeight:(0.13/0.43)*world.getCardWidth()
-    });
-    var resizeCanvas = true;
+   <!-- Three.js WebGL main rendering loop -->
+   <script type="text/javascript">
+      // create our world geometry
+      var world = new World();
 
-    var raycaster = new THREE.Raycaster();
-    var mouse;
+      var deckOfCards = new DeckOfCards({
+         width: world.getCardWidth(),
+         height: (0.7 / 0.43) * world.getCardWidth(),
+         cornerRadius: world.getCardWidth() / 10,
+         rankHeight: (0.13 / 0.43) * world.getCardWidth()
+      });
 
-    function canvasClicked(event) {
-        mouse = new THREE.Vector2();
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-    }
+      var raycaster = new THREE.Raycaster();
+      var mouse;
 
-    
-    function main() {
-      const canvas = document.querySelector('#c');
-      canvas.onclick = canvasClicked;
-      
-      const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true});
+      function resizeCanvas() {
+         renderer.resizeCanvas(body.clientWidth, body.clientHeight);
+      }
 
-      const fov = 75;
-      const aspect = 2;  // the canvas default
-      const near = 0.1;
-      const far = 5;
-      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.z = 2;
+      function canvasClicked(event) {
+         mouse = new THREE.Vector2();
+         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      }
 
-        const scene = new THREE.Scene();
 
-        {
-          const color = 0xFFFFFF;
-          const intensity = 1;
-          const light = new THREE.DirectionalLight(color, intensity);
-          light.position.set(-1, 2, 4);
-          scene.add(light);
-          scene.background = new THREE.Color(0x80A0A0);
-        }
+      function main() {
+         
+         // create our renderer
+         const canvas = document.querySelector('#c');
+         canvas.onclick = canvasClicked;
+         var renderer = new Renderer(canvas);
+         var scene = renderer.getScene();
 
-        var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
-        groundGeometry.rotateX(-90*Math.PI/180);
-        var ground = new THREE.Mesh( groundGeometry, new THREE.MeshMatcapMaterial({color:0x7f4f00}) );
-        ground.position.y = world.getGroundY();
-        scene.add(ground);
+         // add our handler to resize it
+         body.onresize = function() { renderer.resizeCanvas(body.clientWidth, body.clientHeight); }
+         body.onresize();
 
-        var tableWorldGeometry = world.getTableGeometry();
-        var tableWorldSize = tableWorldGeometry.getSize(new THREE.Vector3());
-        var tableGeometry = new THREE.PlaneGeometry(
-               tableWorldSize.x,
-               Math.sqrt(tableWorldSize.y*tableWorldSize.y + tableWorldSize.z*tableWorldSize.z)
-               );
-        tableGeometry.computeBoundingBox();
-        tableGeometry.translate(0, -tableGeometry.boundingBox.min.y, 0);
-        tableGeometry.rotateX(-Math.atan2(tableWorldSize.z, tableWorldSize.y));
-        var table = new THREE.Mesh( tableGeometry, new THREE.MeshMatcapMaterial({color:0x007F00}) );
-        table.position.y = tableWorldGeometry.min.y;
-        table.position.z = tableWorldGeometry.max.z;
-        scene.add(table);
+         var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
+         groundGeometry.rotateX(-90 * Math.PI / 180);
+         var ground = new THREE.Mesh(groundGeometry, new THREE.MeshMatcapMaterial({color: 0x7f4f00}));
+         ground.position.y = world.getGroundY();
+         scene.add(ground);
 
-      
-        // initialize our deck of cards; on completion add cards to the scene
-        deckOfCards.initialize(function(){
+         var tableWorldGeometry = world.getTableGeometry();
+         var tableWorldSize = tableWorldGeometry.getSize(new THREE.Vector3());
+         var tableGeometry = new THREE.PlaneGeometry(
+                 tableWorldSize.x,
+                 Math.sqrt(tableWorldSize.y * tableWorldSize.y + tableWorldSize.z * tableWorldSize.z)
+                 );
+         tableGeometry.computeBoundingBox();
+         tableGeometry.translate(0, -tableGeometry.boundingBox.min.y, 0);
+         tableGeometry.rotateX(-Math.atan2(tableWorldSize.z, tableWorldSize.y));
+         var table = new THREE.Mesh(tableGeometry, new THREE.MeshMatcapMaterial({color: 0x007F00}));
+         table.position.y = tableWorldGeometry.min.y;
+         table.position.z = tableWorldGeometry.max.z;
+         scene.add(table);
+
+
+         // initialize our deck of cards; on completion add cards to the scene
+         deckOfCards.initialize(function () {
             // build an array of all cards
             var allCards = new Array();
-            for (var suit=0; suit<4; ++suit) {
-                for (var rank=1; rank<=13; ++rank) {
-                    var card = deckOfCards.createCard3D(suit, rank);
-                    scene.add(card);
-                    allCards[allCards.length] = card;
-                }
+            for (var suit = 0; suit < 4; ++suit) {
+               for (var rank = 1; rank <= 13; ++rank) {
+                  var card = deckOfCards.createCard3D(suit, rank);
+                  scene.add(card);
+                  allCards[allCards.length] = card;
+               }
             }
-            
+
             // have the card positioner put them somewhere
-            for (var column=0;column<10;++column) {
-                for (row=0;row<5; ++row) {
-                    var position = world.getColumnPosition(column, row);
-                    var card = allCards[5*column + row];
-                    card.position.x = position.x;
-                    card.position.y = position.y;
-                    card.position.z = position.z;
-                }
+            for (var column = 0; column < 10; ++column) {
+               for (row = 0; row < 5; ++row) {
+                  var position = world.getColumnPosition(column, row);
+                  var card = allCards[5 * column + row];
+                  card.position.x = position.x;
+                  card.position.y = position.y;
+                  card.position.z = position.z;
+               }
             }
-            
+
             // and put the last two on towers
             var position = world.getTowerTop(1);
-            allCards[50].position.x = position.x - world.getCardWidth()/2;
+            allCards[50].position.x = position.x - world.getCardWidth() / 2;
             allCards[50].position.y = position.y;
             allCards[50].position.z = position.z;
             position = world.getTowerTop(2);
-            allCards[51].position.x = position.x - world.getCardWidth()/2;
+            allCards[51].position.x = position.x - world.getCardWidth() / 2;
             allCards[51].position.y = position.y;
             allCards[51].position.z = position.z;
-        });
+         });
 
 
-    var towers = new Array();
-    var loader = new THREE.GLTFLoader();
+         var towers = new Array();
+         var loader = new THREE.GLTFLoader();
 
-    loader.load( 'tower/scene.gltf', function ( gltf ) {
-        var tower = gltf.scene;
-        tower.scale.x = tower.scale.y = tower.scale.z = world.getTowerScale();
-        tower.add(new THREE.SpotLight( 0xFFFFFF, 4 ));
+         loader.load('tower/scene.gltf', function (gltf) {
+            var tower = gltf.scene;
+            tower.scale.x = tower.scale.y = tower.scale.z = world.getTowerScale();
+            tower.add(new THREE.SpotLight(0xFFFFFF, 4));
 
-        for (var i=0; i<4; ++i) {
-            towers[i] = tower.clone();
-            var position = world.getTowerPosition(i);
-            towers[i].position.x = position.x;
-            towers[i].position.y = position.y;
-            towers[i].position.z = position.z;
-            scene.add(towers[i]);
-        }
-    }, undefined, function ( error ) {
-        console.error( error );
-    } );
-
-
-      function render(time) {
-        time *= 0.001;  // convert time to seconds
-
-        if (resizeCanvas) {
-            // update the size of the canvas to fit the window
-            renderer.setSize(body.clientWidth, body.clientHeight);
-            
-            // We want a constant horizontal view angle.  This gives is the distance
-            // to the projector.
-            const horizontalViewAngle = 120 * Math.PI / 180;
-            var l = body.clientWidth / 2.0 / Math.tan(horizontalViewAngle / 2);
-            
-            // then that gives us the vertical viewAngle
-            var verticalViewAngle = 2 * Math.atan(body.clientHeight / 2.0 / l) * 180 / Math.PI;
-            
-            // update our camera view... this is not the final form of
-            // this... it's just an approximation for now
-            camera.fov = verticalViewAngle;
-            camera.aspect = body.clientWidth / body.clientHeight;
-            camera.updateProjectionMatrix();
-            
-            // all good now
-            resizeCanvas = false;
-        }
-
-        if (mouse) {
-            // update the picking ray with the camera and mouse position
-            raycaster.setFromCamera( mouse, camera );
-
-            // calculate objects intersecting the picking ray
-            var intersects = raycaster.intersectObjects(scene.children, true);
-
-            for ( var i = 0; i < intersects.length; i++ ) {
-                if (intersects[i].object.clickID)
-                {
-                    alert(intersects[i].object.clickID);
-                    break;
-                }
+            for (var i = 0; i < 4; ++i) {
+               towers[i] = tower.clone();
+               var position = world.getTowerPosition(i);
+               towers[i].position.x = position.x;
+               towers[i].position.y = position.y;
+               towers[i].position.z = position.z;
+               scene.add(towers[i]);
             }
-            
-            mouse = undefined;
-        }
+         }, undefined, function (error) {
+            console.error(error);
+         });
 
-        renderer.render(scene, camera);
+         renderer.start();
 
-        requestAnimationFrame(render);
       }
-      requestAnimationFrame(render);
 
-    }
-
-    main();
-</script>
+      main();
+   </script>
 </html>
