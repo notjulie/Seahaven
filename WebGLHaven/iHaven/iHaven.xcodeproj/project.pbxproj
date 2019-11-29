@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0237E811238AF572002E73A5 /* droid_serif_bold.typeface.json in Resources */ = {isa = PBXBuildFile; fileRef = 0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */; };
 		02588CFC238C9B5E00B4E4E9 /* tower in Resources */ = {isa = PBXBuildFile; fileRef = 02588CFB238C9B5E00B4E4E9 /* tower */; };
-		02588CFE238C9B6A00B4E4E9 /* GLTFLoader.js in Resources */ = {isa = PBXBuildFile; fileRef = 02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */; };
-		026451D02389F95300677BDB /* CardPositioner.js in Resources */ = {isa = PBXBuildFile; fileRef = 026451CF2389F95300677BDB /* CardPositioner.js */; };
+		0265B9F02391E13A004B533F /* three in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9EF2391E13A004B533F /* three */; };
+		0265B9F62391E163004B533F /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9F12391E163004B533F /* style.css */; };
+		0265B9F72391E163004B533F /* Renderer.js in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9F22391E163004B533F /* Renderer.js */; };
+		0265B9F82391E163004B533F /* World.js in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9F32391E163004B533F /* World.js */; };
+		0265B9F92391E163004B533F /* Card3D.js in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9F42391E163004B533F /* Card3D.js */; };
+		0265B9FA2391E163004B533F /* GameState.js in Resources */ = {isa = PBXBuildFile; fileRef = 0265B9F52391E163004B533F /* GameState.js */; };
 		027F632F2383A13A00714E9F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 027F632E2383A13A00714E9F /* index.html */; };
-		027F63322383A24700714E9F /* three.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63302383A24700714E9F /* three.js */; };
 		027F63332383A24700714E9F /* DeckOfCards.js in Resources */ = {isa = PBXBuildFile; fileRef = 027F63312383A24700714E9F /* DeckOfCards.js */; };
 		0284FC1D23899CF1001F155F /* Shapes.js in Resources */ = {isa = PBXBuildFile; fileRef = 0284FC1C23899CF1001F155F /* Shapes.js */; };
 		E22916471F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */; };
@@ -28,12 +30,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = droid_serif_bold.typeface.json; sourceTree = "<group>"; };
 		02588CFB238C9B5E00B4E4E9 /* tower */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tower; sourceTree = "<group>"; };
-		02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GLTFLoader.js; sourceTree = "<group>"; };
-		026451CF2389F95300677BDB /* CardPositioner.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CardPositioner.js; sourceTree = "<group>"; };
+		0265B9EF2391E13A004B533F /* three */ = {isa = PBXFileReference; lastKnownFileType = folder; path = three; sourceTree = "<group>"; };
+		0265B9F12391E163004B533F /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		0265B9F22391E163004B533F /* Renderer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Renderer.js; sourceTree = "<group>"; };
+		0265B9F32391E163004B533F /* World.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = World.js; sourceTree = "<group>"; };
+		0265B9F42391E163004B533F /* Card3D.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Card3D.js; sourceTree = "<group>"; };
+		0265B9F52391E163004B533F /* GameState.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GameState.js; sourceTree = "<group>"; };
 		027F632E2383A13A00714E9F /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		027F63302383A24700714E9F /* three.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = three.js; sourceTree = "<group>"; };
 		027F63312383A24700714E9F /* DeckOfCards.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = DeckOfCards.js; sourceTree = "<group>"; };
 		0284FC1C23899CF1001F155F /* Shapes.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Shapes.js; sourceTree = "<group>"; };
 		E22916461F82B9C300DC731E /* ViewController+WKURLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+WKURLSchemeHandler.swift"; sourceTree = "<group>"; };
@@ -64,13 +68,15 @@
 		027F632D23839FFE00714E9F /* public_html */ = {
 			isa = PBXGroup;
 			children = (
-				02588CFD238C9B6A00B4E4E9 /* GLTFLoader.js */,
+				0265B9F42391E163004B533F /* Card3D.js */,
+				0265B9F52391E163004B533F /* GameState.js */,
+				0265B9F22391E163004B533F /* Renderer.js */,
+				0265B9F12391E163004B533F /* style.css */,
+				0265B9F32391E163004B533F /* World.js */,
+				0265B9EF2391E13A004B533F /* three */,
 				02588CFB238C9B5E00B4E4E9 /* tower */,
-				0237E810238AF572002E73A5 /* droid_serif_bold.typeface.json */,
-				026451CF2389F95300677BDB /* CardPositioner.js */,
 				0284FC1C23899CF1001F155F /* Shapes.js */,
 				027F63312383A24700714E9F /* DeckOfCards.js */,
-				027F63302383A24700714E9F /* three.js */,
 				027F632E2383A13A00714E9F /* index.html */,
 			);
 			name = public_html;
@@ -173,16 +179,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				0284FC1D23899CF1001F155F /* Shapes.js in Resources */,
+				0265B9F62391E163004B533F /* style.css in Resources */,
+				0265B9FA2391E163004B533F /* GameState.js in Resources */,
 				E294C1BA1F80FC68002DD38A /* LaunchScreen.storyboard in Resources */,
 				E294C1B71F80FC68002DD38A /* Assets.xcassets in Resources */,
-				02588CFE238C9B6A00B4E4E9 /* GLTFLoader.js in Resources */,
-				0237E811238AF572002E73A5 /* droid_serif_bold.typeface.json in Resources */,
 				E294C1B51F80FC68002DD38A /* Main.storyboard in Resources */,
-				027F63322383A24700714E9F /* three.js in Resources */,
+				0265B9F92391E163004B533F /* Card3D.js in Resources */,
+				0265B9F72391E163004B533F /* Renderer.js in Resources */,
 				027F632F2383A13A00714E9F /* index.html in Resources */,
 				027F63332383A24700714E9F /* DeckOfCards.js in Resources */,
+				0265B9F82391E163004B533F /* World.js in Resources */,
+				0265B9F02391E13A004B533F /* three in Resources */,
 				02588CFC238C9B5E00B4E4E9 /* tower in Resources */,
-				026451D02389F95300677BDB /* CardPositioner.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
