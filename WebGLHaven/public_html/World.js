@@ -70,13 +70,13 @@ function World() {
          case 0:
             return {
                x: -3.4,
-               y: -0.7,
+               y: groundY,
                z: -0.1
             };
          case 1:
             return {
                x: -3.5,
-               y: -0.4,
+               y: groundY,
                z: -0.6
             };
             break;
