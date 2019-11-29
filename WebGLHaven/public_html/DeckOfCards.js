@@ -105,7 +105,7 @@ function DeckOfCards(attributes) {
       suits[1].geometry = createSuitGeometry(createDiamondShape(100, 150));
       suits[2].geometry = createSuitGeometry(createHeartShape(100, 100));
       suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
-   }
+   };
 
    /// <summary>
    /// Creates a card Object3D of the given suit and rank
@@ -113,8 +113,7 @@ function DeckOfCards(attributes) {
    this.createCard3D = function (suit, rank) {
       // Our result is a Group that combines a bunch of things.  Presumably
       // you had already guessed that is what a Group does.
-      var group = new THREE.Group();
-      group.clickID = ranks[rank].mnemonic + suits[suit].mnemonic;
+      var group = new Card3D(ranks[rank].mnemonic + suits[suit].mnemonic);
 
       // Add the blank card face
       var cardFaceMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: cardFaceColor}));
@@ -154,6 +153,6 @@ function DeckOfCards(attributes) {
 
       // done
       return group;
-   }
+   };
 }
 

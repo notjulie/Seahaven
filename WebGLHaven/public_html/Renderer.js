@@ -12,6 +12,7 @@ function Renderer(canvas) {
    var requestedCanvasSize;
 
    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+   const raycaster = new THREE.Raycaster();
    
    // create our default camera position
    const fov = 75;
@@ -65,9 +66,9 @@ function Renderer(canvas) {
          var intersects = raycaster.intersectObjects(scene.children, true);
 
          for (var i = 0; i < intersects.length; i++) {
-            if (intersects[i].object.parent.clickID)
+            if (intersects[i].object.parent.getClickID)
             {
-               alert(intersects[i].object.parent.clickID);
+               alert(intersects[i].object.parent.getClickID());
                break;
             }
          }
@@ -82,14 +83,14 @@ function Renderer(canvas) {
    
    this.start = function() {
       requestAnimationFrame(render);
-   }
+   };
    
    this.resizeCanvas = function(width, height) {
       requestedCanvasSize = {
          width:width,
          height:height
       };
-   }
+   };
    
-   this.getScene = function() { return scene; }
+   this.getScene = function() { return scene; };
 }
