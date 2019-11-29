@@ -6,6 +6,8 @@
  */
 
 
+/* global THREE */
+
 /// <summary>
 /// Creates a rounded rectangle with the given parameters
 /// </summary>
