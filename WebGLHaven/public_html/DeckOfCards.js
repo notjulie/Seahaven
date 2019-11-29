@@ -7,6 +7,8 @@
 
 
 
+/* global THREE */
+
 /// <summary>
 /// class DeckOfCards
 ///    Represents a deck of 3D card objects
@@ -112,10 +114,11 @@ function DeckOfCards(attributes) {
       // Our result is a Group that combines a bunch of things.  Presumably
       // you had already guessed that is what a Group does.
       var group = new THREE.Group();
+      group.clickID = ranks[rank].mnemonic + suits[suit].mnemonic;
 
       // Add the blank card face
       var cardFaceMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: cardFaceColor}));
-      cardFaceMesh.clickID = ranks[rank].mnemonic + suits[suit].mnemonic;
+      cardFaceMesh.cardObject = group;
       group.add(cardFaceMesh);
 
       // Add the back of the card... for now I just give the front and back

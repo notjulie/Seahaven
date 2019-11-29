@@ -65,9 +65,9 @@ function Renderer(canvas) {
          var intersects = raycaster.intersectObjects(scene.children, true);
 
          for (var i = 0; i < intersects.length; i++) {
-            if (intersects[i].object.clickID)
+            if (intersects[i].object.parent.clickID)
             {
-               alert(intersects[i].object.clickID);
+               alert(intersects[i].object.parent.clickID);
                break;
             }
          }
