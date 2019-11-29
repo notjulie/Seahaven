@@ -6,37 +6,59 @@
  */
 
 
+/// <summary>
+/// Class that is in charge of calculating global points in the
+/// 3D coordinate system.
+/// </summary>
 function World() {
    const towerModelNominalHeight = 25.0;
    const cardWidth = 0.43;
    const relativeMarginBetweenCards = 0.2;
+   const groundY = -1.0;
+
+   // table dimensions
+   const numberOfRowsOnTable = 6;
+   const tableAngle = 70;
+   const tableHeight = 1.0;
+   const tableFrontZ = -0.6;
+
 
    this.getCardWidth = function() {
       return cardWidth;
    };
 
+   /// <summary>
+   /// Gets the card location associated with a card at a given
+   /// row and column
+   /// </summary>
    this.getColumnPosition = function (column, row) {
+      var table = this.getTableGeometry();
+      var tableSize = table.getSize(new THREE.Vector3());
+
       return {
          x: (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth,
-         y: -row * 0.2,
-         z: 0.1 * row
+         y: table.max.y - row * tableSize.y / numberOfRowsOnTable,
+         z: table.min.z + row * tableSize.z / numberOfRowsOnTable
       };
    };
 
    this.getGroundY = function () {
-      return -1.5;
+      return groundY;
    };
 
    this.getTableGeometry = function () {
-      var dy = this.getColumnPosition(9,0).y - this.getColumnPosition(9,4).y;
-      var dz = this.getColumnPosition(9,4).z - this.getColumnPosition(9,0).z;
-      return {
-         width:1.05*(this.getColumnPosition(10,0).x - this.getColumnPosition(0,0).x),
-         height:Math.sqrt(dy*dy + dz * dz),
-         bottomY:this.getColumnPosition(9,4).y,
-         bottomZ:this.getColumnPosition(9,4).z,
-         xRotation:-Math.atan2(dz,dy)
-      };
+      var width = 10.0 * (1 + relativeMarginBetweenCards)*cardWidth + 0.5*cardWidth;
+      
+      var result = new THREE.Box3();
+      result.min.x = -width/2;
+      result.max.x = width/2;
+      
+      result.min.y = groundY;
+      result.max.y = result.min.y + tableHeight*Math.sin(tableAngle * Math.PI/180);
+
+      result.min.z = tableFrontZ;
+      result.max.z = result.min.z + tableHeight*Math.cos(tableAngle * Math.PI/180);
+      return result;
    };
 
    this.getTowerScale = function () {

@@ -85,13 +85,17 @@
         scene.add(ground);
 
         var tableWorldGeometry = world.getTableGeometry();
-        var tableGeometry = new THREE.PlaneGeometry(tableWorldGeometry.width, tableWorldGeometry.height);
+        var tableWorldSize = tableWorldGeometry.getSize(new THREE.Vector3());
+        var tableGeometry = new THREE.PlaneGeometry(
+               tableWorldSize.x,
+               Math.sqrt(tableWorldSize.y*tableWorldSize.y + tableWorldSize.z*tableWorldSize.z)
+               );
         tableGeometry.computeBoundingBox();
         tableGeometry.translate(0, -tableGeometry.boundingBox.min.y, 0);
-        tableGeometry.rotateX(tableWorldGeometry.xRotation);
+        tableGeometry.rotateX(-Math.atan2(tableWorldSize.z, tableWorldSize.y));
         var table = new THREE.Mesh( tableGeometry, new THREE.MeshMatcapMaterial({color:0x007F00}) );
-        table.position.y = tableWorldGeometry.bottomY;
-        table.position.z = tableWorldGeometry.bottomZ;
+        table.position.y = tableWorldGeometry.min.y;
+        table.position.z = tableWorldGeometry.max.z;
         scene.add(table);
 
       
