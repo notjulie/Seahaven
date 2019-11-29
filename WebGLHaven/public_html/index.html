@@ -35,24 +35,15 @@
             rankHeight: (0.13 / 0.43) * world.getCardWidth()
          });
 
-         var mouse;
 
          function resizeCanvas() {
             renderer.resizeCanvas(body.clientWidth, body.clientHeight);
          }
 
-         function canvasClicked(event) {
-            mouse = new THREE.Vector2();
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-         }
-
-
          function main() {
 
             // create our renderer
             const canvas = document.querySelector('#c');
-            canvas.onclick = canvasClicked;
             var renderer = new Renderer(canvas);
             var scene = renderer.getScene();
 

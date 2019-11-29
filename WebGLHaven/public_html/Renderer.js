@@ -10,9 +10,16 @@
 
 function Renderer(canvas) {
    var requestedCanvasSize;
+   var mouse;
 
    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
    const raycaster = new THREE.Raycaster();
+   
+   canvas.onclick = function(event) {
+      mouse = new THREE.Vector2();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+   };
    
    // create our default camera position
    const fov = 75;
