@@ -18,6 +18,7 @@
       <!-- WebHaven js includes -->
       <script type="text/javascript" src="Card3D.js"></script>
       <script type="text/javascript" src="DeckOfCards.js"></script>
+      <script type="text/javascript" src="GameState.js"></script>
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
       <script type="text/javascript" src="World.js"></script>
@@ -35,6 +36,7 @@
             rankHeight: (0.13 / 0.43) * world.getCardWidth()
          });
 
+         var gameState = new GameState();
 
          function resizeCanvas() {
             renderer.resizeCanvas(body.clientWidth, body.clientHeight);
