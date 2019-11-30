@@ -23,6 +23,7 @@ function World() {
    const tableAngle = 70;
    const tableHeight = 1.0;
    const tableFrontZ = -0.6;
+   const zSpacingOnGround = 0.03;
 
 
    this.getCardWidth = function() {
@@ -37,11 +38,23 @@ function World() {
       var table = this.getTableGeometry();
       var tableSize = table.getSize(new THREE.Vector3());
 
-      return new THREE.Vector3(
-         (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth,
-         table.max.y - row * tableSize.y / numberOfRowsOnTable,
-         table.min.z + row * tableSize.z / numberOfRowsOnTable
-      );
+      var x = (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth;
+
+      // see if it's on the table or on the ground
+      if (row < numberOfRowsOnTable) {
+         return new THREE.Vector3(
+            x,
+            table.max.y - row * tableSize.y / (numberOfRowsOnTable - 1),
+            table.min.z + row * tableSize.z / (numberOfRowsOnTable - 1)
+         );         
+      } else {
+         return new THREE.Vector3(
+            x,
+            table.min.y,
+            table.max.z + (1 + row - numberOfRowsOnTable) * zSpacingOnGround
+         );         
+      }
+
    };
 
    this.getGroundY = function () {
