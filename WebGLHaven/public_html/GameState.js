@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global CardID */
+/* global CardID, LocationID, deckOfCards, gameState, world */
 
 function GameState() {
    const cardLocations = {};
@@ -17,9 +17,9 @@ function GameState() {
       var columnIndex = Math.floor(index / 5);
       var rowIndex = index % 5;
       if (columnIndex < 10)
-         return 'C' + columnIndex + '-' + rowIndex;
+         return LocationID.columns[columnIndex][rowIndex];
       else
-         return 'T' + rowIndex;
+         return LocationID.towers[rowIndex];
    };
 
    for (var cardID in CardID.all)
@@ -27,27 +27,27 @@ function GameState() {
 
    this.getCardLocation = function(cardID) {
       return cardLocations[cardID];
-   }
+   };
    
    this.getNumberOfCardsOnColumn = function(column) {
       var result = 0;
       for (var cardID in cardLocations) {
          var locationID = cardLocations[cardID];
-         if (LocationID.all[locationID].column == column)
+         if (LocationID.all[locationID].column === column)
             ++result;
       }
       return result;
-   }
+   };
    
    this.moveToBottomOfColumn = function(cardID, column) {
-      cardLocations[cardID] = 'C' + column + '-' + this.getNumberOfCardsOnColumn(column);
-   }
+      cardLocations[cardID] = LocationID.columns[column][this.getNumberOfCardsOnColumn(column)];
+   };
    
    this.repositionAll = function() {
       for (var cardID in CardID.all) {
          var card = deckOfCards.getCard3D(cardID);
-         var locationID = gameState.getCardLocation(cardID);
+         var locationID = this.getCardLocation(cardID);
          card.position.copy(world.getCardLocation(locationID));
       }
-   }
+   };
 }
