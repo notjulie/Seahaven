@@ -23,14 +23,15 @@
       <script type="text/javascript" src="LocationID.js"></script>
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
+      <script type="text/javascript" src="StateMachine.js"></script>
       <script type="text/javascript" src="World.js"></script>
 
 
       <!-- Three.js WebGL main rendering loop -->
       <script type="text/javascript">
-         // create our world geometry
+         // create our globals
          var world = new World();
-
+         var stateMachine = new StateMachine();
          var deckOfCards = new DeckOfCards({
             width: world.getCardWidth(),
             height: (0.7 / 0.43) * world.getCardWidth(),
@@ -80,12 +81,9 @@
 
             // initialize our deck of cards; on completion add cards to the scene
             deckOfCards.initialize(function () {
-               for (var cardID in CardID.all) {
-                  var card = deckOfCards.getCard3D(cardID);
-                  var locationID = gameState.getCardLocation(cardID);
-                  card.position.copy(world.getCardLocation(locationID));
-                  scene.add(card);
-               }
+               gameState.repositionAll();
+               for (var cardID in CardID.all)
+                  scene.add(deckOfCards.getCard3D(cardID));
             });
 
 

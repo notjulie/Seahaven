@@ -75,7 +75,7 @@ function Renderer(canvas) {
          for (var i = 0; i < intersects.length; i++) {
             if (intersects[i].object.parent.getClickID)
             {
-               alert(intersects[i].object.parent.getClickID());
+               stateMachine.cardClicked(intersects[i].object.parent.getClickID());
                break;
             }
          }
