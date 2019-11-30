@@ -6,6 +6,8 @@
  */
 
 
+/* global LocationID, THREE */
+
 /// <summary>
 /// Class that is in charge of calculating global points in the
 /// 3D coordinate system.
@@ -35,11 +37,11 @@ function World() {
       var table = this.getTableGeometry();
       var tableSize = table.getSize(new THREE.Vector3());
 
-      return {
-         x: (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth,
-         y: table.max.y - row * tableSize.y / numberOfRowsOnTable,
-         z: table.min.z + row * tableSize.z / numberOfRowsOnTable
-      };
+      return new THREE.Vector3(
+         (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth,
+         table.max.y - row * tableSize.y / numberOfRowsOnTable,
+         table.min.z + row * tableSize.z / numberOfRowsOnTable
+      );
    };
 
    this.getGroundY = function () {
@@ -93,4 +95,12 @@ function World() {
       result.y += towerModelNominalHeight * this.getTowerScale();
       return result;
    };
+   
+   this.getCardLocation = function(locationID) {
+      var locationInfo = LocationID.all[locationID];
+      if (locationInfo.isTower)
+         return this.getTowerTop(locationInfo.tower);
+      else
+         return this.getColumnPosition(locationInfo.column, locationInfo.row);
+   }
 }

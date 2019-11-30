@@ -17,8 +17,10 @@
 
       <!-- WebHaven js includes -->
       <script type="text/javascript" src="Card3D.js"></script>
+      <script type="text/javascript" src="CardID.js"></script>
       <script type="text/javascript" src="DeckOfCards.js"></script>
       <script type="text/javascript" src="GameState.js"></script>
+      <script type="text/javascript" src="LocationID.js"></script>
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
       <script type="text/javascript" src="World.js"></script>
@@ -78,36 +80,12 @@
 
             // initialize our deck of cards; on completion add cards to the scene
             deckOfCards.initialize(function () {
-               // build an array of all cards
-               var allCards = new Array();
-               for (var suit = 0; suit < 4; ++suit) {
-                  for (var rank = 1; rank <= 13; ++rank) {
-                     var card = deckOfCards.getCard3D(suit, rank);
-                     scene.add(card);
-                     allCards[allCards.length] = card;
-                  }
+               for (var cardID in CardID.all) {
+                  var card = deckOfCards.getCard3D(cardID);
+                  var locationID = gameState.getCardLocation(cardID);
+                  card.position.copy(world.getCardLocation(locationID));
+                  scene.add(card);
                }
-
-               // have the card positioner put them somewhere
-               for (var column = 0; column < 10; ++column) {
-                  for (row = 0; row < 5; ++row) {
-                     var position = world.getColumnPosition(column, row);
-                     var card = allCards[5 * column + row];
-                     card.position.x = position.x;
-                     card.position.y = position.y;
-                     card.position.z = position.z;
-                  }
-               }
-
-               // and put the last two on towers
-               var position = world.getTowerTop(1);
-               allCards[50].position.x = position.x - world.getCardWidth() / 2;
-               allCards[50].position.y = position.y;
-               allCards[50].position.z = position.z;
-               position = world.getTowerTop(2);
-               allCards[51].position.x = position.x - world.getCardWidth() / 2;
-               allCards[51].position.y = position.y;
-               allCards[51].position.z = position.z;
             });
 
 
