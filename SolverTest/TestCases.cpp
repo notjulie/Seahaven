@@ -58,6 +58,27 @@ const ProblemDefinition scottsProblem = {
    { "9D", "KD" }
 };
 
+ProblemDefinition scott2 =
+{
+   // columns
+   {
+      {"9S", "2D", "4S", "KS", "9H"},
+      {"KD", "9C", "5S", "TC"},
+      {"5H", "TH", "6H", "3S", "KC"},
+      {"8S", "7D", "4H", "2S", "9D"},
+      {"5C", "7H", "7S"},
+      {"3D", "6S", "KH", "5D", "7C"},
+      {"4C", "8C", "JH", "6C", "TD"},
+      {"QH", "2H", "JS", "AH", "8H"},
+      {"TS", "3H", "QC", "3C", "QD"},
+      {"JD", "8D", "6D", "JC", "QS"},
+   },
+   // towers
+   {
+      "4D"
+   }
+};
+
 /// <summary>
 /// simple test case that requires only one column to column move
 /// </summary>

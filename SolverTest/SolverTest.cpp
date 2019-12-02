@@ -15,6 +15,14 @@ int main()
    tester.testSingleColumnToTowerProblem();
    tester.testSingleColumnToColumnProblem();
 
+   {
+      extern ProblemDefinition scott2;
+      SeahavenProblem s2(scott2);
+      solver::Solver solver;
+      solver.Solve(s2).Dump(stdout);
+      return 0;
+   }
+
    std::cout << "Starting slow problem... ";
    tester.TestSlowProblem2();
    std::cout << "done" << std::endl;
