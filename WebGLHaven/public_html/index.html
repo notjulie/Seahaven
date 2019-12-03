@@ -24,6 +24,7 @@
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
       <script type="text/javascript" src="StateMachine.js"></script>
+      <script type="text/javascript" src="Tower3D.js"></script>
       <script type="text/javascript" src="World.js"></script>
 
 
@@ -90,22 +91,14 @@
             var towers = new Array();
             var loader = new THREE.GLTFLoader();
 
-            loader.load('tower/scene.gltf', function (gltf) {
-               var tower = gltf.scene;
-               tower.scale.x = tower.scale.y = tower.scale.z = world.getTowerScale();
-               tower.add(new THREE.SpotLight(0xFFFFFF, 4));
-
-               for (var i = 0; i < 4; ++i) {
-                  towers[i] = tower.clone();
-                  var position = world.getTowerPosition(i);
-                  towers[i].position.x = position.x;
-                  towers[i].position.y = position.y;
-                  towers[i].position.z = position.z;
-                  scene.add(towers[i]);
-               }
-            }, undefined, function (error) {
-               console.error(error);
-            });
+            for (var i = 0; i < 4; ++i) {
+               towers[i] = new Tower3D();
+               var position = world.getTowerPosition(i);
+               towers[i].position.x = position.x;
+               towers[i].position.y = position.y;
+               towers[i].position.z = position.z;
+               scene.add(towers[i]);
+            }
 
             renderer.start();
 
