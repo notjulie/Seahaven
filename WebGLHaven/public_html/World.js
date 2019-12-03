@@ -13,7 +13,7 @@
 /// 3D coordinate system.
 /// </summary>
 function World() {
-   const towerModelNominalHeight = 25.0;
+   const towerHeight = 1.0;
    const cardWidth = 0.43;
    const relativeMarginBetweenCards = 0.2;
    const groundY = -1.0;
@@ -76,10 +76,6 @@ function World() {
       return result;
    };
 
-   this.getTowerScale = function () {
-      return 0.04;
-   };
-
    this.getTowerPosition = function (tower) {
       switch (tower) {
          case 0:
@@ -105,7 +101,7 @@ function World() {
 
    this.getTowerTop = function (tower) {
       var result = this.getTowerPosition(tower);
-      result.y += towerModelNominalHeight * this.getTowerScale();
+      result.y += towerHeight;
       return result;
    };
    

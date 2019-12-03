@@ -16,7 +16,10 @@ function Tower3D() {
    THREE.Group.call(this);
 
    function setTower(tower) {
-      tower.scale.x = tower.scale.y = tower.scale.z = 0.04;
+      // normalize its scale so that the height is 1.0
+      var boundingBox = new THREE.Box3().setFromObject(tower);
+      tower.scale.x = tower.scale.y = tower.scale.z = 1.0 / (boundingBox.max.y - boundingBox.min.y);
+      tower.position.y = -boundingBox.min.y * tower.scale.y;
       tower.add(new THREE.SpotLight(0xFFFFFF, 4));
       thisTower.add(tower);
    }
