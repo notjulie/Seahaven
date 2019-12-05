@@ -76,6 +76,9 @@ function World() {
       return result;
    };
 
+   /// <summary>
+   /// returns the location at which to place the given Tower3D object
+   /// </summary>
    this.getTowerPosition = function (tower) {
       switch (tower) {
          case 0:
@@ -99,9 +102,14 @@ function World() {
       }
    };
 
+   /// <summary>
+   /// returns the location at which to place a card that sits on
+   /// a tower
+   /// </summary>
    this.getTowerTop = function (tower) {
       var result = this.getTowerPosition(tower);
       result.y += towerHeight;
+      result.x -= cardWidth/2;
       return result;
    };
    

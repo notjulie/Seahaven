@@ -19,8 +19,15 @@ function Tower3D() {
       // normalize its scale so that the height is 1.0
       var boundingBox = new THREE.Box3().setFromObject(tower);
       tower.scale.x = tower.scale.y = tower.scale.z = 1.0 / (boundingBox.max.y - boundingBox.min.y);
+
+      // and shift it so that the origin is bottom center
       tower.position.y = -boundingBox.min.y * tower.scale.y;
+      tower.position.x = -(boundingBox.min.x + boundingBox.max.x)/2 * tower.scale.x;
+
+      // add a spotlight
       tower.add(new THREE.SpotLight(0xFFFFFF, 4));
+
+      // and add it as the only actual thing in this group
       thisTower.add(tower);
    }
 
