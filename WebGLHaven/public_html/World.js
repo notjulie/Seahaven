@@ -13,7 +13,6 @@
 /// 3D coordinate system.
 /// </summary>
 function World() {
-   const towerHeight = 1.0;
    const cardWidth = 0.43;
    const relativeMarginBetweenCards = 0.2;
    const groundY = -1.0;
@@ -22,8 +21,8 @@ function World() {
    const numberOfRowsOnTable = 6;
    const tableAngle = 70;
    const tableHeight = 1.0;
-   const tableFrontZ = -0.6;
-   const zSpacingOnGround = 0.03;
+   const tableFrontZ = -0.3;
+   const zSpacingOnGround = 0.02;
 
 
    this.getCardWidth = function() {
@@ -83,15 +82,17 @@ function World() {
       switch (tower) {
          case 0:
             return {
-               x: -3.4,
+               x: -3.3,
                y: groundY,
-               z: -0.1
+               z: -0.3,
+               height: 1.0
             };
          case 1:
             return {
-               x: -3.5,
+               x: -3.3,
                y: groundY,
-               z: -0.6
+               z: -0.7,
+               height: 2.0
             };
             break;
          case 2:
@@ -108,7 +109,7 @@ function World() {
    /// </summary>
    this.getTowerTop = function (tower) {
       var result = this.getTowerPosition(tower);
-      result.y += towerHeight;
+      result.y += result.height;
       result.x -= cardWidth/2;
       return result;
    };
