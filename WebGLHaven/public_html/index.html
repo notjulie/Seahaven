@@ -11,7 +11,7 @@
    <body id="body">
       <canvas id="c"></canvas>
       <div id="buttonBar">
-         <button id="newGame">New Game</button>
+         <button id="newGame" onclick="stateMachine.newGame()">New Game</button>
       </div>
 
       <!-- beautiful three.js -->
@@ -26,11 +26,14 @@
       <script type="text/javascript" src="LocationID.js"></script>
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
-      <script type="text/javascript" src="StateMachine.js"></script>
       <script type="text/javascript" src="Tower3D.js"></script>
       <script type="text/javascript" src="World.js"></script>
 
-
+      <!-- WebHaven js includes -->
+      <script type="text/javascript" src="StateMachine/StateMachine.js"></script>
+      <script type="text/javascript" src="StateMachine/State.js"></script>
+      <script type="text/javascript" src="StateMachine/NewGameState.js"></script>
+      
       <!-- Three.js WebGL main rendering loop -->
       <script type="text/javascript">
          // create our globals
