@@ -11,19 +11,30 @@ function GameState() {
    const cardLocations = {};
    
    
-   function getDefaultCardLocation(cardID) {
-      var cardInfo = CardID.all[cardID];
-      var index = (cardInfo.rankIndex - 1) + cardInfo.suitIndex*13;
-      var columnIndex = Math.floor(index / 5);
-      var rowIndex = index % 5;
-      if (columnIndex < 10)
-         return LocationID.columns[columnIndex][rowIndex];
-      else
-         return LocationID.towers[rowIndex];
+   /// <summary>
+   /// shuffles the deck and deals
+   /// </summary>
+   this.newGame = function() {
+      // make an array of all the CardIDs
+      var cardIDs = new Array();
+      for (var cardID in CardID.all)
+         cardIDs.push(cardID);
+      
+      // shuffle
+      for (var i=cardIDs.length-1; i>=0; --i) {
+         var n = Math.floor((Math.random() * i));
+         var tempCardID = cardIDs[n];
+         cardIDs[n] = cardIDs[i];
+         cardIDs[i] = tempCardID;
+      }
+      
+      // deal
+      for (var column=0; column<10; ++column)
+         for (var row=0; row<5; ++row)
+            cardLocations[cardIDs[column*5 + row]] = LocationID.columns[column][row];
+      cardLocations[cardIDs[50]] = LocationID.towers[1];
+      cardLocations[cardIDs[51]] = LocationID.towers[2];
    };
-
-   for (var cardID in CardID.all)
-      cardLocations[cardID] = getDefaultCardLocation(cardID);
 
    this.getCardLocation = function(cardID) {
       return cardLocations[cardID];
@@ -50,4 +61,7 @@ function GameState() {
          card.position.copy(world.getCardLocation(locationID));
       }
    };
+   
+   // start by shuffling
+   this.newGame();
 }

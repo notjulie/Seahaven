@@ -5,14 +5,21 @@
  * Warranty: None
  */
 
-/* global State */
+/* global State, gameState, stateMachine */
 
 function NewGameState() {
    // inherit State
    State.call(this);
 
    this.enter = function() {
-      alert("Entering NewGameState");
+      // shuffle
+      gameState.newGame();
+      
+      // update
+      gameState.repositionAll();
+      
+      // start moving to aces
+      stateMachine.setState(new MoveToAcesState());
    };
 }
 
