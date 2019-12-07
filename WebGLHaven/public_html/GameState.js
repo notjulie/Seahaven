@@ -54,11 +54,15 @@ function GameState() {
       cardLocations[cardID] = LocationID.columns[column][this.getNumberOfCardsOnColumn(column)];
    };
    
+   /// <summary>
+   /// Moves all Card3D objects to the current positions and shows them
+   /// </summary>
    this.repositionAll = function() {
       for (var cardID in CardID.all) {
-         var card = deckOfCards.getCard3D(cardID);
+         var card3D = deckOfCards.getCard3D(cardID);
          var locationID = this.getCardLocation(cardID);
-         card.position.copy(world.getCardLocation(locationID));
+         card3D.position.copy(world.getCardLocation(locationID));
+         card3D.visible = true;
       }
    };
    

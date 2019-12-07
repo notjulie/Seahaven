@@ -32,6 +32,7 @@
       <!-- WebHaven StateMachine js includes -->
       <script type="text/javascript" src="StateMachine/StateMachine.js"></script>
       <script type="text/javascript" src="StateMachine/State.js"></script>
+      <script type="text/javascript" src="StateMachine/GameIdleState.js"></script>
       <script type="text/javascript" src="StateMachine/MoveToAcesState.js"></script>
       <script type="text/javascript" src="StateMachine/NewGameState.js"></script>
       
@@ -101,9 +102,15 @@
 
             // initialize our deck of cards; on completion add cards to the scene
             deckOfCards.initialize(function () {
-               gameState.repositionAll();
-               for (var cardID in CardID.all)
-                  scene.add(deckOfCards.getCard3D(cardID));
+               // add all the cards to the scene, but hidden
+               for (var cardID in CardID.all) {
+                  var card3D = deckOfCards.getCard3D(cardID);
+                  card3D.visible = false;
+                  scene.add(card3D);
+               }
+               
+               // start a new game
+               stateMachine.setState(new NewGameState());
             });
 
 
