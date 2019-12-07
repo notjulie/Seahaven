@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global State, gameState, stateMachine */
+/* global State, cardLocations, stateMachine */
 
 function NewGameState() {
    // inherit State
@@ -13,10 +13,10 @@ function NewGameState() {
 
    this.enter = function() {
       // shuffle
-      gameState.newGame();
+      cardLocations.newGame();
       
       // update
-      gameState.repositionAll();
+      cardLocations.repositionAll();
       
       // start moving to aces
       stateMachine.setState(new MoveToAcesState());

@@ -21,8 +21,8 @@
       <!-- WebHaven js includes -->
       <script type="text/javascript" src="Card3D.js"></script>
       <script type="text/javascript" src="CardID.js"></script>
+      <script type="text/javascript" src="CardLocations.js"></script>
       <script type="text/javascript" src="DeckOfCards.js"></script>
-      <script type="text/javascript" src="GameState.js"></script>
       <script type="text/javascript" src="LocationID.js"></script>
       <script type="text/javascript" src="Renderer.js"></script>
       <script type="text/javascript" src="Shapes.js"></script>
@@ -49,7 +49,7 @@
          });
 
 
-         var gameState = new GameState();
+         var cardLocations = new CardLocations();
 
          function resizeCanvas() {
             renderer.resizeCanvas(body.clientWidth, body.clientHeight);

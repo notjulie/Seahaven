@@ -7,7 +7,8 @@
 
 /* global CardID, LocationID, deckOfCards, gameState, world */
 
-function GameState() {
+
+function CardLocations() {
    const cardLocations = {};
    
    
