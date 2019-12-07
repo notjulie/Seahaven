@@ -41,6 +41,42 @@ function CardLocations() {
       return cardLocations[cardID];
    };
    
+   this.cardsOnAce = function(suit) {
+      var result = 0;
+      for (var cardID in cardLocations) {
+         var locationInfo = LocationID.all[cardLocations[cardID]];
+         if (locationInfo.isAce)
+            if (locationInfo.suit === suit)
+               ++result;
+      }
+      return result;
+   };
+   
+   this.getCardAtLocation = function(locationID) {
+      for (var cardID in cardLocations)
+         if (cardLocations[cardID] === locationID)
+            return cardID;
+   };
+   
+   this.getTowerCardID = function(towerIndex) {
+      return this.getCardAtLocation(LocationID.towers[towerIndex]);
+   };
+   
+   this.getBottomColumnCardID = function(column) {
+      var result;
+      var maxRow = -1;
+      
+      for (var cardID in cardLocations) {
+         var locationInfo = LocationID.all[cardLocations[cardID]];
+         if (locationInfo.column===column && locationInfo.row>maxRow) {
+            result = cardID;
+            maxRow = locationInfo.row;
+         }
+      }
+      
+      return result;
+   };
+   
    this.getNumberOfCardsOnColumn = function(column) {
       var result = 0;
       for (var cardID in cardLocations) {

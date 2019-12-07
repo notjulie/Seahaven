@@ -30,9 +30,9 @@ function generateAllCardIDs() {
       for (var cardRankIndex in cardRankMnemonics) {
          var id = cardRankMnemonics[cardRankIndex] + cardSuitMnemonics[suitIndex];
          result[id] = {
-            suitIndex: suitIndex,
-            rankIndex: cardRankIndex
-         }
+            suitIndex: parseInt(suitIndex),
+            rankIndex: parseInt(cardRankIndex)
+         };
       }
    }
    return result;

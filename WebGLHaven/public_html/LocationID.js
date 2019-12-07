@@ -24,6 +24,13 @@ function generateTowerLocationIDs() {
    return result;
 }
 
+function generateAceLocationIDs() {
+   var result = {};
+   for (var suit=0; suit<4; ++suit)
+      result[suit] = 'A' + suit;
+   return result;
+}
+
 function generateAllLocationIDs() {
    var result = new Object();
 
@@ -47,10 +54,20 @@ function generateAllLocationIDs() {
       };
    }
    
+   var aces = generateAceLocationIDs();
+   for (var suit=0; suit<4; ++suit) {
+      var id = aces[suit];
+      result[id] = {
+         isAce: true,
+         suit: suit 
+      };
+   }
+   
    return result;
 }
 
 const LocationID =  {
+   aces : generateAceLocationIDs(),
    columns : generateColumnLocationIDs(),
    towers : generateTowerLocationIDs(),
    all : generateAllLocationIDs()
