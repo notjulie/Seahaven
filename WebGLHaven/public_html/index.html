@@ -103,7 +103,7 @@
             // initialize our deck of cards; on completion add cards to the scene
             deckOfCards.initialize(function () {
                // add all the cards to the scene, but hidden
-               for (var cardID in CardID.all) {
+               for (var cardID in CardID.info) {
                   var card3D = deckOfCards.getCard3D(cardID);
                   card3D.visible = false;
                   scene.add(card3D);

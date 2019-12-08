@@ -13,7 +13,7 @@ function MoveToAcesState() {
    State.call(this);
    
    function canMoveToAce(cardID) {
-      var cardInfo = CardID.all[cardID];
+      var cardInfo = CardID.info[cardID];
       return cardInfo.rankIndex === cardLocations.cardsOnAce(cardInfo.suitIndex) + 1;
    }
    
@@ -38,8 +38,12 @@ function MoveToAcesState() {
       return;
    }
 
-   function startAnimation() {
-      alert("MoveToAcesState- startAnimation not implemented");
+   function startAnimation(cardID) {
+      // for now just move it
+      cardLocations.moveToAce(cardID);
+      
+      // update
+      cardLocations.repositionAll();
    }
    
    this.enter = function() {

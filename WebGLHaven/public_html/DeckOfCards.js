@@ -81,7 +81,7 @@ function DeckOfCards(attributes) {
    /// Creates a card Object3D for the given card ID
    /// </summary>
    function createCard3D(cardID) {
-      var cardInfo = CardID.all[cardID];
+      var cardInfo = CardID.info[cardID];
       
       // Our result is a Group that combines a bunch of things.  Presumably
       // you had already guessed that is what a Group does.
@@ -138,7 +138,7 @@ function DeckOfCards(attributes) {
       fontLoader.load(fontName, function (font) {
          for (var rankNumber in cardRankMnemonics)
             rankGeometries[rankNumber] = createRankGeometry(font, cardRankMnemonics[rankNumber]);
-         for (var cardID in CardID.all)
+         for (var cardID in CardID.info)
             cards[cardID] = createCard3D(cardID);
          loadCompleteCallback();
       });
@@ -155,6 +155,6 @@ function DeckOfCards(attributes) {
    /// </summary>
    this.getCard3D = function(cardID) {
       return cards[cardID];
-   }
+   };
 }
 

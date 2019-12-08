@@ -26,8 +26,11 @@ function generateTowerLocationIDs() {
 
 function generateAceLocationIDs() {
    var result = {};
-   for (var suit=0; suit<4; ++suit)
-      result[suit] = 'A' + suit;
+   for (var suit=0; suit<4; ++suit) {
+      result[suit] = new Array();
+      for (var rank=1; rank<13; ++rank)
+         result[suit][rank] = 'A' + suit + '_' + rank;
+   }
    return result;
 }
 
@@ -56,11 +59,13 @@ function generateAllLocationIDs() {
    
    var aces = generateAceLocationIDs();
    for (var suit=0; suit<4; ++suit) {
-      var id = aces[suit];
-      result[id] = {
-         isAce: true,
-         suit: suit 
-      };
+      for (var rank=1; rank<13; ++rank) {
+         var id = aces[suit][rank];
+         result[id] = {
+            isAce: true,
+            suit: suit 
+         };
+      }
    }
    
    return result;

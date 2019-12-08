@@ -24,7 +24,7 @@ const cardRankMnemonics = {
 const cardSuitMnemonics = ['C', 'D', 'H', 'S'];
 
 
-function generateAllCardIDs() {
+function generateAllCardIDInfo() {
    var result = new Object();
    for (var suitIndex in cardSuitMnemonics) {
       for (var cardRankIndex in cardRankMnemonics) {
@@ -38,7 +38,14 @@ function generateAllCardIDs() {
    return result;
 }
 
+function generateAllCardIDs() {
+   var result = new Array();
+   for (var cardID in generateAllCardIDInfo())
+      result.push(cardID);
+   return result;
+}
 
 const CardID =  {
-   all : generateAllCardIDs()
+   all : generateAllCardIDs(),
+   info : generateAllCardIDInfo()
 };

@@ -17,9 +17,7 @@ function CardLocations() {
    /// </summary>
    this.newGame = function() {
       // make an array of all the CardIDs
-      var cardIDs = new Array();
-      for (var cardID in CardID.all)
-         cardIDs.push(cardID);
+      var cardIDs = CardID.all.slice();
       
       // shuffle
       for (var i=cardIDs.length-1; i>=0; --i) {
@@ -91,11 +89,16 @@ function CardLocations() {
       cardLocations[cardID] = LocationID.columns[column][this.getNumberOfCardsOnColumn(column)];
    };
    
+   this.moveToAce = function(cardID) {
+      var cardInfo = CardID.info[cardID];
+      cardLocations[cardID] = LocationID.aces[cardInfo.suitIndex][cardInfo.rankIndex];
+   };
+   
    /// <summary>
    /// Moves all Card3D objects to the current positions and shows them
    /// </summary>
    this.repositionAll = function() {
-      for (var cardID in CardID.all) {
+      for (var cardID in CardID.info) {
          var card3D = deckOfCards.getCard3D(cardID);
          var locationID = this.getCardLocation(cardID);
          card3D.position.copy(world.getCardLocation(locationID));
