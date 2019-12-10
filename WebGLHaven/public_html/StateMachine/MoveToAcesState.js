@@ -54,6 +54,14 @@ function MoveToAcesState() {
       else
          stateMachine.setState(new GameIdleState());
    };
+   
+   this.service = function(time) {
+      var cardToMove = getNextCardToMove();
+      if (cardToMove)
+         startAnimation(cardToMove);
+      else
+         stateMachine.setState(new GameIdleState());
+   };
 }
 
 

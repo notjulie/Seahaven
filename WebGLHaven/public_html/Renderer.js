@@ -6,7 +6,7 @@
  */
 
 
-/* global THREE */
+/* global THREE, stateMachine */
 
 function Renderer(canvas) {
    var requestedCanvasSize;
@@ -42,6 +42,9 @@ function Renderer(canvas) {
 
    function render(time) {
       time *= 0.001;  // convert time to seconds
+
+      // give the state machine its timeslice
+      stateMachine.service(time);
 
       if (requestedCanvasSize) {
          // update the size of the canvas to fit the window

@@ -25,4 +25,8 @@ function StateMachine() {
       currentState = state;
       currentState.enter();
    };
+   
+   this.service = function(time) {
+      currentState.service(time);
+   }
 }
