@@ -14,6 +14,7 @@
 /// </summary>
 function World() {
    const cardWidth = 0.43;
+   const cardHeight = (0.7 / 0.43) * cardWidth;
    const relativeMarginBetweenCards = 0.2;
    const groundY = -1.0;
 
@@ -23,10 +24,19 @@ function World() {
    const tableHeight = 1.0;
    const tableFrontZ = -0.3;
    const zSpacingOnGround = 0.02;
+   
+   // aces
+   const yDistanceToAces = 1.0;
+   const zDistanceToAces = 2.0;
+   const aceZSpacing = 0.01;
 
 
    this.getCardWidth = function() {
       return cardWidth;
+   };
+
+   this.getCardHeight = function() {
+      return cardHeight;
    };
 
    /// <summary>
@@ -76,6 +86,22 @@ function World() {
    };
 
    /// <summary>
+   /// returns the location on the aces for the given card
+   /// </summary>
+   this.getAcePosition = function(suit, rank) {
+      // start with the position of the top of the card on the top of a
+      // column straight in front of the ace
+      var result = this.getColumnPosition(3 + suit, 0);
+      result.y += cardHeight;
+      result.y += yDistanceToAces;
+      
+      // move it back in Z
+      result.z -= zDistanceToAces;
+      result.z += rank*aceZSpacing;
+      return result;
+   };
+
+   /// <summary>
    /// returns the location at which to place the given Tower3D object
    /// </summary>
    this.getTowerPosition = function (tower) {
@@ -114,10 +140,15 @@ function World() {
       return result;
    };
    
+   /// <summary>
+   /// returns the location associated with the given location ID
+   /// </summary>
    this.getCardLocation = function(locationID) {
       var locationInfo = LocationID.all[locationID];
       if (locationInfo.isTower)
          return this.getTowerTop(locationInfo.tower);
+      else if (locationInfo.isAce)
+         return this.getAcePosition(locationInfo.suit, locationInfo.rank);
       else
          return this.getColumnPosition(locationInfo.column, locationInfo.row);
    }

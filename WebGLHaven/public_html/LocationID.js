@@ -63,7 +63,8 @@ function generateAllLocationIDs() {
          var id = aces[suit][rank];
          result[id] = {
             isAce: true,
-            suit: suit 
+            suit: suit,
+            rank: rank
          };
       }
    }

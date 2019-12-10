@@ -43,7 +43,7 @@
          var stateMachine = new StateMachine();
          var deckOfCards = new DeckOfCards({
             width: world.getCardWidth(),
-            height: (0.7 / 0.43) * world.getCardWidth(),
+            height: world.getCardHeight(),
             cornerRadius: world.getCardWidth() / 10,
             rankHeight: (0.13 / 0.43) * world.getCardWidth()
          });
