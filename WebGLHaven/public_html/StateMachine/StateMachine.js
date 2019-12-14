@@ -10,11 +10,16 @@
 
 function StateMachine() {
    var currentState = new State();
+   var currentTime;
    
    this.cardClicked = function(cardID) {
       gameState.moveToBottomOfColumn(cardID, 0);
       gameState.repositionAll();
    };
+   
+   this.getTime = function() {
+      return currentTime;
+   }
    
    this.newGame = function() {
       currentState.newGame();
@@ -27,6 +32,7 @@ function StateMachine() {
    };
    
    this.service = function(time) {
-      currentState.service(time);
+      currentTime = time;
+      currentState.service();
    }
 }

@@ -56,12 +56,15 @@ function MoveToAcesState() {
       
       // move the card's static location
       cardLocations.moveToAce(cardID);
-      var endLocation = cardLocations.getCardAtLocation(cardID);
+      var endLocation = cardLocations.getCardLocation(cardID);
       
       // start animating it to that position
       animations.push(new AnimateToAce(cardID, startLocation, endLocation));
    }
    
+   /// <summary>
+   /// Performs actions associated with state entry
+   /// </summary>
    this.enter = function() {
       // either we have something to do or we don't
       var cardToMove = getNextCardToMove();
@@ -71,11 +74,31 @@ function MoveToAcesState() {
          stateMachine.setState(new GameIdleState());
    };
    
-   this.service = function(time) {
-      var cardToMove = getNextCardToMove();
-      if (cardToMove)
-         startAnimation(cardToMove);
-      else
+   /// <summary>
+   /// Carries out periodic actions
+   /// </summary>
+   this.service = function() {
+      // give all our current animations their timeslice and remove any that
+      // have finished
+      var canStartNextCard = true;
+      for (var i=animations.length-1; i>=0; --i) {
+         animations[i].service();
+         if (animations[i].isFinished()) {
+            animations.splice(i,1);
+         } else if (!animations[i].canStartNext()) {
+            canStartNextCard = false;
+         }
+      }
+      
+      // if we can start the next card, do so
+      if (canStartNextCard) {
+         var cardToMove = getNextCardToMove();
+         if (cardToMove)
+            startAnimation(cardToMove);
+      }
+      
+      // if all our animations are done we can move on to the next state
+      if (animations.length === 0)
          stateMachine.setState(new GameIdleState());
    };
 }
