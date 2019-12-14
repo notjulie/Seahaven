@@ -13,6 +13,7 @@ function MoveToAcesState() {
    State.call(this);
    
    // private members
+   const zDistanceBetweenCards = 0.01;
    var animations = [];
    
    /// <summary>
@@ -78,22 +79,27 @@ function MoveToAcesState() {
    /// Carries out periodic actions
    /// </summary>
    this.service = function() {
-      // give all our current animations their timeslice and remove any that
-      // have finished
-      var canStartNextCard = true;
-      for (var i=animations.length-1; i>=0; --i) {
-         animations[i].service();
-         if (animations[i].isFinished()) {
-            animations.splice(i,1);
-         } else if (!animations[i].canStartNext()) {
-            canStartNextCard = false;
-         }
+      // give all our current animations their timeslice
+      var maximumZ = -100000;
+      for (var i=0; i<animations.length; ++i) {
+         animations[i].service(maximumZ + zDistanceBetweenCards);
+         var z = animations[i].getCurrentPosition().z;
+         if (z > maximumZ)
+            maximumZ = z;
       }
       
-      // if we can start the next card, do so
-      if (canStartNextCard) {
-         var cardToMove = getNextCardToMove();
-         if (cardToMove)
+      // remove any that have finished
+      for (var i=animations.length-1; i>=0; --i) {
+         if (animations[i].isFinished())
+            animations.splice(i,1);
+      }
+      
+      // if all the cards' Z positions are further back than
+      // the next card to move we can start moving it
+      var cardToMove = getNextCardToMove();
+      if (cardToMove) {
+         var startPosition = world.getCardLocation(cardLocations.getCardLocation(cardToMove));
+         if (startPosition.z > maximumZ + zDistanceBetweenCards)
             startAnimation(cardToMove);
       }
       
