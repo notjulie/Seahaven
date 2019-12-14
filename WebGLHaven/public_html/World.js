@@ -17,6 +17,7 @@ function World() {
    const cardHeight = (0.7 / 0.43) * cardWidth;
    const relativeMarginBetweenCards = 0.2;
    const groundY = -1.0;
+   const defaultCameraPosition = new THREE.Vector3(0, 0, 1.9);
 
    // table dimensions
    const numberOfRowsOnTable = 6;
@@ -64,6 +65,14 @@ function World() {
          );         
       }
 
+   };
+
+   /**
+    * Gets the default camera position
+    * @returns {THREE.Vector3}
+    */
+   this.getDefaultCameraPosition = function() {
+      return defaultCameraPosition;
    };
 
    this.getGroundY = function () {
