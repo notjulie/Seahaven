@@ -144,12 +144,12 @@ function World() {
    /// returns the location associated with the given location ID
    /// </summary>
    this.getCardLocation = function(locationID) {
-      var locationInfo = LocationID.all[locationID];
+      var locationInfo = LocationID.info[locationID];
       if (locationInfo.isTower)
          return this.getTowerTop(locationInfo.tower);
       else if (locationInfo.isAce)
          return this.getAcePosition(locationInfo.suit, locationInfo.rank);
       else
          return this.getColumnPosition(locationInfo.column, locationInfo.row);
-   }
+   };
 }

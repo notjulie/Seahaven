@@ -34,7 +34,7 @@ function generateAceLocationIDs() {
    return result;
 }
 
-function generateAllLocationIDs() {
+function generateAllLocationInfo() {
    var result = new Object();
 
    var columns = generateColumnLocationIDs();
@@ -72,9 +72,40 @@ function generateAllLocationIDs() {
    return result;
 }
 
+/**
+ * Global that contains handy collections for iterating and accessing
+ * info about LocationID strings
+ * 
+ * @type Object
+ */
 const LocationID =  {
-   aces : generateAceLocationIDs(),
-   columns : generateColumnLocationIDs(),
-   towers : generateTowerLocationIDs(),
-   all : generateAllLocationIDs()
+   /**
+    * Double indexed collection that contains LocationID strings for
+    * locations of cards sitting on the ace piles.
+    * 
+    * @type object
+    */
+   aces : Object.freeze(generateAceLocationIDs()),
+
+   /**
+    * Double indexed collection that contains LocationID strings for
+    * locations of cards sitting on the columns.
+    * 
+    * @type object
+    */
+   columns : Object.freeze(generateColumnLocationIDs()),
+
+   /**
+    * Collection that contains LocationID strings for the towers.
+    * 
+    * @type object
+    */
+   towers : Object.freeze(generateTowerLocationIDs()),
+
+   /**
+    * Collection that contains location information for each LocationID string.
+    * 
+    * @type object
+    */
+   info : Object.freeze(generateAllLocationInfo())
 };
