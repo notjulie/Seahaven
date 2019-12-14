@@ -12,11 +12,20 @@ function MoveToAcesState() {
    // inherit State
    State.call(this);
    
+   // private members
+   var animations = [];
+   
+   /// <summary>
+   /// Determines if a card can move to the aces
+   /// </summary>
    function canMoveToAce(cardID) {
       var cardInfo = CardID.info[cardID];
       return cardInfo.rankIndex === cardLocations.cardsOnAce(cardInfo.suitIndex) + 1;
    }
    
+   /// <summary>
+   /// Gets the next card to move
+   /// </summary>
    function getNextCardToMove() {
       // try towers
       for (var tower=0; tower<4; ++tower) {
@@ -38,12 +47,19 @@ function MoveToAcesState() {
       return;
    }
 
+   /// <summary>
+   /// Starts animating the card
+   /// </summary>
    function startAnimation(cardID) {
-      // for now just move it
-      cardLocations.moveToAce(cardID);
+      // get the starting location
+      var startLocation = cardLocations.getCardLocation(cardID);
       
-      // update
-      cardLocations.repositionAll();
+      // move the card's static location
+      cardLocations.moveToAce(cardID);
+      var endLocation = cardLocations.getCardAtLocation(cardID);
+      
+      // start animating it to that position
+      animations.push(new AnimateToAce(cardID, startLocation, endLocation));
    }
    
    this.enter = function() {
