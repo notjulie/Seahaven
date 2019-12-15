@@ -24,9 +24,6 @@ function Tower3D() {
       tower.position.y = -boundingBox.min.y * tower.scale.y;
       tower.position.x = -(boundingBox.min.x + boundingBox.max.x)/2 * tower.scale.x;
 
-      // add a spotlight
-      tower.add(new THREE.SpotLight(0xFFFFFF, 4));
-
       // and add it as the only actual thing in this group
       thisTower.add(tower);
    }

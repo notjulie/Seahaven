@@ -32,11 +32,12 @@ function Renderer(canvas) {
    // create our main scene
    const scene = new THREE.Scene();
    {
-      const color = 0xFFFFFF;
-      const intensity = 1;
-      const light = new THREE.DirectionalLight(color, intensity);
-      light.position.set(-1, 2, 4);
+      var light = new THREE.DirectionalLight(0xFFFFFF, 10);
+      light.position.set(0, 1000, 0);
       scene.add(light);
+      
+      scene.add(new THREE.AmbientLight(0xFFFFFF, 5));
+      
       scene.background = new THREE.Color(0x80A0A0);
    }
 
