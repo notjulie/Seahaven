@@ -15,6 +15,12 @@ function Tower3D() {
    // inherit THREE.Group
    THREE.Group.call(this);
 
+   // create an object that represents where we want a spotlight to
+   // aim when it aims at us
+   var spotlightTarget = new THREE.Group();
+   spotlightTarget.position.y = 0.8;
+   this.add(spotlightTarget);
+
    function setTower(tower) {
       // normalize its scale so that the height is 1.0
       var boundingBox = new THREE.Box3().setFromObject(tower);
@@ -35,6 +41,10 @@ function Tower3D() {
    }, undefined, function (error) {
       console.error(error);
    });
+   
+   this.getSpotlightTarget = function() {
+      return spotlightTarget;
+   }
 }
 
 Tower3D.prototype = Object.assign( Object.create( THREE.Group.prototype ), {

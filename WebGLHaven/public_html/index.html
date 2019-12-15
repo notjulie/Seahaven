@@ -129,6 +129,7 @@
                towers[i].scale.y = position.height;
                scene.add(towers[i]);
             }
+            renderer.setSpotLightTarget(towers[2].getSpotlightTarget());
 
             renderer.start();
 

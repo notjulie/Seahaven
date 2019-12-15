@@ -138,15 +138,18 @@ function World() {
       }
    };
 
-   /// <summary>
-   /// returns the location at which to place a card that sits on
-   /// a tower
-   /// </summary>
+   /**
+    * returns the location at which to place a card that sits on a tower
+    * @param tower {integer} index of tower
+    * @returns {Vector3}
+    */
    this.getTowerTop = function (tower) {
-      var result = this.getTowerPosition(tower);
-      result.y += result.height;
-      result.x -= cardWidth/2;
-      return result;
+      var towerPosition = this.getTowerPosition(tower);
+      return new THREE.Vector3(
+            towerPosition.x - cardWidth/2,
+            towerPosition.y + towerPosition.height,
+            towerPosition.z
+            );
    };
    
    /// <summary>

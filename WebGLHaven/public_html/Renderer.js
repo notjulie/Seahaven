@@ -6,11 +6,12 @@
  */
 
 
-/* global THREE, stateMachine */
+/* global THREE, stateMachine, world */
 
 function Renderer(canvas) {
    var requestedCanvasSize;
    var mouse;
+   var spotLight;
 
    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
    const raycaster = new THREE.Raycaster();
@@ -40,6 +41,17 @@ function Renderer(canvas) {
       
       scene.background = new THREE.Color(0x80A0A0);
    }
+   
+   spotLight = new THREE.SpotLight(0xFF0000, 15);
+   scene.add(spotLight);
+
+   this.setSpotLightTarget = function(target) {
+      spotLight.target = target;
+      spotLight.position.x = target.position.x;
+      spotLight.position.y = target.position.y + 1.5;
+      spotLight.position.z = target.position.z + 0.005;
+      spotLight.angle *= 0.17;
+   };
 
    function render(time) {
       time *= 0.001;  // convert time to seconds
