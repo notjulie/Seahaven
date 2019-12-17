@@ -23,29 +23,43 @@ const cardRankMnemonics = {
 
 const cardSuitMnemonics = ['C', 'D', 'H', 'S'];
 
+/**
+ * Singleton with properties for enumerating and obtaining info about CardIDs
+ * 
+ * @type Object
+ */
+const CardID =  {};
 
-function generateAllCardIDInfo() {
-   var result = new Object();
-   for (var suitIndex in cardSuitMnemonics) {
-      for (var cardRankIndex in cardRankMnemonics) {
-         var id = cardRankMnemonics[cardRankIndex] + cardSuitMnemonics[suitIndex];
-         result[id] = {
-            suitIndex: parseInt(suitIndex),
-            rankIndex: parseInt(cardRankIndex)
-         };
-      }
-   }
-   return result;
-}
+// create CardID.info collection
+Object.defineProperty(CardID, 'info', {
+   value: Object.freeze(function() {
+         var result = new Object();
+         for (var suitIndex in cardSuitMnemonics) {
+            for (var cardRankIndex in cardRankMnemonics) {
+               var id = cardRankMnemonics[cardRankIndex] + cardSuitMnemonics[suitIndex];
+               result[id] = {
+                  suitIndex: parseInt(suitIndex),
+                  rankIndex: parseInt(cardRankIndex)
+               };
+            }
+         }
+         return result;
+      }()),
+   writable: false,
+   enumerable: true,
+   configurable: false
+});
 
-function generateAllCardIDs() {
-   var result = new Array();
-   for (var cardID in generateAllCardIDInfo())
-      result.push(cardID);
-   return result;
-}
+// create CardID.all collection
+Object.defineProperty(CardID, 'all', {
+   value: Object.freeze(function() {
+         var result = new Array();
+         for (var cardID in CardID.info)
+            result.push(cardID);
+         return result;
+      }()),
+   writable: false,
+   enumerable: true,
+   configurable: false
+});
 
-const CardID =  {
-   all : generateAllCardIDs(),
-   info : generateAllCardIDInfo()
-};
