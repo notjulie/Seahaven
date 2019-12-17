@@ -8,17 +8,23 @@
 
 /* global THREE */
 
-function Card3D(clickID) {
+
+/**
+ * Constructor for Card3D, which is an Object3D that represents a card
+ * 
+ * @param {string} cardID
+ * @returns {Card3D}
+ */
+function Card3D(cardID) {
    // inherit THREE.Group
    THREE.Group.call(this);
    
    this.getClickID = function() {
-      return clickID;
-   }
+      return cardID;
+   };
 }
 
+
 Card3D.prototype = Object.assign( Object.create( THREE.Group.prototype ), {
-
-   constructor: Card3D,
-
+   constructor: Card3D
 } );
