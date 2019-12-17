@@ -45,10 +45,10 @@
          var world = new World();
          var stateMachine = new StateMachine();
          var deckOfCards = new DeckOfCards({
-            width: world.getCardWidth(),
-            height: world.getCardHeight(),
-            cornerRadius: world.getCardWidth() / 10,
-            rankHeight: (0.13 / 0.43) * world.getCardWidth()
+            width: world.cardDimensions.width,
+            height: world.cardDimensions.height,
+            cornerRadius: world.cardDimensions.width / 10,
+            rankHeight: (0.13 / 0.43) * world.cardDimensions.width
          });
 
 

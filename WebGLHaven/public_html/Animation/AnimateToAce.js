@@ -49,11 +49,11 @@ function AnimateToAce(cardID, startLocationID, endLocationID) {
       }
    } else {
       var step1 = world.getCardLocation(startLocationID);
-      step1.y += world.getCardHeight();
+      step1.y += world.cardDimensions.height;
       path.push(step1);
       
       var step2 = world.getCardLocation(startLocationID);
-      step2.y = world.getColumnPosition(0,0).y + world.getCardHeight();
+      step2.y = world.getColumnPosition(0,0).y + world.cardDimensions.height;
       step2.z = world.getColumnPosition(0,0).z;
       path.push(step2);
    }

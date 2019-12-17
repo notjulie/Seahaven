@@ -13,9 +13,6 @@
 /// 3D coordinate system.
 /// </summary>
 function World() {
-   const cardWidth = 0.43;
-   const cardHeight = (0.7 / 0.43) * cardWidth;
-   const relativeMarginBetweenCards = 0.2;
    const groundY = -1.0;
    const defaultCameraPosition = new THREE.Vector3(0, 0, 1.9);
 
@@ -31,14 +28,17 @@ function World() {
    const zDistanceToAces = 2.0;
    const aceZSpacing = 0.01;
 
-
-   this.getCardWidth = function() {
-      return cardWidth;
-   };
-
-   this.getCardHeight = function() {
-      return cardHeight;
-   };
+   // define the cardDimensions property
+   Object.defineProperty(this, 'cardDimensions', {
+      value: Object.freeze({
+         width:0.43,
+         height:0.7,
+         relativeMargin:0.2
+      }),
+      writable: false,
+      enumerable: true,
+      configurable: false
+   });
 
    /// <summary>
    /// Gets the card location associated with a card at a given
@@ -48,7 +48,9 @@ function World() {
       var table = this.getTableGeometry();
       var tableSize = table.getSize(new THREE.Vector3());
 
-      var x = (relativeMarginBetweenCards/2 + (1+relativeMarginBetweenCards)*(column - 5)) * cardWidth;
+      var x = (
+         this.cardDimensions.relativeMargin/2 + 
+         (1+this.cardDimensions.relativeMargin)*(column - 5)) * this.cardDimensions.width;
 
       // see if it's on the table or on the ground
       if (row < numberOfRowsOnTable) {
@@ -80,7 +82,9 @@ function World() {
    };
 
    this.getTableGeometry = function () {
-      var width = 10.0 * (1 + relativeMarginBetweenCards)*cardWidth + 0.5*cardWidth;
+      var width =
+         10.0 * (1 + this.cardDimensions.relativeMargin)*this.cardDimensions.width +
+         0.5*this.cardDimensions.width;
       
       var result = new THREE.Box3();
       result.min.x = -width/2;
@@ -101,7 +105,7 @@ function World() {
       // start with the position of the top of the card on the top of a
       // column straight in front of the ace
       var result = this.getColumnPosition(3 + suit, 0);
-      result.y += cardHeight;
+      result.y += this.cardDimensions.height;
       result.y += yDistanceToAces;
       
       // move it back in Z
@@ -146,7 +150,7 @@ function World() {
    this.getTowerTop = function (tower) {
       var towerPosition = this.getTowerPosition(tower);
       return new THREE.Vector3(
-            towerPosition.x - cardWidth/2,
+            towerPosition.x - this.cardDimensions.width/2,
             towerPosition.y + towerPosition.height,
             towerPosition.z
             );
