@@ -17,6 +17,9 @@ function State() {
    this.service = function(time) {
    };
    
+   this.onMouseDown = function(event) {
+   };
+
    this.newGame = function() {
       stateMachine.setState(new NewGameState());
    };

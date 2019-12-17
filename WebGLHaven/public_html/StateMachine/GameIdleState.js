@@ -5,10 +5,14 @@
  * Warranty: None
  */
 
-/* global State, gameState, stateMachine */
+/* global State, stateMachine */
 
 function GameIdleState() {
    // inherit State
    State.call(this);
+   
+   this.onMouseDown = function(event) {
+      alert('GameIdleState.onMouseDown not implemented');
+   };
 }
 
