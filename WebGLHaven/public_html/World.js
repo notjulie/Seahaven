@@ -26,7 +26,7 @@ function World() {
    // aces
    const yDistanceToAces = 1.0;
    const zDistanceToAces = 2.0;
-   const aceZSpacing = 0.01;
+   const aceZSpacing = 0.05;
 
    // define the cardDimensions property
    Object.defineProperty(this, 'cardDimensions', {
