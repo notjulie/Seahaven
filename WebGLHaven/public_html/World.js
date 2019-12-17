@@ -32,7 +32,7 @@ function World() {
    Object.defineProperty(this, 'cardDimensions', {
       value: Object.freeze({
          width:0.43,
-         height:0.7,
+         height:0.65,
          relativeMargin:0.2
       }),
       writable: false,

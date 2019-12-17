@@ -27,7 +27,7 @@ function DeckOfCards(attributes) {
    const fontName = attributes.font ? attributes.font : 'three/droid_serif_bold.typeface.json';
    const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1 * cardHeight;
    const suitHeight = rankHeight;
-   const cardFaceColor = 0xFFFFF4;
+   const cardFaceColor = 0xF4FCFF;
 
    const cards = new Array();
 
@@ -35,8 +35,8 @@ function DeckOfCards(attributes) {
    const rankGeometries = new Array();
    const suits = [
       {color: 0x000000},
-      {color: 0xFF0000},
-      {color: 0xFF0000},
+      {color: 0xD00000},
+      {color: 0xD00000},
       {color: 0x000000}
    ];
 
@@ -58,7 +58,8 @@ function DeckOfCards(attributes) {
       var geometry = new THREE.TextGeometry(text, {
          font: font,
          size: 80,
-         height: 1
+         height: 10,
+         curveSegments:36
       });
       geometry.computeBoundingBox();
       var heightScale = rankHeight / (geometry.boundingBox.max.y - geometry.boundingBox.min.y);
@@ -99,36 +100,37 @@ function DeckOfCards(attributes) {
       // Add the back of the card... for now I just give the front and back
       // the same geometry, which means that the edge of the card is half
       // front color and half back color.  I'll probably change that.
-      var cardBackMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: 0x3F3F3F}));
-      cardBackMesh.scale.x = cardBackMesh.scale.y = 1.008;
+      var cardBackMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: 0}));
+      cardBackMesh.scale.x = cardBackMesh.scale.y = 1.0015;
       cardBackMesh.position.x = (1 - cardBackMesh.scale.x) * cardWidth / 2;
       cardBackMesh.position.y = (1 - cardBackMesh.scale.y) * cardHeight / 2;
       cardBackMesh.position.z = (cardGeometry.boundingBox.min.z - cardGeometry.boundingBox.max.z) / 500;
       group.add(cardBackMesh);
 
       // calculate a margin... the minimum would be cornerRadius * (1 - 0.707)
-      var margin = 0.5 * cardCornerRadius;
+      var margin = 0.6 * cardCornerRadius;
       
       // add the suit
       var suitGeometry = suits[cardInfo.suitIndex].geometry;
-      var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color: suits[cardInfo.suitIndex].color}));
+      var suitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshBasicMaterial({color: suits[cardInfo.suitIndex].color}));
       group.add(suitMesh);
       suitMesh.position.z = 0.001;
       suitMesh.position.y = cardHeight - margin - suitGeometry.boundingBox.max.y;
       suitMesh.position.x = cardWidth - margin - suitGeometry.boundingBox.max.x;
 
       // add the rank
-      var rankMesh = new THREE.Mesh(rankGeometries[cardInfo.rankIndex], new THREE.MeshPhongMaterial({color: suits[cardInfo.suitIndex].color}));
+      var rankMesh = new THREE.Mesh(rankGeometries[cardInfo.rankIndex], new THREE.MeshBasicMaterial({color: suits[cardInfo.suitIndex].color}));
       rankMesh.position.z = cardGeometry.boundingBox.max.z;
       rankMesh.position.y = cardHeight - rankGeometries[cardInfo.rankIndex].boundingBox.max.y - margin;
       rankMesh.position.x = margin;
       group.add(rankMesh);
 
       // and add the larger suit image
-      var bigSuitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshPhongMaterial({color: suits[cardInfo.suitIndex].color}));
+      const largeSuitContentArea = 0.9;
+      var bigSuitMesh = new THREE.Mesh(suitGeometry, new THREE.MeshBasicMaterial({color: suits[cardInfo.suitIndex].color}));
       bigSuitMesh.scale.x = bigSuitMesh.scale.y = 2.0;
       bigSuitMesh.position.z = 0.001;
-      bigSuitMesh.position.y = (cardHeight -  bigSuitMesh.scale.y*suitGeometry.boundingBox.max.y) / 2;
+      bigSuitMesh.position.y = (largeSuitContentArea*cardHeight -  bigSuitMesh.scale.y*suitGeometry.boundingBox.max.y) / 2;
       bigSuitMesh.position.x = (cardWidth -  bigSuitMesh.scale.x*suitGeometry.boundingBox.max.x) / 2;
       group.add(bigSuitMesh);
 
