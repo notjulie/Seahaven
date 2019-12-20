@@ -9,16 +9,15 @@
 
 /* global THREE, CardID */
 
-/// <summary>
-/// class DeckOfCards
-///    Represents a deck of 3D card objects
-/// construction attributes:
-///    width: width of the card; default 0.5
-///    height: height of the card; default 1.0
-///    cornerRadius: the corner radius; default 0.01
-///    font: the path of the JSON file containing the typeface definition
-///    rankHeight: the height of the rank image
-/// </summary>
+/**
+ * class DeckOfCards constructor
+ * @param {Object} attributes object with optional contruction attributes, including:
+ *    width: width of the card; default 0.5
+ *    height: height of the card; default 1.0
+ *    cornerRadius: the corner radius; default 0.01
+ *    font: the path of the JSON file containing the typeface definition
+ *    rankHeight: the height of the rank image
+ */
 function DeckOfCards(attributes) {
    // private data... attributes
    const cardWidth = attributes.width ? attributes.width : 0.5;
@@ -28,6 +27,7 @@ function DeckOfCards(attributes) {
    const rankHeight = attributes.rankHeight ? attributes.rankHeight : 0.1 * cardHeight;
    const suitHeight = rankHeight;
    const cardFaceColor = 0xF4FCFF;
+   const zOffsetForCardBack = 0.001;
 
    const cards = new Array();
 
@@ -81,8 +81,8 @@ function DeckOfCards(attributes) {
    /**
     * Creates a card Object3D for the given card ID
     * 
-    * @param {string} cardID
-    * @returns {Card3D}
+    * @param {string} cardID the card ID string
+    * @returns {Card3D} an Object3D that contains all the different parts that make up a card
     */
    function createCard3D(cardID) {
       var cardInfo = CardID.info[cardID];
@@ -104,7 +104,7 @@ function DeckOfCards(attributes) {
       cardBackMesh.scale.x = cardBackMesh.scale.y = 1.0015;
       cardBackMesh.position.x = (1 - cardBackMesh.scale.x) * cardWidth / 2;
       cardBackMesh.position.y = (1 - cardBackMesh.scale.y) * cardHeight / 2;
-      cardBackMesh.position.z = (cardGeometry.boundingBox.min.z - cardGeometry.boundingBox.max.z) / 500;
+      cardBackMesh.position.z = -zOffsetForCardBack;
       group.add(cardBackMesh);
 
       // calculate a margin... the minimum would be cornerRadius * (1 - 0.707)
@@ -139,10 +139,11 @@ function DeckOfCards(attributes) {
    };
    
    
-   /// <summary>
-   /// Loads resources required by the deck of cards, calls the callback
-   /// when loading completes.
-   /// </summary>
+   /**
+    * Loads resources required by the deck of cards, calls the callback
+    * when loading completes.
+    * @param {function} loadCompleteCallback callback for when loading completes
+    */
    this.initialize = function (loadCompleteCallback) {
       // start creating our rank geometries
       var fontLoader = new THREE.FontLoader();
@@ -161,9 +162,11 @@ function DeckOfCards(attributes) {
       suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
    };
    
-   /// <summary>
-   /// Gets the requested card object
-   /// </summary>
+   /**
+    * Gets the requested card object
+    * @param {string} cardID the card ID string
+    * @returns {Card3D} the card
+    */
    this.getCard3D = function(cardID) {
       return cards[cardID];
    };
