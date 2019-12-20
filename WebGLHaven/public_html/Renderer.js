@@ -16,7 +16,6 @@
  */
 function Renderer(canvas) {
    var requestedCanvasSize;
-   var mouse;
    var spotLight;
 
    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
@@ -85,24 +84,6 @@ function Renderer(canvas) {
          requestedCanvasSize = undefined;
       }
 
-      if (mouse) {
-         // update the picking ray with the camera and mouse position
-         raycaster.setFromCamera(mouse, camera);
-
-         // calculate objects intersecting the picking ray
-         var intersects = raycaster.intersectObjects(scene.children, true);
-
-         for (var i = 0; i < intersects.length; i++) {
-            if (intersects[i].object.parent.getClickID)
-            {
-               stateMachine.cardClicked(intersects[i].object.parent.getClickID());
-               break;
-            }
-         }
-
-         mouse = undefined;
-      }
-
       renderer.render(scene, camera);
 
       requestAnimationFrame(render);
@@ -120,4 +101,28 @@ function Renderer(canvas) {
    };
    
    this.getScene = function() { return scene; };
+   
+   /**
+    * Gets the ID of the card at the given point
+    * 
+    * @param {number} x x coordinate within the canvas
+    * @param {number} y y coordinate within the canvas
+    * @returns {string} the CardID string
+    */
+   this.pointToCard = function(x, y) {
+      // update the picking ray with the camera and mouse position
+      var screenPoint = new THREE.Vector2(
+         x / renderer.domElement.clientWidth * 2  - 1,
+         1 - y / renderer.domElement.clientHeight * 2
+         );
+      raycaster.setFromCamera(screenPoint, camera);
+
+      // calculate objects intersecting the picking ray
+      var intersects = raycaster.intersectObjects(scene.children, true);
+
+      // return the first one that intersects that belongs to a Card3D
+      for (var i = 0; i < intersects.length; i++)
+         if (intersects[i].object.parent.cardID)
+            return intersects[i].object.parent.cardID;
+   };
 }

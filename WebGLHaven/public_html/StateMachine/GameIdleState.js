@@ -5,14 +5,16 @@
  * Warranty: None
  */
 
-/* global State, stateMachine */
+/* global State, stateMachine, renderer, THREE */
 
 function GameIdleState() {
    // inherit State
    State.call(this);
    
    this.onMouseDown = function(event) {
-      alert('GameIdleState.onMouseDown not implemented');
+      var cardID = renderer.pointToCard(event.clientX, event.clientY);
+      if (cardID)
+         alert(cardID);
    };
 }
 

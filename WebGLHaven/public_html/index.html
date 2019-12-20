@@ -54,22 +54,18 @@
 
          var cardLocations = new CardLocations();
 
-         function resizeCanvas() {
+         // create our renderer
+         const canvas = document.querySelector('#c');
+         var renderer = new Renderer(canvas);
+         
+         // add our handler to resize it
+         body.onresize = function () {
             renderer.resizeCanvas(body.clientWidth, body.clientHeight);
-         }
-
+         };
+         body.onresize();
+         
          function main() {
-
-            // create our renderer
-            const canvas = document.querySelector('#c');
-            var renderer = new Renderer(canvas);
             var scene = renderer.getScene();
-
-            // add our handler to resize it
-            body.onresize = function () {
-               renderer.resizeCanvas(body.clientWidth, body.clientHeight);
-            };
-            body.onresize();
 
             var texture = new THREE.TextureLoader().load('Sand002_COLOR.jpg');
             texture.repeat.x = 5000;
