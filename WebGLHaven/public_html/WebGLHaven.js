@@ -6,7 +6,7 @@
  */
 
 
-/* global body, THREE, CardID */
+/* global THREE, CardID */
 
 /**
  * The global world geometry
@@ -29,11 +29,6 @@ var cardLocations = new CardLocations();
 const canvas = document.querySelector('#c');
 var renderer = new Renderer(canvas);
 
-// add our handler to resize it
-body.onresize = function () {
-   renderer.resizeCanvas(body.clientWidth, body.clientHeight);
-};
-body.onresize();
 
 function main() {
    var scene = renderer.getScene();
@@ -102,4 +97,3 @@ function main() {
 
 }
 
-main();
