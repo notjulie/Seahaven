@@ -8,13 +8,20 @@
 /* global CardID, LocationID, deckOfCards, gameState, world */
 
 
+/**
+ * Constructor for CardLocations, which is just a collection of the
+ * location IDs of all cards.
+ * 
+ * @returns {CardLocations}
+ */
 function CardLocations() {
    const cardLocations = {};
    
    
-   /// <summary>
-   /// shuffles the deck and deals
-   /// </summary>
+   /**
+    * shuffles the deck and deals
+    * @returns {undefined}
+    */
    this.newGame = function() {
       // make an array of all the CardIDs
       var cardIDs = CardID.all.slice();
@@ -35,6 +42,12 @@ function CardLocations() {
       cardLocations[cardIDs[51]] = LocationID.towers[2];
    };
 
+   /**
+    * Returns the current LocationID for the given card
+    * 
+    * @param {string} cardID the card ID
+    * @returns {string} the location ID
+    */
    this.getCardLocation = function(cardID) {
       return cardLocations[cardID];
    };

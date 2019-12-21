@@ -29,6 +29,15 @@ function State() {
    this.onMouseMove = function(event) {
    };
 
+   /**
+    * Handles a mouse up event; does nothing by default
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseUp = function(event) {
+   };
+
    this.newGame = function() {
       stateMachine.setState(new NewGameState());
    };

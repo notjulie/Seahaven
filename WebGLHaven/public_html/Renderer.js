@@ -28,6 +28,9 @@ function Renderer(canvas) {
    canvas.addEventListener('mousemove', function(event) {
       stateMachine.onMouseMove(event);
    });
+   canvas.addEventListener('mouseup', function(event) {
+      stateMachine.onMouseUp(event);
+   });
    
    // create our default camera position
    const fov = 75;
@@ -51,6 +54,14 @@ function Renderer(canvas) {
    
    spotLight = new THREE.SpotLight(0xFF0000, 15);
    scene.add(spotLight);
+
+   function pointToRaycaster(x, y) {
+      var screenPoint = new THREE.Vector2(
+         x / renderer.domElement.clientWidth * 2  - 1,
+         1 - y / renderer.domElement.clientHeight * 2
+         );
+      raycaster.setFromCamera(screenPoint, camera);
+   }
 
    this.setSpotLightTarget = function(target) {
       spotLight.target = target;
@@ -115,11 +126,7 @@ function Renderer(canvas) {
     */
    this.pointToCard = function(x, y) {
       // update the picking ray with the camera and mouse position
-      var screenPoint = new THREE.Vector2(
-         x / renderer.domElement.clientWidth * 2  - 1,
-         1 - y / renderer.domElement.clientHeight * 2
-         );
-      raycaster.setFromCamera(screenPoint, camera);
+      pointToRaycaster(x, y);
 
       // calculate objects intersecting the picking ray
       var intersects = raycaster.intersectObjects(scene.children, true);
@@ -128,5 +135,20 @@ function Renderer(canvas) {
       for (var i = 0; i < intersects.length; i++)
          if (intersects[i].object.parent.cardID)
             return intersects[i].object.parent.cardID;
+   };
+   
+   /**
+    * Gets a ray that goes through the given screen point
+    * 
+    * @param {number} x x coordinate within the canvas
+    * @param {number} y y coordinate within the canvas
+    * @returns {Ray} the ray
+    */
+   this.pointToRay = function(x, y) {
+      // update the picking ray with the camera and mouse position
+      pointToRaycaster(x, y);
+      
+      // return its ray
+      return raycaster.ray;
    };
 }

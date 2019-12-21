@@ -156,9 +156,12 @@ function World() {
             );
    };
    
-   /// <summary>
-   /// returns the location associated with the given location ID
-   /// </summary>
+   /**
+    * returns the location associated with the given location ID
+    * 
+    * @param {string} locationID the location ID
+    * @returns {THREE.Vector3} the world coordinates of the location
+    */
    this.getCardLocation = function(locationID) {
       var locationInfo = LocationID.info[locationID];
       if (locationInfo.isTower)

@@ -44,6 +44,16 @@ function StateMachine() {
       currentState.onMouseMove(event);
    };
       
+   /**
+    * Called when a mouse up event occurs on the game canvas
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseUp = function(event) {
+      currentState.onMouseUp(event);
+   };
+      
    
    this.setState = function(state) {
       currentState.exit();
