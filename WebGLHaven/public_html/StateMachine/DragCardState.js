@@ -25,7 +25,7 @@ function DragCardState(mouseDownEvent) {
    // get its location
    var startLocationID = cardLocations.getCardLocation(cardID);
    var startPosition = world.getCardLocation(startLocationID);
-   var startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), startPosition.z);
+   var startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
    
    // calculate the world position that corresponds to the point
    // on the card at the click position... we do this by calculating
