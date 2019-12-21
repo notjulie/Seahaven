@@ -6,7 +6,7 @@
  */
 
 
-/* global State, renderer, stateMachine, cardLocations, world, THREE, deckOfCards */
+/* global State, renderer, stateMachine, cardLocations, THREE, deckOfCards */
 
 
 /**
@@ -42,15 +42,24 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseMove = function(event) {
-      // get the ray that goes through the point on the screen
+      // get the ray that goes through the point on the screen; this is the
+      // ray that should go through the point on the card that was originally
+      // clicked
       var ray = renderer.pointToRay(event.clientX, event.clientY);
+      
+      // offset the ray to give us a ray on which the card's origin must fall
+      ray.origin.x -= worldClickPoint.x - startPosition.x;
+      ray.origin.y -= worldClickPoint.y - startPosition.y;
+      
+      // we can figure out the 3D location of the card by first seeing where our ray
+      // intersects the plane that represents the top of the cards on the table
       
       // intersect it with the plane of the card's original location
       var worldPoint = ray.intersectPlane(startPositionPlane, new THREE.Vector3());
       
       // update the card's position
-      card.position.x = startPosition.x + (worldPoint.x - worldClickPoint.x);
-      card.position.y = startPosition.y + (worldPoint.y - worldClickPoint.y);
+      card.position.x = worldPoint.x;
+      card.position.y = worldPoint.y;
    };
    
    /**

@@ -8,10 +8,13 @@
 
 /* global LocationID, THREE */
 
-/// <summary>
-/// Class that is in charge of calculating global points in the
-/// 3D coordinate system.
-/// </summary>
+/**
+ * Class that is in charge of calculating global points in the
+ * 3D coordinate system
+ * 
+ * @class
+ * @returns {World}
+ */
 function World() {
    const groundY = -1.0;
    const defaultCameraPosition = new THREE.Vector3(0, 0, 1.9);
@@ -28,8 +31,11 @@ function World() {
    const zDistanceToAces = 2.0;
    const aceZSpacing = 0.05;
 
-   // define the cardDimensions property
-   Object.defineProperty(this, 'cardDimensions', {
+   /**
+    * Object defining world dimensions of a card
+    * @type Object
+    */
+   const cardDimensions = {
       value: Object.freeze({
          width:0.43,
          height:0.65,
@@ -38,14 +44,47 @@ function World() {
       writable: false,
       enumerable: true,
       configurable: false
-   });
+   };
+   Object.defineProperty(this, 'cardDimensions', cardDimensions);
 
-   /// <summary>
-   /// Gets the card location associated with a card at a given
-   /// row and column
-   /// </summary>
+   /**
+    * Bounding box of the table.
+    * @type Box3
+    */
+   const tableBox = {
+         value: function () {
+            var width =
+               10.0 * (1 + this.cardDimensions.relativeMargin)*this.cardDimensions.width +
+               0.5*this.cardDimensions.width;
+
+            var result = new THREE.Box3();
+            result.min.x = -width/2;
+            result.max.x = width/2;
+
+            result.min.y = groundY;
+            result.max.y = result.min.y + tableHeight*Math.sin(tableAngle * Math.PI/180);
+
+            result.min.z = tableFrontZ;
+            result.max.z = result.min.z + tableHeight*Math.cos(tableAngle * Math.PI/180);
+            return Object.freeze(result);
+         }.call(this),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      }
+   Object.defineProperty(this, 'tableBox', tableBox);
+
+   /**
+    * Gets the card location associated with a card at a given
+    * row and column
+    * 
+    * @param {Integer} column the column (0-9)
+    * @param {Integer} row the row (0-16)
+    * @returns {THREE.Vector3} the world position of a card at the position
+    * in the given column
+    */
    this.getColumnPosition = function (column, row) {
-      var table = this.getTableGeometry();
+      var table = this.tableBox;
       var tableSize = table.getSize(new THREE.Vector3());
 
       var x = (
@@ -79,23 +118,6 @@ function World() {
 
    this.getGroundY = function () {
       return groundY;
-   };
-
-   this.getTableGeometry = function () {
-      var width =
-         10.0 * (1 + this.cardDimensions.relativeMargin)*this.cardDimensions.width +
-         0.5*this.cardDimensions.width;
-      
-      var result = new THREE.Box3();
-      result.min.x = -width/2;
-      result.max.x = width/2;
-      
-      result.min.y = groundY;
-      result.max.y = result.min.y + tableHeight*Math.sin(tableAngle * Math.PI/180);
-
-      result.min.z = tableFrontZ;
-      result.max.z = result.min.z + tableHeight*Math.cos(tableAngle * Math.PI/180);
-      return result;
    };
 
    /// <summary>
@@ -172,3 +194,4 @@ function World() {
          return this.getColumnPosition(locationInfo.column, locationInfo.row);
    };
 }
+
