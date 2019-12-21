@@ -20,6 +20,15 @@ function State() {
    this.onMouseDown = function(event) {
    };
 
+   /**
+    * Handles a mouse move event; does nothing by default
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseMove = function(event) {
+   };
+
    this.newGame = function() {
       stateMachine.setState(new NewGameState());
    };

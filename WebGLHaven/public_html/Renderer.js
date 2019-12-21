@@ -21,8 +21,12 @@ function Renderer(canvas) {
    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
    const raycaster = new THREE.Raycaster();
    
+   // add our event listeners to the canvas
    canvas.addEventListener('mousedown', function(event) {
       stateMachine.onMouseDown(event);
+   });
+   canvas.addEventListener('mousemove', function(event) {
+      stateMachine.onMouseMove(event);
    });
    
    // create our default camera position

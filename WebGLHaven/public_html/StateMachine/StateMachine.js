@@ -25,7 +25,7 @@ function StateMachine() {
    };
 
    /**
-    * Called when a mouse down even occurs on the game canvas
+    * Called when a mouse down event occurs on the game canvas
     * 
     * @param {MouseEvent} event
     * @returns {undefined}
@@ -33,6 +33,17 @@ function StateMachine() {
    this.onMouseDown = function(event) {
       currentState.onMouseDown(event);
    };
+   
+   /**
+    * Called when a mouse move event occurs on the game canvas
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseMove = function(event) {
+      currentState.onMouseMove(event);
+   };
+      
    
    this.setState = function(state) {
       currentState.exit();
