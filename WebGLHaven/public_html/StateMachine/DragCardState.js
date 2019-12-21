@@ -26,6 +26,10 @@ function DragCardState(mouseDownEvent) {
    var startPosition;
    var startPositionPlane;
    
+   /**
+    * Performs the state's entry actions
+    * @returns {undefined}
+    */
    this.enter = function() {
       // get the card that we are going to drag
       var cardID = this.webGLHaven.renderer.pointToCard(mouseDownEvent.clientX, mouseDownEvent.clientY);
@@ -62,13 +66,12 @@ function DragCardState(mouseDownEvent) {
       
       // we can figure out the 3D location of the card by first seeing where our ray
       // intersects the plane that represents the top of the cards on the table
-      
-      // intersect it with the plane of the card's original location
-      var worldPoint = ray.intersectPlane(startPositionPlane, new THREE.Vector3());
+      var pointOnTableLid = ray.intersectPlane(this.webGLHaven.world.tableLidPlane, new THREE.Vector3());
       
       // update the card's position
-      card.position.x = worldPoint.x;
-      card.position.y = worldPoint.y;
+      card.position.x = pointOnTableLid.x;
+      card.position.y = pointOnTableLid.y;
+      card.position.z = pointOnTableLid.z;
    };
    
    /**

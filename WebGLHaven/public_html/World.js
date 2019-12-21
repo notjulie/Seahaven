@@ -35,7 +35,22 @@ function World() {
     * Object defining world dimensions of a card
     * @type Object
     */
-   const cardDimensions = {
+   this.cardDimensions;
+   
+   /**
+    * Bounding box of the table.
+    * @type Box3
+    */
+   this.tableBox;
+   
+   /**
+    * Plane defining the lid on the table; i.e. the plane that cards
+    * being dragged should not sink below.
+    * @type Plane
+    */
+   this.tableLidPlane;
+   
+   Object.defineProperty(this, 'cardDimensions', {
       value: Object.freeze({
          width:0.43,
          height:0.65,
@@ -44,14 +59,9 @@ function World() {
       writable: false,
       enumerable: true,
       configurable: false
-   };
-   Object.defineProperty(this, 'cardDimensions', cardDimensions);
+   });
 
-   /**
-    * Bounding box of the table.
-    * @type Box3
-    */
-   const tableBox = {
+   Object.defineProperty(this, 'tableBox', {
          value: function () {
             var width =
                10.0 * (1 + this.cardDimensions.relativeMargin)*this.cardDimensions.width +
@@ -71,8 +81,7 @@ function World() {
          writable: false,
          enumerable: true,
          configurable: false
-      };
-   Object.defineProperty(this, 'tableBox', tableBox);
+      });
 
    /**
     * Gets the card location associated with a card at a given
@@ -193,5 +202,23 @@ function World() {
       else
          return this.getColumnPosition(locationInfo.column, locationInfo.row);
    };
+   
+   // create our plane that represents the table lid
+   Object.defineProperty(this, 'tableLidPlane', {
+      value: function() {
+         var plane = new THREE.Plane();
+         plane.setFromCoplanarPoints(
+            this.getColumnPosition(0,0),
+            this.getColumnPosition(0,1),
+            this.getColumnPosition(1,0),
+            );
+         plane.translate(new THREE.Vector3(0,this.cardDimensions.height,0));
+         return plane;
+      }.call(this),
+      writable: false,
+      enumerable: true,
+      configurable: false
+   });
+
 }
 
