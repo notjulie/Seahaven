@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global State, stateMachine, renderer, THREE */
+/* global State, THREE */
 
 /**
  * Constructor for class GameIdleState, which implements the behaviors of
@@ -24,9 +24,9 @@ function GameIdleState() {
     * @returns {undefined}
     */
    this.onMouseDown = function(event) {
-      var cardID = renderer.pointToCard(event.clientX, event.clientY);
+      var cardID = this.webGLHaven.renderer.pointToCard(event.clientX, event.clientY);
       if (cardID)
-         stateMachine.setState(new DragCardState(event));
+         this.webGLHaven.stateMachine.setState(new DragCardState(event));
    };
 }
 

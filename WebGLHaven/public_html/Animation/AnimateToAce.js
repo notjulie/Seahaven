@@ -5,22 +5,23 @@
  * Warranty: None
  */
 
-/* global cardLocations, stateMachine, deckOfCards, LocationID, webGLHaven */
+/* global cardLocations, LocationID */
 
 
 /**
  * 
  * @class Animation class for moving cards to the ace piles
  * 
+ * @param {WebGLHaven} webGLHaven the game object
  * @param {string} cardID
  * @param {string} startLocationID
  * @param {string} endLocationID
  * @returns {AnimateToAce}
  */
-function AnimateToAce(cardID, startLocationID, endLocationID) {
+function AnimateToAce(webGLHaven, cardID, startLocationID, endLocationID) {
    var positionOnCurrentStep = 0;
-   var startTime = stateMachine.getTime();
-   var card3D = deckOfCards.getCard3D(cardID);
+   var startTime = webGLHaven.stateMachine.getTime();
+   var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
    var speed = 6.0; // world units per second
    
    // path depends on if it's from a tower or column
@@ -79,8 +80,8 @@ function AnimateToAce(cardID, startLocationID, endLocationID) {
     */
    this.service = function(minimumZ) {
       // update our clock
-      elapsed = stateMachine.getTime() - startTime;
-      startTime = stateMachine.getTime();
+      elapsed = webGLHaven.stateMachine.getTime() - startTime;
+      startTime = webGLHaven.stateMachine.getTime();
 
       // update our position along the current segment
       positionOnCurrentStep += elapsed * speed;

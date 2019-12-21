@@ -16,10 +16,10 @@ function NewGameState() {
       cardLocations.newGame();
       
       // update
-      cardLocations.repositionAll();
+      cardLocations.repositionAll(this.webGLHaven);
       
       // start moving to aces
-      stateMachine.setState(new MoveToAcesState());
+      this.webGLHaven.stateMachine.setState(new MoveToAcesState());
    };
 }
 

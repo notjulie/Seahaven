@@ -8,6 +8,8 @@
 /* global stateMachine */
 
 function State() {
+   this.webGLHaven = undefined;
+   
    this.enter = function() {
    };
    
@@ -39,6 +41,6 @@ function State() {
    };
 
    this.newGame = function() {
-      stateMachine.setState(new NewGameState());
+      stateMachine.setState(new NewGameState(webGLHaven));
    };
 }

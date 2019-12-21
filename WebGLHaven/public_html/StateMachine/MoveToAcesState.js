@@ -6,7 +6,7 @@
  */
 
 
-/* global State, stateMachine, cardLocations, CardID */
+/* global State, cardLocations, CardID */
 
 function MoveToAcesState() {
    // inherit State
@@ -60,7 +60,7 @@ function MoveToAcesState() {
       var endLocation = cardLocations.getCardLocation(cardID);
       
       // start animating it to that position
-      animations.push(new AnimateToAce(cardID, startLocation, endLocation));
+      animations.push(new AnimateToAce(this.webGLHaven, cardID, startLocation, endLocation));
    }
    
    /// <summary>
@@ -70,9 +70,9 @@ function MoveToAcesState() {
       // either we have something to do or we don't
       var cardToMove = getNextCardToMove();
       if (cardToMove)
-         startAnimation(cardToMove);
+         startAnimation.call(this, cardToMove);
       else
-         stateMachine.setState(new GameIdleState());
+         this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
    
    /// <summary>
@@ -98,14 +98,14 @@ function MoveToAcesState() {
       // the next card to move we can start moving it
       var cardToMove = getNextCardToMove();
       if (cardToMove) {
-         var startPosition = webGLHaven.world.getCardLocation(cardLocations.getCardLocation(cardToMove));
+         var startPosition = this.webGLHaven.world.getCardLocation(cardLocations.getCardLocation(cardToMove));
          if (startPosition.z > maximumZ + zDistanceBetweenCards)
-            startAnimation(cardToMove);
+            startAnimation.call(this, cardToMove);
       }
       
       // if all our animations are done we can move on to the next state
       if (animations.length === 0)
-         stateMachine.setState(new GameIdleState());
+         this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
 }
 

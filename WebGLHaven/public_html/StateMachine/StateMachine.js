@@ -12,7 +12,7 @@
  * 
  * @returns {StateMachine}
  */
-function StateMachine() {
+function StateMachine(webGLHaven) {
    var currentState = new State();
    var currentTime;
    
@@ -58,6 +58,7 @@ function StateMachine() {
    this.setState = function(state) {
       currentState.exit();
       currentState = state;
+      state.webGLHaven = webGLHaven;
       currentState.enter();
    };
    

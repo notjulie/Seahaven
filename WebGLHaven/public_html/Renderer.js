@@ -6,30 +6,30 @@
  */
 
 
-/* global THREE, stateMachine, webGLHaven */
+/* global THREE */
 
 /**
  * Constructor for class Renderer
  * 
- * @param {HTML canvas element} canvas
+ * @param {WebGLHaven} webGLHaven
  * @returns {Renderer}
  */
-function Renderer(canvas) {
+function Renderer(webGLHaven) {
    var requestedCanvasSize;
    var spotLight;
 
-   const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+   const renderer = new THREE.WebGLRenderer({canvas: webGLHaven.canvas, antialias: true});
    const raycaster = new THREE.Raycaster();
    
    // add our event listeners to the canvas
-   canvas.addEventListener('mousedown', function(event) {
-      stateMachine.onMouseDown(event);
+   webGLHaven.canvas.addEventListener('mousedown', function(event) {
+      webGLHaven.stateMachine.onMouseDown(event);
    });
-   canvas.addEventListener('mousemove', function(event) {
-      stateMachine.onMouseMove(event);
+   webGLHaven.canvas.addEventListener('mousemove', function(event) {
+      webGLHaven.stateMachine.onMouseMove(event);
    });
-   canvas.addEventListener('mouseup', function(event) {
-      stateMachine.onMouseUp(event);
+   webGLHaven.canvas.addEventListener('mouseup', function(event) {
+      webGLHaven.stateMachine.onMouseUp(event);
    });
    
    // create our default camera position
@@ -75,7 +75,7 @@ function Renderer(canvas) {
       time *= 0.001;  // convert time to seconds
 
       // give the state machine its timeslice
-      stateMachine.service(time);
+      webGLHaven.stateMachine.service(time);
 
       if (requestedCanvasSize) {
          // update the size of the canvas to fit the window

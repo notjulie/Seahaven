@@ -6,7 +6,7 @@
  */
 
 
-/* global State, renderer, stateMachine, cardLocations, THREE, deckOfCards */
+/* global State, cardLocations, THREE */
 
 
 /**
@@ -18,22 +18,28 @@ function DragCardState(mouseDownEvent) {
    // inherit State
    State.call(this);
    
-   // get the card that we are going to drag
-   var cardID = renderer.pointToCard(mouseDownEvent.clientX, mouseDownEvent.clientY);
-   var card = deckOfCards.getCard3D(cardID);
+   var card;
+   var worldClickPoint;
+   var startPosition;
+   var startPositionPlane;
    
-   // get its location
-   var startLocationID = cardLocations.getCardLocation(cardID);
-   var startPosition = webGLHaven.world.getCardLocation(startLocationID);
-   var startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
-   
-   // calculate the world position that corresponds to the point
-   // on the card at the click position... we do this by calculating
-   // the x and y of the camera ray where it intersects the card's Z
-   // coordinate
-   var clickRay = renderer.pointToRay(mouseDownEvent.clientX, mouseDownEvent.clientY);
-   var worldClickPoint = clickRay.intersectPlane(startPositionPlane, new THREE.Vector3());
-   
+   this.enter = function() {
+      // get the card that we are going to drag
+      var cardID = this.webGLHaven.renderer.pointToCard(mouseDownEvent.clientX, mouseDownEvent.clientY);
+      card = this.webGLHaven.deckOfCards.getCard3D(cardID);
+
+      // get its location
+      var startLocationID = cardLocations.getCardLocation(cardID);
+      startPosition = this.webGLHaven.world.getCardLocation(startLocationID);
+      startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
+
+      // calculate the world position that corresponds to the point
+      // on the card at the click position... we do this by calculating
+      // the x and y of the camera ray where it intersects the card's Z
+      // coordinate
+      var clickRay = this.webGLHaven.renderer.pointToRay(mouseDownEvent.clientX, mouseDownEvent.clientY);
+      worldClickPoint = clickRay.intersectPlane(startPositionPlane, new THREE.Vector3());      
+   };
 
    /**
     * Handles a mouse move event
@@ -45,7 +51,7 @@ function DragCardState(mouseDownEvent) {
       // get the ray that goes through the point on the screen; this is the
       // ray that should go through the point on the card that was originally
       // clicked
-      var ray = renderer.pointToRay(event.clientX, event.clientY);
+      var ray = this.webGLHaven.renderer.pointToRay(event.clientX, event.clientY);
       
       // offset the ray to give us a ray on which the card's origin must fall
       ray.origin.x -= worldClickPoint.x - startPosition.x;
@@ -69,7 +75,7 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseUp = function(event) {
-      cardLocations.repositionAll();
-      stateMachine.setState(new GameIdleState());
+      cardLocations.repositionAll(this.webGLHaven);
+      this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
 }

@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global CardID, LocationID, deckOfCards, gameState */
+/* global CardID, LocationID */
 
 
 /**
@@ -110,9 +110,9 @@ function CardLocations() {
    /// <summary>
    /// Moves all Card3D objects to the current positions and shows them
    /// </summary>
-   this.repositionAll = function() {
+   this.repositionAll = function(webGLHaven) {
       for (var cardID in CardID.info) {
-         var card3D = deckOfCards.getCard3D(cardID);
+         var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
          var locationID = this.getCardLocation(cardID);
          card3D.position.copy(webGLHaven.world.getCardLocation(locationID));
          card3D.visible = true;

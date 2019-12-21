@@ -12,9 +12,22 @@
  * Our main object that aggregates the whole game
  * 
  * @constructor
+ * @param {HTML canvas element} canvas
  * @returns {WebGLHaven}
  */
-function WebGLHaven() {
+function WebGLHaven(canvasElement) {
+   /**
+    * Our canvas
+    * @type HTML canvas element
+    */
+   const canvas = {
+         value: canvasElement,
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'canvas', canvas);   
+
    /**
     * Our global instance of the world geometry
     * @type World
@@ -26,31 +39,55 @@ function WebGLHaven() {
          configurable: false
       };
    Object.defineProperty(this, 'world', world);   
+
+   /**
+    * Our deck of cards
+    * @type DeckOfCards
+    */
+   const deckOfCards = {
+         value: new DeckOfCards({
+            width: this.world.cardDimensions.width,
+            height: this.world.cardDimensions.height,
+            cornerRadius: this.world.cardDimensions.width / 20,
+            rankHeight: (0.13 / 0.43) * this.world.cardDimensions.width
+         }),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'deckOfCards', deckOfCards);
+   
+   /**
+    * Our renderer
+    * @type Renderer
+    */
+   const renderer = {
+         value: new Renderer(this),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'renderer', renderer);   
+
+   
+   /**
+    * Our stateMachine
+    * @type Renderer
+    */
+   const stateMachine = {
+         value: new StateMachine(this),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'stateMachine', stateMachine);   
 }
-
-/**
- * 
- * @type WebGLHaven
- */
-var webGLHaven = new WebGLHaven();
-var stateMachine = new StateMachine();
-var deckOfCards = new DeckOfCards({
-   width: webGLHaven.world.cardDimensions.width,
-   height: webGLHaven.world.cardDimensions.height,
-   cornerRadius: webGLHaven.world.cardDimensions.width / 20,
-   rankHeight: (0.13 / 0.43) * webGLHaven.world.cardDimensions.width
-});
-
 
 var cardLocations = new CardLocations();
 
-// create our renderer
-const canvas = document.querySelector('#c');
-var renderer = new Renderer(canvas);
 
-
-function main() {
-   var scene = renderer.getScene();
+function main(webGLHaven) {   
+   var scene = webGLHaven.renderer.getScene();
 
    var texture = new THREE.TextureLoader().load('Sand002_COLOR.jpg');
    texture.repeat.x = 5000;
@@ -85,16 +122,16 @@ function main() {
 
 
    // initialize our deck of cards; on completion add cards to the scene
-   deckOfCards.initialize(function () {
+   webGLHaven.deckOfCards.initialize(function () {
       // add all the cards to the scene, but hidden
       for (var cardID in CardID.info) {
-         var card3D = deckOfCards.getCard3D(cardID);
+         var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
          card3D.visible = false;
          scene.add(card3D);
       }
 
       // start a new game
-      stateMachine.setState(new NewGameState());
+      webGLHaven.stateMachine.setState(new NewGameState());
    });
 
 
@@ -110,9 +147,9 @@ function main() {
       towers[i].scale.y = position.height;
       scene.add(towers[i]);
    }
-   renderer.setSpotLightTarget(towers[2].getSpotlightTarget());
+   webGLHaven.renderer.setSpotLightTarget(towers[2].getSpotlightTarget());
 
-   renderer.start();
+   webGLHaven.renderer.start();
 
 }
 
