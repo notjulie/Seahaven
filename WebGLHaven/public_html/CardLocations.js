@@ -12,6 +12,7 @@
  * Constructor for CardLocations, which is just a collection of the
  * location IDs of all cards.
  * 
+ * @class
  * @returns {CardLocations}
  */
 function CardLocations() {

@@ -41,6 +41,6 @@ function State() {
    };
 
    this.newGame = function() {
-      stateMachine.setState(new NewGameState(webGLHaven));
+      this.webGLHaven.stateMachine.setState(new NewGameState(this.webGLHaven));
    };
 }

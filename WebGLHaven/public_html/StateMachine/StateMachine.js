@@ -10,6 +10,7 @@
  * Constructor for class StateMachine, which is the main state machine for the
  * game.
  * 
+ * @class StateMachine
  * @param {WebGLHaven} webGLHaven 
  * @returns {StateMachine}
  */

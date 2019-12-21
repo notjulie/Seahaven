@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global State, cardLocations, stateMachine */
+/* global State, stateMachine */
 
 function NewGameState() {
    // inherit State

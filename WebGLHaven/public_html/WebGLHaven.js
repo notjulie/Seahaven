@@ -18,45 +18,62 @@
 function WebGLHaven(canvasElement) {
    /**
     * Our canvas
-    * @type HTML canvas element
+    * @type Canvas
     */
-   const canvas = {
-         value: canvasElement,
-         writable: false,
-         enumerable: true,
-         configurable: false
-      };
-   Object.defineProperty(this, 'canvas', canvas);   
-
+   this.canvas;
+   
    /**
-    * Our global instance of the world geometry
-    * @type World
+    * Our stateMachine
+    * @type StateMachine
     */
-   const world = {
-         value: Object.freeze(new World()),
-         writable: false,
-         enumerable: true,
-         configurable: false
-      };
-   Object.defineProperty(this, 'world', world);   
+   this.stateMachine;
 
    /**
     * Our card locations
     * @type CardLocations
     */
-   const cardLocations = {
-         value: new CardLocations(),
-         writable: false,
-         enumerable: true,
-         configurable: false
-      };
-   Object.defineProperty(this, 'cardLocations', cardLocations);   
+   this.cardLocations;
 
    /**
     * Our deck of cards
     * @type DeckOfCards
     */
-   const deckOfCards = {
+   this.deckOfCards;
+
+   /**
+    * Our renderer
+    * @type Renderer
+    */
+   this.renderer;
+
+   /**
+    * Our global instance of the world geometry
+    * @type World
+    */
+   this.world;
+   
+   Object.defineProperty(this, 'canvas', {
+         value: canvasElement,
+         writable: false,
+         enumerable: true,
+         configurable: false
+      });
+
+   Object.defineProperty(this, 'world', {
+         value: Object.freeze(new World()),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      });   
+
+   Object.defineProperty(this, 'cardLocations', {
+         value: new CardLocations(),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      });
+
+   Object.defineProperty(this, 'deckOfCards', {
          value: new DeckOfCards({
             width: this.world.cardDimensions.width,
             height: this.world.cardDimensions.height,
@@ -66,33 +83,22 @@ function WebGLHaven(canvasElement) {
          writable: false,
          enumerable: true,
          configurable: false
-      };
-   Object.defineProperty(this, 'deckOfCards', deckOfCards);
+      });
    
-   /**
-    * Our renderer
-    * @type Renderer
-    */
-   const renderer = {
+   Object.defineProperty(this, 'renderer', {
          value: new Renderer(this),
          writable: false,
          enumerable: true,
          configurable: false
-      };
-   Object.defineProperty(this, 'renderer', renderer);   
+      });   
 
    
-   /**
-    * Our stateMachine
-    * @type Renderer
-    */
-   const stateMachine = {
+   Object.defineProperty(this, 'stateMachine', {
          value: new StateMachine(this),
          writable: false,
          enumerable: true,
          configurable: false
-      };
-   Object.defineProperty(this, 'stateMachine', stateMachine);   
+      });
 }
 
 
