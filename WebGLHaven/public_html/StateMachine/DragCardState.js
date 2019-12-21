@@ -10,7 +10,10 @@
 
 
 /**
+ * State class active when the user is dragging a card
  * 
+ * @constructor
+ * @extends State
  * @param {MouseEvent} mouseDownEvent the mouse down event that begins the drag 
  * @returns {DragCardState}
  */
