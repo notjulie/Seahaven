@@ -13,10 +13,10 @@ function NewGameState() {
 
    this.enter = function() {
       // shuffle
-      cardLocations.newGame();
+      this.webGLHaven.cardLocations.newGame();
       
       // update
-      cardLocations.repositionAll(this.webGLHaven);
+      this.webGLHaven.cardLocations.repositionAll(this.webGLHaven);
       
       // start moving to aces
       this.webGLHaven.stateMachine.setState(new MoveToAcesState());

@@ -11,12 +11,14 @@
 
 /**
  * class DeckOfCards constructor
+ * @class
  * @param {Object} attributes object with optional contruction attributes, including:
  *    width: width of the card; default 0.5
  *    height: height of the card; default 1.0
  *    cornerRadius: the corner radius; default 0.01
  *    font: the path of the JSON file containing the typeface definition
  *    rankHeight: the height of the rank image
+ * @returns DeckOfCards
  */
 function DeckOfCards(attributes) {
    // private data... attributes

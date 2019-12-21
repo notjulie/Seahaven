@@ -6,7 +6,7 @@
  */
 
 
-/* global State, cardLocations, CardID */
+/* global State, CardID */
 
 function MoveToAcesState() {
    // inherit State
@@ -21,7 +21,7 @@ function MoveToAcesState() {
    /// </summary>
    function canMoveToAce(cardID) {
       var cardInfo = CardID.info[cardID];
-      return cardInfo.rankIndex === cardLocations.cardsOnAce(cardInfo.suitIndex) + 1;
+      return cardInfo.rankIndex === this.webGLHaven.cardLocations.cardsOnAce(cardInfo.suitIndex) + 1;
    }
    
    /// <summary>
@@ -30,17 +30,17 @@ function MoveToAcesState() {
    function getNextCardToMove() {
       // try towers
       for (var tower=0; tower<4; ++tower) {
-         var cardID = cardLocations.getTowerCardID(tower);
+         var cardID = this.webGLHaven.cardLocations.getTowerCardID(tower);
          if (cardID)
-            if (canMoveToAce(cardID))
+            if (canMoveToAce.call(this, cardID))
                return cardID;
       }
       
       // try columns
       for (var column=0; column<10; ++column) {
-         var cardID = cardLocations.getBottomColumnCardID(column);
+         var cardID = this.webGLHaven.cardLocations.getBottomColumnCardID(column);
          if (cardID)
-            if (canMoveToAce(cardID))
+            if (canMoveToAce.call(this, cardID))
                return cardID;
       }
       
@@ -53,11 +53,11 @@ function MoveToAcesState() {
    /// </summary>
    function startAnimation(cardID) {
       // get the starting location
-      var startLocation = cardLocations.getCardLocation(cardID);
+      var startLocation = this.webGLHaven.cardLocations.getCardLocation(cardID);
       
       // move the card's static location
-      cardLocations.moveToAce(cardID);
-      var endLocation = cardLocations.getCardLocation(cardID);
+      this.webGLHaven.cardLocations.moveToAce(cardID);
+      var endLocation = this.webGLHaven.cardLocations.getCardLocation(cardID);
       
       // start animating it to that position
       animations.push(new AnimateToAce(this.webGLHaven, cardID, startLocation, endLocation));
@@ -68,7 +68,7 @@ function MoveToAcesState() {
    /// </summary>
    this.enter = function() {
       // either we have something to do or we don't
-      var cardToMove = getNextCardToMove();
+      var cardToMove = getNextCardToMove.call(this);
       if (cardToMove)
          startAnimation.call(this, cardToMove);
       else
@@ -96,9 +96,9 @@ function MoveToAcesState() {
       
       // if all the cards' Z positions are further back than
       // the next card to move we can start moving it
-      var cardToMove = getNextCardToMove();
+      var cardToMove = getNextCardToMove.call(this);
       if (cardToMove) {
-         var startPosition = this.webGLHaven.world.getCardLocation(cardLocations.getCardLocation(cardToMove));
+         var startPosition = this.webGLHaven.world.getCardLocation(this.webGLHaven.cardLocations.getCardLocation(cardToMove));
          if (startPosition.z > maximumZ + zDistanceBetweenCards)
             startAnimation.call(this, cardToMove);
       }

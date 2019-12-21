@@ -6,7 +6,7 @@
  */
 
 
-/* global State, cardLocations, THREE */
+/* global State, THREE */
 
 
 /**
@@ -29,7 +29,7 @@ function DragCardState(mouseDownEvent) {
       card = this.webGLHaven.deckOfCards.getCard3D(cardID);
 
       // get its location
-      var startLocationID = cardLocations.getCardLocation(cardID);
+      var startLocationID = this.webGLHaven.cardLocations.getCardLocation(cardID);
       startPosition = this.webGLHaven.world.getCardLocation(startLocationID);
       startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
 
@@ -75,7 +75,7 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseUp = function(event) {
-      cardLocations.repositionAll(this.webGLHaven);
+      this.webGLHaven.cardLocations.repositionAll(this.webGLHaven);
       this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
 }

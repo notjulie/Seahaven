@@ -12,7 +12,7 @@
  * Our main object that aggregates the whole game
  * 
  * @constructor
- * @param {HTML canvas element} canvas
+ * @param {HTML canvas element} canvasElement
  * @returns {WebGLHaven}
  */
 function WebGLHaven(canvasElement) {
@@ -39,6 +39,18 @@ function WebGLHaven(canvasElement) {
          configurable: false
       };
    Object.defineProperty(this, 'world', world);   
+
+   /**
+    * Our card locations
+    * @type CardLocations
+    */
+   const cardLocations = {
+         value: new CardLocations(),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'cardLocations', cardLocations);   
 
    /**
     * Our deck of cards
@@ -82,8 +94,6 @@ function WebGLHaven(canvasElement) {
       };
    Object.defineProperty(this, 'stateMachine', stateMachine);   
 }
-
-var cardLocations = new CardLocations();
 
 
 function main(webGLHaven) {   
