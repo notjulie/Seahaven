@@ -98,7 +98,7 @@ function MoveToAcesState() {
       // the next card to move we can start moving it
       var cardToMove = getNextCardToMove();
       if (cardToMove) {
-         var startPosition = world.getCardLocation(cardLocations.getCardLocation(cardToMove));
+         var startPosition = webGLHaven.world.getCardLocation(cardLocations.getCardLocation(cardToMove));
          if (startPosition.z > maximumZ + zDistanceBetweenCards)
             startAnimation(cardToMove);
       }

@@ -9,17 +9,36 @@
 /* global THREE, CardID */
 
 /**
- * The global world geometry
- * @type World
+ * Our main object that aggregates the whole game
+ * 
+ * @constructor
+ * @returns {WebGLHaven}
  */
-const world = new World();
+function WebGLHaven() {
+   /**
+    * Our global instance of the world geometry
+    * @type World
+    */
+   const world = {
+         value: Object.freeze(new World()),
+         writable: false,
+         enumerable: true,
+         configurable: false
+      };
+   Object.defineProperty(this, 'world', world);   
+}
 
+/**
+ * 
+ * @type WebGLHaven
+ */
+var webGLHaven = new WebGLHaven();
 var stateMachine = new StateMachine();
 var deckOfCards = new DeckOfCards({
-   width: world.cardDimensions.width,
-   height: world.cardDimensions.height,
-   cornerRadius: world.cardDimensions.width / 20,
-   rankHeight: (0.13 / 0.43) * world.cardDimensions.width
+   width: webGLHaven.world.cardDimensions.width,
+   height: webGLHaven.world.cardDimensions.height,
+   cornerRadius: webGLHaven.world.cardDimensions.width / 20,
+   rankHeight: (0.13 / 0.43) * webGLHaven.world.cardDimensions.width
 });
 
 
@@ -42,7 +61,7 @@ function main() {
    groundGeometry.rotateX(-90 * Math.PI / 180);
    //var ground = new THREE.Mesh(groundGeometry, new THREE.MeshMatcapMaterial({color: 0x7f4f00}));
    var ground = new THREE.Mesh(groundGeometry, material);
-   ground.position.y = world.getGroundY();
+   ground.position.y = webGLHaven.world.getGroundY();
    scene.add(ground);
 
    var tableTexture = new THREE.TextureLoader().load('grass.jpg');
@@ -50,7 +69,7 @@ function main() {
    tableTexture.repeat.y = 10;
    tableTexture.wrapS = tableTexture.wrapT = THREE.RepeatWrapping;
    var tableMaterial = new THREE.MeshBasicMaterial( { map: tableTexture } );
-   var tableWorldGeometry = world.tableBox;
+   var tableWorldGeometry = webGLHaven.world.tableBox;
    var tableWorldSize = tableWorldGeometry.getSize(new THREE.Vector3());
    var tableGeometry = new THREE.PlaneGeometry(
            tableWorldSize.x,
@@ -84,7 +103,7 @@ function main() {
 
    for (var i = 0; i < 4; ++i) {
       towers[i] = new Tower3D();
-      var position = world.getTowerPosition(i);
+      var position = webGLHaven.world.getTowerPosition(i);
       towers[i].position.x = position.x;
       towers[i].position.y = position.y;
       towers[i].position.z = position.z;

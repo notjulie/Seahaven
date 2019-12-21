@@ -71,7 +71,7 @@ function World() {
          writable: false,
          enumerable: true,
          configurable: false
-      }
+      };
    Object.defineProperty(this, 'tableBox', tableBox);
 
    /**

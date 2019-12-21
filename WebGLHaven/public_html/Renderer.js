@@ -6,7 +6,7 @@
  */
 
 
-/* global THREE, stateMachine, world */
+/* global THREE, stateMachine, webGLHaven */
 
 /**
  * Constructor for class Renderer
@@ -38,7 +38,7 @@ function Renderer(canvas) {
    const near = 0.1;
    const far = 5;
    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-   camera.position.copy(world.getDefaultCameraPosition());
+   camera.position.copy(webGLHaven.world.getDefaultCameraPosition());
 
    // create our main scene
    const scene = new THREE.Scene();
