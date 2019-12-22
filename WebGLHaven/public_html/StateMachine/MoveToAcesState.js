@@ -109,4 +109,5 @@ function MoveToAcesState() {
    };
 }
 
+MoveToAcesState.prototype = Object.create(State.prototype);
 

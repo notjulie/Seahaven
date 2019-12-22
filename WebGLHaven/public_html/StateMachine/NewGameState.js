@@ -23,3 +23,4 @@ function NewGameState() {
    };
 }
 
+NewGameState.prototype = Object.create(State.prototype);

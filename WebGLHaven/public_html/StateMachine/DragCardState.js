@@ -85,3 +85,4 @@ function DragCardState(mouseDownEvent) {
       this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
 }
+DragCardState.prototype = Object.create(State.prototype);
