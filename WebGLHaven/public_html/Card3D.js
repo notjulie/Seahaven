@@ -19,9 +19,13 @@ function Card3D(cardID) {
    // inherit THREE.Group
    THREE.Group.call(this);
    
-   this.getClickID = function() {
-      return cardID;
-   };
+   // define the cardID property
+   Object.defineProperty(this, 'cardID', {
+      value: cardID,
+      writable: false,
+      enumerable: true,
+      configurable: false
+   });
 }
 
 

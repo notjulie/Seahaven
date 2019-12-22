@@ -11,12 +11,14 @@
 
 /**
  * class DeckOfCards constructor
+ * @class
  * @param {Object} attributes object with optional contruction attributes, including:
  *    width: width of the card; default 0.5
  *    height: height of the card; default 1.0
  *    cornerRadius: the corner radius; default 0.01
  *    font: the path of the JSON file containing the typeface definition
  *    rankHeight: the height of the rank image
+ * @returns DeckOfCards
  */
 function DeckOfCards(attributes) {
    // private data... attributes
@@ -29,9 +31,12 @@ function DeckOfCards(attributes) {
    const cardFaceColor = 0xF4FCFF;
    const zOffsetForCardBack = 0.001;
 
-   const cards = new Array();
-
+   // XY scale for the back of the card relative to the front of the card;
+   // setting the back larger than the front gives a nice outline on the front
+   const cardBackScale = 1.02;
+   
    // private collections
+   const cards = new Array();
    const rankGeometries = new Array();
    const suits = [
       {color: 0x000000},
@@ -101,7 +106,7 @@ function DeckOfCards(attributes) {
       // the same geometry, which means that the edge of the card is half
       // front color and half back color.  I'll probably change that.
       var cardBackMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: 0}));
-      cardBackMesh.scale.x = cardBackMesh.scale.y = 1.0015;
+      cardBackMesh.scale.x = cardBackMesh.scale.y = cardBackScale;
       cardBackMesh.position.x = (1 - cardBackMesh.scale.x) * cardWidth / 2;
       cardBackMesh.position.y = (1 - cardBackMesh.scale.y) * cardHeight / 2;
       cardBackMesh.position.z = -zOffsetForCardBack;

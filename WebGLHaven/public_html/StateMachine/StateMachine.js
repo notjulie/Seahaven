@@ -10,9 +10,11 @@
  * Constructor for class StateMachine, which is the main state machine for the
  * game.
  * 
+ * @class StateMachine
+ * @param {WebGLHaven} webGLHaven 
  * @returns {StateMachine}
  */
-function StateMachine() {
+function StateMachine(webGLHaven) {
    var currentState = new State();
    var currentTime;
    
@@ -25,7 +27,7 @@ function StateMachine() {
    };
 
    /**
-    * Called when a mouse down even occurs on the game canvas
+    * Called when a mouse down event occurs on the game canvas
     * 
     * @param {MouseEvent} event
     * @returns {undefined}
@@ -34,9 +36,31 @@ function StateMachine() {
       currentState.onMouseDown(event);
    };
    
+   /**
+    * Called when a mouse move event occurs on the game canvas
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseMove = function(event) {
+      currentState.onMouseMove(event);
+   };
+      
+   /**
+    * Called when a mouse up event occurs on the game canvas
+    * 
+    * @param {MouseEvent} event the event
+    * @returns {undefined}
+    */
+   this.onMouseUp = function(event) {
+      currentState.onMouseUp(event);
+   };
+      
+   
    this.setState = function(state) {
       currentState.exit();
       currentState = state;
+      state.webGLHaven = webGLHaven;
       currentState.enter();
    };
    

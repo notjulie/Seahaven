@@ -5,16 +5,24 @@
  * Warranty: None
  */
 
-/* global CardID, LocationID, deckOfCards, gameState, world */
+/* global CardID, LocationID */
 
 
+/**
+ * Constructor for CardLocations, which is just a collection of the
+ * location IDs of all cards.
+ * 
+ * @class
+ * @returns {CardLocations}
+ */
 function CardLocations() {
    const cardLocations = {};
    
    
-   /// <summary>
-   /// shuffles the deck and deals
-   /// </summary>
+   /**
+    * shuffles the deck and deals
+    * @returns {undefined}
+    */
    this.newGame = function() {
       // make an array of all the CardIDs
       var cardIDs = CardID.all.slice();
@@ -35,6 +43,12 @@ function CardLocations() {
       cardLocations[cardIDs[51]] = LocationID.towers[2];
    };
 
+   /**
+    * Returns the current LocationID for the given card
+    * 
+    * @param {string} cardID the card ID
+    * @returns {string} the location ID
+    */
    this.getCardLocation = function(cardID) {
       return cardLocations[cardID];
    };
@@ -97,11 +111,11 @@ function CardLocations() {
    /// <summary>
    /// Moves all Card3D objects to the current positions and shows them
    /// </summary>
-   this.repositionAll = function() {
+   this.repositionAll = function(webGLHaven) {
       for (var cardID in CardID.info) {
-         var card3D = deckOfCards.getCard3D(cardID);
+         var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
          var locationID = this.getCardLocation(cardID);
-         card3D.position.copy(world.getCardLocation(locationID));
+         card3D.position.copy(webGLHaven.world.getCardLocation(locationID));
          card3D.visible = true;
       }
    };

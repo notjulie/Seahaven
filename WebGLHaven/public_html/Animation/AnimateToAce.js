@@ -5,33 +5,34 @@
  * Warranty: None
  */
 
-/* global cardLocations, stateMachine, world, deckOfCards, LocationID */
+/* global cardLocations, LocationID */
 
 
 /**
  * 
  * @class Animation class for moving cards to the ace piles
  * 
+ * @param {WebGLHaven} webGLHaven the game object
  * @param {string} cardID
  * @param {string} startLocationID
  * @param {string} endLocationID
  * @returns {AnimateToAce}
  */
-function AnimateToAce(cardID, startLocationID, endLocationID) {
+function AnimateToAce(webGLHaven, cardID, startLocationID, endLocationID) {
    var positionOnCurrentStep = 0;
-   var startTime = stateMachine.getTime();
-   var card3D = deckOfCards.getCard3D(cardID);
+   var startTime = webGLHaven.stateMachine.getTime();
+   var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
    var speed = 6.0; // world units per second
    
    // path depends on if it's from a tower or column
-   var path = [ world.getCardLocation(startLocationID) ];
+   var path = [ webGLHaven.world.getCardLocation(startLocationID) ];
    var startLocationInfo = LocationID.info[startLocationID];
    if (startLocationInfo.isTower) {
       var next;
       switch (startLocationInfo.tower) {
          case 0:
-            var next = world.getTowerTop(1);
-            next.x -= world.getCardWidth();
+            var next = webGLHaven.world.getTowerTop(1);
+            next.x -= webGLHaven.world.getCardWidth();
             path.push(next);
             break;
 
@@ -42,23 +43,23 @@ function AnimateToAce(cardID, startLocationID, endLocationID) {
             break;
 
          case 3:
-            var next = world.getTowerTop(2);
-            next.x += world.getCardWidth();
+            var next = webGLHaven.world.getTowerTop(2);
+            next.x += webGLHaven.world.getCardWidth();
             path.push(next);
             break;
       }
    } else {
-      var step1 = world.getCardLocation(startLocationID);
-      step1.y += world.cardDimensions.height;
+      var step1 = webGLHaven.world.getCardLocation(startLocationID);
+      step1.y += webGLHaven.world.cardDimensions.height;
       path.push(step1);
       
-      var step2 = world.getCardLocation(startLocationID);
-      step2.y = world.getColumnPosition(0,0).y + world.cardDimensions.height;
-      step2.z = world.getColumnPosition(0,0).z;
+      var step2 = webGLHaven.world.getCardLocation(startLocationID);
+      step2.y = webGLHaven.world.getColumnPosition(0,0).y + webGLHaven.world.cardDimensions.height;
+      step2.z = webGLHaven.world.getColumnPosition(0,0).z;
       path.push(step2);
    }
    
-   path.push(world.getCardLocation(endLocationID));
+   path.push(webGLHaven.world.getCardLocation(endLocationID));
    
    /**
     * Gets the current position of the care we are animating
@@ -72,12 +73,15 @@ function AnimateToAce(cardID, startLocationID, endLocationID) {
    /**
     * Performs periodic animation updates
     * 
+    * @param {Number} minimumZ the farthest back that we are allowed
+    * to move this card on this iteration; this prevents us from having
+    * cards pass through each other 
     * @returns {undefined}
     */
    this.service = function(minimumZ) {
       // update our clock
-      elapsed = stateMachine.getTime() - startTime;
-      startTime = stateMachine.getTime();
+      elapsed = webGLHaven.stateMachine.getTime() - startTime;
+      startTime = webGLHaven.stateMachine.getTime();
 
       // update our position along the current segment
       positionOnCurrentStep += elapsed * speed;
