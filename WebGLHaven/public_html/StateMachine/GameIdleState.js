@@ -5,7 +5,7 @@
  * Warranty: None
  */
 
-/* global State, THREE */
+/* global State, THREE, LocationID */
 
 /**
  * Constructor for class GameIdleState, which implements the behaviors of
@@ -28,6 +28,9 @@ GameIdleState.prototype = Object.create(State.prototype);
  */
 GameIdleState.prototype.onMouseDown = function(event) {
    var cardID = this.webGLHaven.renderer.pointToCard(event.clientX, event.clientY);
-   if (cardID)
-      this.webGLHaven.stateMachine.setState(new DragCardState(event));
+   if (cardID) {
+      var locationID = this.webGLHaven.cardLocations.getCardLocation(cardID);
+      if (!LocationID.info[locationID].isAce)
+         this.webGLHaven.stateMachine.setState(new DragCardState(event));
+   }
 };
