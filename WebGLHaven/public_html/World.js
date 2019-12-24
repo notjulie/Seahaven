@@ -9,13 +9,48 @@
 /* global LocationID, THREE */
 
 /**
+ * Object that defines the
+ * @constructor
+ * @returns {WorldProperties}
+ */
+function WorldProperties() {
+   /**
+    * Width of a card in world units
+    * @type Number
+    */
+   this.cardWidth = 0.43;
+}
+/**
+ * Width of a card in world units
+ * @type Number
+ */
+WorldProperties.prototype.cardWidth = 0.43;
+/**
+ * Height of a card in world units
+ * @type Number
+ */
+WorldProperties.prototype.cardHeight = 0.65;
+/**
+ * the spacing between columns relative ot cardWidth
+ * @type Number
+ */
+WorldProperties.prototype.cardRelativeMargin = 0.2;
+
+
+
+/**
  * Class that is in charge of calculating global points in the
  * 3D coordinate system
  * 
  * @class
+ * @param {WorldProperties} properties
  * @returns {World}
  */
-function World() {
+function World(properties) {
+   // default the properties if we weren't given any
+   if (!properties)
+      properties = new WorldProperties();
+   
    const groundY = -1.0;
    const defaultCameraPosition = new THREE.Vector3(0, 0, 1.9);
 
@@ -33,12 +68,6 @@ function World() {
    const aceZSpacing = 0.05;
 
    /**
-    * Object defining world dimensions of a card
-    * @type Object
-    */
-   this.cardDimensions;
-   
-   /**
     * Bounding box of the table.
     * @type Box3
     */
@@ -51,22 +80,21 @@ function World() {
     */
    this.tableLidPlane;
    
-   Object.defineProperty(this, 'cardDimensions', {
-      value: Object.freeze({
-         width:0.43,
-         height:0.65,
-         relativeMargin:0.2
-      }),
-      writable: false,
-      enumerable: true,
-      configurable: false
+   /**
+    * Our construction parameters
+    * @type WorldProperties
+    */
+   this.properties;
+   
+   Object.defineProperty(this, 'properties', {
+      value: Object.freeze(properties)
    });
 
    Object.defineProperty(this, 'tableBox', {
          value: function () {
             var width =
-               10.0 * (1 + this.cardDimensions.relativeMargin)*this.cardDimensions.width +
-               0.5*this.cardDimensions.width;
+               10.0 * (1 + this.properties.cardRelativeMargin)*this.properties.cardWidth +
+               0.5*this.properties.cardWidth;
 
             var result = new THREE.Box3();
             result.min.x = -width/2;
@@ -98,8 +126,8 @@ function World() {
       var tableSize = table.getSize(new THREE.Vector3());
 
       var x = (
-         this.cardDimensions.relativeMargin/2 + 
-         (1+this.cardDimensions.relativeMargin)*(column - 5)) * this.cardDimensions.width;
+         this.properties.cardRelativeMargin/2 + 
+         (1+this.properties.cardRelativeMargin)*(column - 5)) * this.properties.cardWidth;
 
       // see if it's on the table or on the ground
       if (row < numberOfRowsOnTable) {
@@ -117,10 +145,16 @@ function World() {
       }
    };
    
+   /**
+    * returns the index of the column that contains the given world X
+    * coordinate
+    * @param {Number} x
+    * @returns {Integer}
+    */
    this.getColumnForX = function(x) {
-      x -= this.cardDimensions.relativeMargin/2;
-      x /= this.cardDimensions.width;
-      x /= (1+this.cardDimensions.relativeMargin);
+      x /= this.properties.cardWidth;
+      x -= this.properties.cardRelativeMargin/2;
+      x /= (1+this.properties.cardRelativeMargin);
       return Math.floor(x + 5);
    };
 
@@ -188,7 +222,7 @@ function World() {
    this.getTowerTop = function (tower) {
       var towerPosition = this.getTowerPosition(tower);
       return new THREE.Vector3(
-            towerPosition.x - this.cardDimensions.width/2,
+            towerPosition.x - this.properties.cardWidth/2,
             towerPosition.y + towerPosition.height,
             towerPosition.z
             );
@@ -219,7 +253,7 @@ function World() {
             this.getColumnPosition(9,0),
             this.getColumnPosition(1,16),
             );
-         plane.translate(new THREE.Vector3(0,this.cardDimensions.height+tableLidMargin,0));
+         plane.translate(new THREE.Vector3(0,this.properties.cardHeight+tableLidMargin,0));
          return plane;
       }.call(this),
       writable: false,

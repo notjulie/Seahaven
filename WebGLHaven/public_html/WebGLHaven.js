@@ -53,51 +53,32 @@ function WebGLHaven(canvasElement) {
    this.world;
    
    Object.defineProperty(this, 'canvas', {
-         value: canvasElement,
-         writable: false,
-         enumerable: true,
-         configurable: false
+         value: canvasElement
       });
 
    Object.defineProperty(this, 'world', {
-         value: Object.freeze(new World()),
-         writable: false,
-         enumerable: true,
-         configurable: false
+         value: Object.freeze(new World())
       });   
 
    Object.defineProperty(this, 'cardLocations', {
-         value: new CardLocations(),
-         writable: false,
-         enumerable: true,
-         configurable: false
+         value: new CardLocations()
       });
 
    Object.defineProperty(this, 'deckOfCards', {
          value: new DeckOfCards({
-            width: this.world.cardDimensions.width,
-            height: this.world.cardDimensions.height,
-            cornerRadius: this.world.cardDimensions.width / 20,
-            rankHeight: (0.13 / 0.43) * this.world.cardDimensions.width
-         }),
-         writable: false,
-         enumerable: true,
-         configurable: false
+            width: this.world.properties.cardWidth,
+            height: this.world.properties.cardHeight,
+            cornerRadius: this.world.properties.cardWidth / 20,
+            rankHeight: (0.13 / 0.43) * this.world.properties.cardWidth
+         })
       });
    
    Object.defineProperty(this, 'renderer', {
-         value: new Renderer(this),
-         writable: false,
-         enumerable: true,
-         configurable: false
+         value: new Renderer(this)
       });   
-
    
    Object.defineProperty(this, 'stateMachine', {
-         value: new StateMachine(this),
-         writable: false,
-         enumerable: true,
-         configurable: false
+         value: new StateMachine(this)
       });
 }
 

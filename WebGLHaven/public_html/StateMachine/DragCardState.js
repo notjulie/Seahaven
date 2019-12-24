@@ -26,6 +26,8 @@ function DragCardState(mouseDownEvent) {
    var startPosition;
    
    /**
+    * our private copy of the cardLocations collection with the cards that
+    * we are dragging removed
     * @type CardLocations
     */
    var cardLocations;

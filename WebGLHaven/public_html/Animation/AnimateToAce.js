@@ -50,11 +50,11 @@ function AnimateToAce(webGLHaven, cardID, startLocationID, endLocationID) {
       }
    } else {
       var step1 = webGLHaven.world.getCardLocation(startLocationID);
-      step1.y += webGLHaven.world.cardDimensions.height;
+      step1.y += webGLHaven.world.properties.cardHeight;
       path.push(step1);
       
       var step2 = webGLHaven.world.getCardLocation(startLocationID);
-      step2.y = webGLHaven.world.getColumnPosition(0,0).y + webGLHaven.world.cardDimensions.height;
+      step2.y = webGLHaven.world.getColumnPosition(0,0).y + webGLHaven.world.properties.cardHeight;
       step2.z = webGLHaven.world.getColumnPosition(0,0).z;
       path.push(step2);
    }
