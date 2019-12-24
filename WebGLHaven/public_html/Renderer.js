@@ -46,12 +46,14 @@ function Renderer(webGLHaven) {
    
    // add our directional light so that we can have some shadows
    var light = new THREE.DirectionalLight(0xFFFFFF, 10);
-   light.position.set(0, 0, 100);
+   light.position.set(0, 0, 300);
    light.castShadow = true;
+   light.shadow.mapSize.width = 1024;
+   light.shadow.mapSize.height = 1024;
    scene.add(light);
 
    // add ambient light so that our shadows aren't too exaggerated
-   scene.add(new THREE.AmbientLight(0xFFFFFF, 0.9));
+   scene.add(new THREE.AmbientLight(0xFFFFFF, 0.8));
       
    // background color
    scene.background = new THREE.Color(0x80A0A0);
