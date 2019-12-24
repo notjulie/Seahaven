@@ -108,7 +108,7 @@ function main(webGLHaven) {
    groundGeometry.rotateX(-90 * Math.PI / 180);
    //var ground = new THREE.Mesh(groundGeometry, new THREE.MeshMatcapMaterial({color: 0x7f4f00}));
    var ground = new THREE.Mesh(groundGeometry, material);
-   ground.position.y = webGLHaven.world.getGroundY();
+   ground.position.y = webGLHaven.world.properties.groundY;
    scene.add(ground);
 
    var tableTexture = new THREE.TextureLoader().load('grass.jpg');

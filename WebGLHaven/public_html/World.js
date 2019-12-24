@@ -9,16 +9,11 @@
 /* global LocationID, THREE */
 
 /**
- * Object that defines the
+ * Object that defines the constant characteristics of the world
  * @constructor
  * @returns {WorldProperties}
  */
 function WorldProperties() {
-   /**
-    * Width of a card in world units
-    * @type Number
-    */
-   this.cardWidth = 0.43;
 }
 /**
  * Width of a card in world units
@@ -35,6 +30,11 @@ WorldProperties.prototype.cardHeight = 0.65;
  * @type Number
  */
 WorldProperties.prototype.cardRelativeMargin = 0.2;
+/**
+ * the y coordinate of the ground
+ * @type Number
+ */
+WorldProperties.prototype.groundY = -1.0;
 
 
 
@@ -51,7 +51,6 @@ function World(properties) {
    if (!properties)
       properties = new WorldProperties();
    
-   const groundY = -1.0;
    const defaultCameraPosition = new THREE.Vector3(0, 0, 1.9);
 
    // table dimensions
@@ -100,16 +99,13 @@ function World(properties) {
             result.min.x = -width/2;
             result.max.x = width/2;
 
-            result.min.y = groundY;
+            result.min.y = this.properties.groundY;
             result.max.y = result.min.y + tableHeight*Math.sin(tableAngle * Math.PI/180);
 
             result.min.z = tableFrontZ;
             result.max.z = result.min.z + tableHeight*Math.cos(tableAngle * Math.PI/180);
             return Object.freeze(result);
-         }.call(this),
-         writable: false,
-         enumerable: true,
-         configurable: false
+         }.call(this)
       });
 
    /**
@@ -166,10 +162,6 @@ function World(properties) {
       return defaultCameraPosition;
    };
 
-   this.getGroundY = function () {
-      return groundY;
-   };
-
    /// <summary>
    /// returns the location on the aces for the given card
    /// </summary>
@@ -177,7 +169,7 @@ function World(properties) {
       // start with the position of the top of the card on the top of a
       // column straight in front of the ace
       var result = this.getColumnPosition(3 + suit, 0);
-      result.y += this.cardDimensions.height;
+      result.y += this.properties.cardHeight;
       result.y += yDistanceToAces;
       
       // move it back in Z
@@ -194,14 +186,14 @@ function World(properties) {
          case 0:
             return {
                x: -3.3,
-               y: groundY,
+               y: this.properties.groundY,
                z: -0.3,
                height: 1.0
             };
          case 1:
             return {
                x: -3.3,
-               y: groundY,
+               y: this.properties.groundY,
                z: -0.7,
                height: 2.0
             };
