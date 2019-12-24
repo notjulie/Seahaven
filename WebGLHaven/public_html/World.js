@@ -9,36 +9,6 @@
 /* global LocationID, THREE */
 
 /**
- * Object that defines the constant characteristics of the world
- * @constructor
- * @returns {WorldProperties}
- */
-function WorldProperties() {
-}
-/**
- * Width of a card in world units
- * @type Number
- */
-WorldProperties.prototype.cardWidth = 0.43;
-/**
- * Height of a card in world units
- * @type Number
- */
-WorldProperties.prototype.cardHeight = 0.65;
-/**
- * the spacing between columns relative ot cardWidth
- * @type Number
- */
-WorldProperties.prototype.cardRelativeMargin = 0.2;
-/**
- * the y coordinate of the ground
- * @type Number
- */
-WorldProperties.prototype.groundY = -1.0;
-
-
-
-/**
  * Class that is in charge of calculating global points in the
  * 3D coordinate system
  * 
@@ -255,3 +225,13 @@ function World(properties) {
 
 }
 
+/**
+ * Gets a plane that represents the given row
+ * 
+ * @param {Integer} rowIndex
+ * @returns {THREE.Plane}
+ */
+World.prototype.getRowPlane = function(rowIndex) {
+   var z = this.getColumnPosition(0, rowIndex).z;
+   return new THREE.Plane(new THREE.Vector3(0,0,1), -z);
+};

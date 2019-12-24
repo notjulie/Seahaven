@@ -97,8 +97,27 @@ function CardLocations() {
       var result = 0;
       for (var cardID in cardLocations) {
          var locationID = cardLocations[cardID];
-         if (LocationID.all[locationID].column === column)
-            ++result;
+         if (locationID)
+            if (LocationID.info[locationID].column === column)
+               ++result;
+      }
+      return result;
+   };
+   
+   /**
+    * returns the index of the maximum row that is occupied on the given
+    * column, or -1 if the column is empty
+    * @param {Integer} column
+    * @returns {Integer}
+    */
+   this.getMaxOccupiedRowOnColumn = function(column) {
+      var result = -1;
+      for (var cardID in cardLocations) {
+         var locationID = cardLocations[cardID];
+         if (locationID)
+            if (LocationID.info[locationID].column === column)
+               if (LocationID.info[locationID].row > result)
+                  result = LocationID.info[locationID].row;
       }
       return result;
    };
@@ -121,6 +140,15 @@ function CardLocations() {
       CardID.all.forEach(function(cardID) {
          cardLocations[cardID] = source.getCardLocation(cardID);
       });
+   };
+   
+   /**
+    * Makes the card go away
+    * @param {String} cardID
+    * @returns {undefined}
+    */
+   this.removeCard = function(cardID) {
+      cardLocations[cardID] = undefined;
    };
    
    // start by shuffling

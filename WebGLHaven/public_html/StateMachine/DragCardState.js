@@ -55,7 +55,7 @@ function DragCardState(mouseDownEvent) {
       var startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
 
       // move it to nowhere
-      cardLocations[cardID] = undefined;
+      cardLocations.removeCard(cardID);
 
       // calculate the world position that corresponds to the point
       // on the card at the click position... we do this by calculating
@@ -84,23 +84,30 @@ function DragCardState(mouseDownEvent) {
       // we can figure out the 3D location of the card by first seeing where our ray
       // intersects the plane that represents the top of the cards on the table
       var pointOnTableLid = ray.intersectPlane(this.webGLHaven.world.tableLidPlane, new THREE.Vector3());
+      var targetPosition = pointOnTableLid;
       
-      // see which column we are over
-      var z = pointOnTableLid.z;
-      var columnIndex = this.webGLHaven.world.getColumnForX(pointOnTableLid.x);
-      if (columnIndex>=0 && columnIndex<=9) {
-         // get the z coordinate of the bottom card on the column
-         var bottomColumnCardID = this.webGLHaven.cardLocations.getBottomColumnCardID(columnIndex);
-         if (bottomColumnCardID) {
-            var bottomColumnCard = this.webGLHaven.deckOfCards.getCard3D(bottomColumnCardID);
-            z = bottomColumnCard.position.z;
+      // if our calculated z position is such that we would be in front of the
+      // frontmost row, change to intersect our ray with that row's plane
+      for (var rowIndex=0; rowIndex<this.webGLHaven.world.properties.columnRowCount; ++rowIndex) {
+         // find where our ray intersects that row
+         var position = ray.intersectPlane(this.webGLHaven.world.getRowPlane(rowIndex), new THREE.Vector3());
+         
+         // find what column that would be
+         var columnIndex = this.webGLHaven.world.getColumnForX(position.x);
+         
+         // see if we are in front far enough of that column that we can descend
+         // in front of it; we do that by seeing if we can be one row in front of it
+         var minRowIndex = 1 + cardLocations.getMaxOccupiedRowOnColumn(columnIndex);
+         if (rowIndex >= minRowIndex) {
+            console.info('row: ' + rowIndex);
+            console.info('column: ' + columnIndex);
+            card.position.copy(position);
+            return;
          }
       }
       
       // update the card's position
-      card.position.x = pointOnTableLid.x;
-      card.position.y = pointOnTableLid.y;
-      card.position.z = z;
+      card.position.copy(targetPosition);
    };
    
    /**
