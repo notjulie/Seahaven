@@ -25,6 +25,7 @@ function World() {
    const tableHeight = 1.0;
    const tableFrontZ = -0.3;
    const zSpacingOnGround = 0.02;
+   const tableLidMargin = 0.05;
    
    // aces
    const yDistanceToAces = 1.0;
@@ -209,10 +210,10 @@ function World() {
          var plane = new THREE.Plane();
          plane.setFromCoplanarPoints(
             this.getColumnPosition(0,0),
-            this.getColumnPosition(0,1),
-            this.getColumnPosition(1,0),
+            this.getColumnPosition(9,0),
+            this.getColumnPosition(1,16),
             );
-         plane.translate(new THREE.Vector3(0,this.cardDimensions.height,0));
+         plane.translate(new THREE.Vector3(0,this.cardDimensions.height+tableLidMargin,0));
          return plane;
       }.call(this),
       writable: false,

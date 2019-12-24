@@ -19,6 +19,7 @@ function Renderer(webGLHaven) {
    var spotLight;
 
    const renderer = new THREE.WebGLRenderer({canvas: webGLHaven.canvas, antialias: true});
+   renderer.shadowMap.enabled = true;
    const raycaster = new THREE.Raycaster();
    
    // add our event listeners to the canvas
@@ -42,16 +43,21 @@ function Renderer(webGLHaven) {
 
    // create our main scene
    const scene = new THREE.Scene();
-   {
-      var light = new THREE.DirectionalLight(0xFFFFFF, 10);
-      light.position.set(0, 1000, 0);
-      scene.add(light);
-      
-      scene.add(new THREE.AmbientLight(0xFFFFFF, 5));
-      
-      scene.background = new THREE.Color(0x80A0A0);
-   }
    
+   // add our directional light so that we can have some shadows
+   var light = new THREE.DirectionalLight(0xFFFFFF, 10);
+   light.position.set(0, 0, 100);
+   light.castShadow = true;
+   scene.add(light);
+
+   // add ambient light so that our shadows aren't too exaggerated
+   scene.add(new THREE.AmbientLight(0xFFFFFF, 0.9));
+      
+   // background color
+   scene.background = new THREE.Color(0x80A0A0);
+
+   // this is a spotlight to highlight a tower that's going to receive a
+   // card... I think
    spotLight = new THREE.SpotLight(0xFF0000, 15);
    scene.add(spotLight);
 

@@ -98,9 +98,12 @@ function DeckOfCards(attributes) {
       var group = new Card3D(cardID);
 
       // Add the blank card face
-      var cardFaceMesh = new THREE.Mesh(cardGeometry, new THREE.MeshBasicMaterial({color: cardFaceColor}));
+      var cardFaceMaterial = new THREE.MeshLambertMaterial({color: cardFaceColor});
+      cardFaceMaterial.shadowSide = THREE.DoubleSide;
+      var cardFaceMesh = new THREE.Mesh(cardGeometry, cardFaceMaterial);
       cardFaceMesh.cardObject = group;
       group.add(cardFaceMesh);
+      cardFaceMesh.receiveShadow = true;
 
       // Add the back of the card... for now I just give the front and back
       // the same geometry, which means that the edge of the card is half
@@ -110,6 +113,7 @@ function DeckOfCards(attributes) {
       cardBackMesh.position.x = (1 - cardBackMesh.scale.x) * cardWidth / 2;
       cardBackMesh.position.y = (1 - cardBackMesh.scale.y) * cardHeight / 2;
       cardBackMesh.position.z = -zOffsetForCardBack;
+      cardBackMesh.castShadow = true;
       group.add(cardBackMesh);
 
       // calculate a margin... the minimum would be cornerRadius * (1 - 0.707)
@@ -138,6 +142,8 @@ function DeckOfCards(attributes) {
       bigSuitMesh.position.y = (largeSuitContentArea*cardHeight -  bigSuitMesh.scale.y*suitGeometry.boundingBox.max.y) / 2;
       bigSuitMesh.position.x = (cardWidth -  bigSuitMesh.scale.x*suitGeometry.boundingBox.max.x) / 2;
       group.add(bigSuitMesh);
+      group.castShadow = true;
+      group.receiveShadow = true;
 
       // done
       return group;
