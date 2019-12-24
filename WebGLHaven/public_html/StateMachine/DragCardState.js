@@ -24,13 +24,25 @@ function DragCardState(mouseDownEvent) {
    var card;
    var worldClickPoint;
    var startPosition;
-   var startPositionPlane;
+   
+   /**
+    * @type CardLocations
+    */
+   var cardLocations;
+   
+   /**
+    * @type WebGLHaven
+    */
+   this.webGLHaven;
    
    /**
     * Performs the state's entry actions
     * @returns {undefined}
     */
    this.enter = function() {
+      // clone the card locations
+      cardLocations = this.webGLHaven.cardLocations.clone();
+      
       // get the card that we are going to drag
       var cardID = this.webGLHaven.renderer.pointToCard(mouseDownEvent.clientX, mouseDownEvent.clientY);
       card = this.webGLHaven.deckOfCards.getCard3D(cardID);
@@ -38,7 +50,10 @@ function DragCardState(mouseDownEvent) {
       // get its location
       var startLocationID = this.webGLHaven.cardLocations.getCardLocation(cardID);
       startPosition = this.webGLHaven.world.getCardLocation(startLocationID);
-      startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
+      var startPositionPlane = new THREE.Plane(new THREE.Vector3(0,0,1), -startPosition.z);
+
+      // move it to nowhere
+      cardLocations[cardID] = undefined;
 
       // calculate the world position that corresponds to the point
       // on the card at the click position... we do this by calculating
@@ -68,10 +83,22 @@ function DragCardState(mouseDownEvent) {
       // intersects the plane that represents the top of the cards on the table
       var pointOnTableLid = ray.intersectPlane(this.webGLHaven.world.tableLidPlane, new THREE.Vector3());
       
+      // see which column we are over
+      var z = pointOnTableLid.z;
+      var columnIndex = this.webGLHaven.world.getColumnForX(pointOnTableLid.x);
+      if (columnIndex>=0 && columnIndex<=9) {
+         // get the z coordinate of the bottom card on the column
+         var bottomColumnCardID = this.webGLHaven.cardLocations.getBottomColumnCardID(columnIndex);
+         if (bottomColumnCardID) {
+            var bottomColumnCard = this.webGLHaven.deckOfCards.getCard3D(bottomColumnCardID);
+            z = bottomColumnCard.position.z;
+         }
+      }
+      
       // update the card's position
       card.position.x = pointOnTableLid.x;
       card.position.y = pointOnTableLid.y;
-      card.position.z = pointOnTableLid.z;
+      card.position.z = z;
    };
    
    /**
@@ -81,7 +108,7 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseUp = function(event) {
-      this.webGLHaven.cardLocations.repositionAll(this.webGLHaven);
+      this.webGLHaven.repositionAllCards();
       this.webGLHaven.stateMachine.setState(new GameIdleState());
    };
 }

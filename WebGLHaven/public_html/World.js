@@ -115,7 +115,13 @@ function World() {
             table.max.z + (1 + row - numberOfRowsOnTable) * zSpacingOnGround
          );         
       }
-
+   };
+   
+   this.getColumnForX = function(x) {
+      x -= this.cardDimensions.relativeMargin/2;
+      x /= this.cardDimensions.width;
+      x /= (1+this.cardDimensions.relativeMargin);
+      return Math.floor(x + 5);
    };
 
    /**

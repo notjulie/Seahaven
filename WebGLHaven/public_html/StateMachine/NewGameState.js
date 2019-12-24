@@ -5,22 +5,26 @@
  * Warranty: None
  */
 
-/* global State, stateMachine */
+/* global State */
 
 function NewGameState() {
    // inherit State
    State.call(this);
-
-   this.enter = function() {
-      // shuffle
-      this.webGLHaven.cardLocations.newGame();
-      
-      // update
-      this.webGLHaven.cardLocations.repositionAll(this.webGLHaven);
-      
-      // start moving to aces
-      this.webGLHaven.stateMachine.setState(new MoveToAcesState());
-   };
 }
 
 NewGameState.prototype = Object.create(State.prototype);
+
+/**
+ * Performs state entry actions
+ * @returns {undefined}
+ */
+NewGameState.prototype.enter = function() {
+   // shuffle
+   this.webGLHaven.cardLocations.newGame();
+
+   // update
+   this.webGLHaven.repositionAllCards();
+
+   // start moving to aces
+   this.webGLHaven.stateMachine.setState(new MoveToAcesState());
+};

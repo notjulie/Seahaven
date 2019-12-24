@@ -16,6 +16,10 @@
  * @returns {CardLocations}
  */
 function CardLocations() {
+   /**
+    * Simple collection that relates CardID strings to LocationID strings
+    * @type Object
+    */
    const cardLocations = {};
    
    
@@ -108,18 +112,28 @@ function CardLocations() {
       cardLocations[cardID] = LocationID.aces[cardInfo.suitIndex][cardInfo.rankIndex];
    };
    
-   /// <summary>
-   /// Moves all Card3D objects to the current positions and shows them
-   /// </summary>
-   this.repositionAll = function(webGLHaven) {
-      for (var cardID in CardID.info) {
-         var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
-         var locationID = this.getCardLocation(cardID);
-         card3D.position.copy(webGLHaven.world.getCardLocation(locationID));
-         card3D.visible = true;
-      }
+   /**
+    * Makes this object a duplicate of the source
+    * @param {CardLocations} source the object to copy
+    * @returns {undefined}
+    */
+   this.copy = function(source) {
+      CardID.all.forEach(function(cardID) {
+         cardLocations[cardID] = source.getCardLocation(cardID);
+      });
    };
    
    // start by shuffling
    this.newGame();
 }
+
+/**
+ * Makes a clone of this object
+ * @returns {CardLocations}
+ */
+CardLocations.prototype.clone = function() {
+   var result = new CardLocations();
+   result.copy(this);
+   return result;
+};
+

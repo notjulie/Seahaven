@@ -101,6 +101,19 @@ function WebGLHaven(canvasElement) {
       });
 }
 
+/**
+ * Moves all Card3D objects to the current positions and shows them
+ * @returns {undefined}
+ */
+WebGLHaven.prototype.repositionAllCards = function() {
+   for (var cardID in CardID.info) {
+      var card3D = this.deckOfCards.getCard3D(cardID);
+      var locationID = this.cardLocations.getCardLocation(cardID);
+      card3D.position.copy(this.world.getCardLocation(locationID));
+      card3D.visible = true;
+   }
+};
+
 
 function main(webGLHaven) {   
    var scene = webGLHaven.renderer.getScene();
