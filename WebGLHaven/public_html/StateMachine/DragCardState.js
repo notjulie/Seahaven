@@ -99,8 +99,11 @@ function DragCardState(mouseDownEvent) {
          // in front of it; we do that by seeing if we can be one row in front of it
          var minRowIndex = 1 + cardLocations.getMaxOccupiedRowOnColumn(columnIndex);
          if (rowIndex >= minRowIndex) {
-            console.info('row: ' + rowIndex);
-            console.info('column: ' + columnIndex);
+            // since at this point we are moving the card downward we need to stop
+            // it if it reaches the table
+            var minY = this.webGLHaven.world.getColumnPosition(columnIndex, rowIndex).y;
+            if (position.y < minY)
+               position.y = minY;
             card.position.copy(position);
             return;
          }
