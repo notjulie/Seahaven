@@ -64,7 +64,7 @@ function Renderer(webGLHaven) {
    bgTexture.offset.y = 0.35;
    
    // add our directional light so that we can have some shadows
-   var light = new THREE.DirectionalLight(0xFFFFFF, 10);
+   var light = new THREE.DirectionalLight(0xFFFFFF, 5);
    light.position.set(0, 0, 300);
    light.castShadow = true;
    light.shadow.mapSize.width = 1024;
