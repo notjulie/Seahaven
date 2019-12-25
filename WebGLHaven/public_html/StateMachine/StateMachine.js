@@ -17,6 +17,7 @@
 function StateMachine(webGLHaven) {
    var currentState = new State();
    var currentTime;
+   var lastMouseMove;
    
    this.getTime = function() {
       return currentTime;
@@ -43,7 +44,10 @@ function StateMachine(webGLHaven) {
     * @returns {undefined}
     */
    this.onMouseMove = function(event) {
-      currentState.onMouseMove(event);
+      // just queue this up to be handled on our display loop, so that we
+      // don't process a ton of events that never actually get seens on the
+      // screen
+      lastMouseMove = event;
    };
       
    /**
@@ -64,7 +68,19 @@ function StateMachine(webGLHaven) {
       currentState.enter();
    };
    
+   /**
+    * Called periodically, i.e. on our screen update loop
+    * @param {Number} time
+    * @returns {undefined}
+    */
    this.service = function(time) {
+      // handle any queued up mouse move event
+      if (lastMouseMove) {
+         currentState.onMouseMove(lastMouseMove);
+         lastMouseMove = undefined;
+      }
+      
+      // call the current state's service function
       currentTime = time;
       currentState.service();
    };
