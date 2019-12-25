@@ -100,11 +100,11 @@ function main(webGLHaven) {
    var scene = webGLHaven.renderer.getScene();
 
    var texture = new THREE.TextureLoader().load('Sand002_COLOR.jpg');
-   texture.repeat.x = 5000;
-   texture.repeat.y = 5000;
+   texture.repeat.x = 1000;
+   texture.repeat.y = 5;
    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
    var material = new THREE.MeshBasicMaterial( { map: texture } );
-   var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
+   var groundGeometry = new THREE.PlaneGeometry(1000, 2.1);
    groundGeometry.rotateX(-90 * Math.PI / 180);
    //var ground = new THREE.Mesh(groundGeometry, new THREE.MeshMatcapMaterial({color: 0x7f4f00}));
    var ground = new THREE.Mesh(groundGeometry, material);

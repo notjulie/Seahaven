@@ -44,6 +44,25 @@ function Renderer(webGLHaven) {
    // create our main scene
    const scene = new THREE.Scene();
    
+   var backgroundLoader = new THREE.TextureLoader();
+   backgroundLoader.setCrossOrigin("");
+
+   //var bgTexture = backgroundLoader.load('adventure_arid_background_desert_desolate_dry_dunes_600264.jpg',
+   var bgTexture = backgroundLoader.load('Beach-With-Sunset-And-Waves-Of-The-Atlantic-Ocean-Portugal-The-Coast-C11.jpg',
+       function ( texture ) {
+           //var img = texture.image;
+           //bgWidth= img.width;
+           //bgHeight = img.height;
+           //resize();
+       }
+   );
+   scene.background = bgTexture;
+   bgTexture.wrapS = THREE.RepeatWrapping;
+   bgTexture.wrapT = THREE.RepeatWrapping;
+   bgTexture.repeat.set(0.8, 0.65);
+   bgTexture.offset.x = 0;
+   bgTexture.offset.y = 0.35;
+   
    // add our directional light so that we can have some shadows
    var light = new THREE.DirectionalLight(0xFFFFFF, 10);
    light.position.set(0, 0, 300);
@@ -56,7 +75,7 @@ function Renderer(webGLHaven) {
    scene.add(new THREE.AmbientLight(0xFFFFFF, 0.8));
       
    // background color
-   scene.background = new THREE.Color(0x80A0A0);
+   //scene.background = new THREE.Color(0x80A0A0);
 
    // this is a spotlight to highlight a tower that's going to receive a
    // card... I think
