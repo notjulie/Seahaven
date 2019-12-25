@@ -57,6 +57,8 @@ function DragCardState(mouseDownEvent) {
          
          // find what column that would be
          var columnIndex = this.webGLHaven.world.getColumnForX(position.x);
+         if (columnIndex > 9 || columnIndex < 0)
+            continue;
          
          // since the card origins are bottom-left, we might be in front of either
          // this column or the one to its right
