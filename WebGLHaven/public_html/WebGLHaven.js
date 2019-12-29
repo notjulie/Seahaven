@@ -95,9 +95,13 @@ WebGLHaven.prototype.repositionAllCards = function() {
    }
 };
 
-
-function main(webGLHaven) {   
-   var scene = webGLHaven.renderer.getScene();
+/**
+ * Initializes everything and starts our main rendering loop
+ * 
+ * @returns {undefined}
+ */
+WebGLHaven.prototype.start = function() {
+   var scene = this.renderer.getScene();
 
    var texture = new THREE.TextureLoader().load('Sand002_COLOR.jpg');
    texture.repeat.x = 1000;
@@ -108,7 +112,7 @@ function main(webGLHaven) {
    groundGeometry.rotateX(-90 * Math.PI / 180);
    //var ground = new THREE.Mesh(groundGeometry, new THREE.MeshMatcapMaterial({color: 0x7f4f00}));
    var ground = new THREE.Mesh(groundGeometry, material);
-   ground.position.y = webGLHaven.world.properties.groundY;
+   ground.position.y = this.world.properties.groundY;
    scene.add(ground);
 
    var tableTexture = new THREE.TextureLoader().load('grass.jpg');
@@ -116,7 +120,7 @@ function main(webGLHaven) {
    tableTexture.repeat.y = 10;
    tableTexture.wrapS = tableTexture.wrapT = THREE.RepeatWrapping;
    var tableMaterial = new THREE.MeshBasicMaterial( { map: tableTexture } );
-   var tableWorldGeometry = webGLHaven.world.tableBox;
+   var tableWorldGeometry = this.world.tableBox;
    var tableWorldSize = tableWorldGeometry.getSize(new THREE.Vector3());
    var tableGeometry = new THREE.PlaneGeometry(
            tableWorldSize.x,
@@ -132,16 +136,17 @@ function main(webGLHaven) {
 
 
    // initialize our deck of cards; on completion add cards to the scene
-   webGLHaven.deckOfCards.initialize(function () {
+   var thisWebGLHaven = this;
+   this.deckOfCards.initialize(function () {      
       // add all the cards to the scene, but hidden
       for (var cardID in CardID.info) {
-         var card3D = webGLHaven.deckOfCards.getCard3D(cardID);
+         var card3D = thisWebGLHaven.deckOfCards.getCard3D(cardID);
          card3D.visible = false;
          scene.add(card3D);
       }
 
       // start a new game
-      webGLHaven.stateMachine.setState(new NewGameState());
+      thisWebGLHaven.stateMachine.setState(new NewGameState());
    });
 
 
@@ -150,16 +155,15 @@ function main(webGLHaven) {
 
    for (var i = 0; i < 4; ++i) {
       towers[i] = new Tower3D();
-      var position = webGLHaven.world.getTowerPosition(i);
+      var position = this.world.getTowerPosition(i);
       towers[i].position.x = position.x;
       towers[i].position.y = position.y;
       towers[i].position.z = position.z;
       towers[i].scale.y = position.height;
       scene.add(towers[i]);
    }
-   webGLHaven.renderer.setSpotLightTarget(towers[2].getSpotlightTarget());
+   this.renderer.setSpotLightTarget(towers[2].getSpotlightTarget());
 
-   webGLHaven.renderer.start();
-
-}
+   this.renderer.start();
+};
 

@@ -50,7 +50,10 @@
       
       <!-- our main -->
       <script type="text/javascript">
-         // create our global instance of the game
+         /**
+          * our global instance of the game
+          * @type WebGLHaven
+          */
          var game = new WebGLHaven(document.querySelector('#c'));
          
          // add our handler to deal with resizing the window, and give it
@@ -61,7 +64,7 @@
          body.onresize();
          
          // start our loop
-         main(game);
+         game.start();
       </script>
    </body>
 </html>
