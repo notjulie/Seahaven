@@ -61,7 +61,8 @@ function WebGLHaven(canvasElement) {
       });   
 
    Object.defineProperty(this, 'cardLocations', {
-         value: new CardLocations()
+         value: new CardLocations(),
+         writable: true
       });
 
    Object.defineProperty(this, 'deckOfCards', {

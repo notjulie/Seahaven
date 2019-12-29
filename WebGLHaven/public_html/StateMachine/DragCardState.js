@@ -89,9 +89,40 @@ function DragCardState(mouseDownEvent) {
             if (position.y < minY)
                position.y = minY;
             card.position.copy(position);
-            return position;
+            return {
+               worldPosition:position,
+               columnIndex:columnIndex
+            };
          }
       }
+   }
+   
+   function calculateDragPosition(event) {
+      // get the ray that goes through the point on the screen; this is the
+      // ray that should go through the point on the card that was originally
+      // clicked
+      var ray = this.webGLHaven.renderer.pointToRay(event.clientX, event.clientY);
+      
+      // offset the ray to give us a ray on which the card's origin must fall
+      ray.origin.x -= worldClickPoint.x - startPosition.x;
+      ray.origin.y -= worldClickPoint.y - startPosition.y;
+      
+      // figure out our position if we assume that we are dragging the card in
+      // front of the column cards
+      var positionInFrontOfColumns = calculatePositionInFrontOfColumns.call(this, ray);
+            
+      // figure out our position assuming that we are dragging the card above the
+      // column cards
+      var pointOnTableLid = ray.intersectPlane(this.webGLHaven.world.tableLidPlane, new THREE.Vector3());
+      
+      // triage
+      var targetPosition = pointOnTableLid;
+      if (positionInFrontOfColumns && positionInFrontOfColumns.worldPosition.z < targetPosition.z)
+         return positionInFrontOfColumns;
+      else
+         return {
+            worldPosition:targetPosition
+         };
    }
    
    /**
@@ -129,30 +160,11 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseMove = function(event) {
-      // get the ray that goes through the point on the screen; this is the
-      // ray that should go through the point on the card that was originally
-      // clicked
-      var ray = this.webGLHaven.renderer.pointToRay(event.clientX, event.clientY);
-      
-      // offset the ray to give us a ray on which the card's origin must fall
-      ray.origin.x -= worldClickPoint.x - startPosition.x;
-      ray.origin.y -= worldClickPoint.y - startPosition.y;
-      
-      // figure out our position if we assume that we are dragging the card in
-      // front of the column cards
-      var positionInFrontOfColumns = calculatePositionInFrontOfColumns.call(this, ray);
-            
-      // figure out our position assuming that we are dragging the card above the
-      // column cards
-      var pointOnTableLid = ray.intersectPlane(this.webGLHaven.world.tableLidPlane, new THREE.Vector3());
-      
-      // triage
-      var targetPosition = pointOnTableLid;
-      if (positionInFrontOfColumns && positionInFrontOfColumns.z < targetPosition.z)
-         targetPosition = positionInFrontOfColumns;
+      // calculate the drag position
+      var targetPosition = calculateDragPosition.call(this, event);
       
       // update the card's position
-      card.position.copy(targetPosition);
+      card.position.copy(targetPosition.worldPosition);
    };
    
    /**
@@ -162,8 +174,18 @@ function DragCardState(mouseDownEvent) {
     * @returns {undefined}
     */
    this.onMouseUp = function(event) {
-      this.webGLHaven.repositionAllCards();
-      this.webGLHaven.stateMachine.setState(new GameIdleState());
+      // calculate the drag position
+      var dragPosition = calculateDragPosition.call(this, event);
+      
+      if (dragPosition.columnIndex) {
+         cardLocations.moveToBottomOfColumn(card.cardID, dragPosition.columnIndex);
+         this.webGLHaven.cardLocations = cardLocations;
+         this.webGLHaven.repositionAllCards();
+         this.webGLHaven.stateMachine.setState(new MoveToAcesState());
+      } else {
+         this.webGLHaven.repositionAllCards();
+         this.webGLHaven.stateMachine.setState(new GameIdleState());
+      }      
    };
 }
 DragCardState.prototype = Object.create(State.prototype);
