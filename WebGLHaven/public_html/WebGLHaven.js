@@ -135,21 +135,6 @@ WebGLHaven.prototype.start = function() {
    scene.add(table);
 
 
-   // initialize our deck of cards; on completion add cards to the scene
-   var thisWebGLHaven = this;
-   this.deckOfCards.initialize(function () {      
-      // add all the cards to the scene, but hidden
-      for (var cardID in CardID.info) {
-         var card3D = thisWebGLHaven.deckOfCards.getCard3D(cardID);
-         card3D.visible = false;
-         scene.add(card3D);
-      }
-
-      // start a new game
-      thisWebGLHaven.stateMachine.setState(new NewGameState());
-   });
-
-
    var towers = new Array();
    var loader = new THREE.GLTFLoader();
 

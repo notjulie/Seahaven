@@ -44,6 +44,11 @@ function DeckOfCards(attributes) {
       {color: 0xD00000},
       {color: 0x000000}
    ];
+   
+   var isLoaded = false;
+   Object.defineProperty(this, 'isLoaded', {
+      get: function() { return isLoaded; }
+   });
 
    // create our card shape... upscale it to a height of 100 so that it
    // renders well, because that seems to matter
@@ -149,30 +154,7 @@ function DeckOfCards(attributes) {
       return group;
    };
    
-   
-   /**
-    * Loads resources required by the deck of cards, calls the callback
-    * when loading completes.
-    * @param {function} loadCompleteCallback callback for when loading completes
-    */
-   this.initialize = function (loadCompleteCallback) {
-      // start creating our rank geometries
-      var fontLoader = new THREE.FontLoader();
-      fontLoader.load(fontName, function (font) {
-         for (var rankNumber in cardRankMnemonics)
-            rankGeometries[rankNumber] = createRankGeometry(font, cardRankMnemonics[rankNumber]);
-         for (var cardID in CardID.info)
-            cards[cardID] = createCard3D(cardID);
-         loadCompleteCallback();
-      });
-
-      // create our suit geometries
-      suits[0].geometry = createSuitGeometry(createClubShape(100, 100));
-      suits[1].geometry = createSuitGeometry(createDiamondShape(100, 150));
-      suits[2].geometry = createSuitGeometry(createHeartShape(100, 100));
-      suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
-   };
-   
+      
    /**
     * Gets the requested card object
     * @param {string} cardID the card ID string
@@ -181,5 +163,26 @@ function DeckOfCards(attributes) {
    this.getCard3D = function(cardID) {
       return cards[cardID];
    };
+   
+   // start creating our rank geometries
+   var fontLoader = new THREE.FontLoader();
+   fontLoader.load(fontName, function (font) {
+      for (var rankNumber in cardRankMnemonics)
+         rankGeometries[rankNumber] = createRankGeometry(font, cardRankMnemonics[rankNumber]);
+      for (var cardID in CardID.info)
+         cards[cardID] = createCard3D(cardID);
+      isLoaded = true;
+   });
+
+   // create our suit geometries
+   suits[0].geometry = createSuitGeometry(createClubShape(100, 100));
+   suits[1].geometry = createSuitGeometry(createDiamondShape(100, 150));
+   suits[2].geometry = createSuitGeometry(createHeartShape(100, 100));
+   suits[3].geometry = createSuitGeometry(createSpadeShape(100, 100));
 }
 
+/**
+ * Indicates whether the deck has finished loading
+ * @type Boolean
+ */
+DeckOfCards.prototype.isLoaded = undefined;
