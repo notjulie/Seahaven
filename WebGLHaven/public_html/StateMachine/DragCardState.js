@@ -47,32 +47,41 @@ function DragCardState(mouseDownEvent) {
    function calculatePositionInFrontOfColumns(ray) {
       var position = new THREE.Vector3();
       
+      /** @type World */
+      var world = this.webGLHaven.world;
+      
       // for each row on the table we intersect the ray with that row's plane and
       // determine if the resulting point:
       //  1) is far enough forward to be in front of the cards
       //  2) is high enough not to be clipped by the table or the ground
-      for (var rowIndex=0; rowIndex<this.webGLHaven.world.properties.columnRowCount; ++rowIndex) {
+      for (var rowIndex=0; rowIndex<world.properties.columnRowCount; ++rowIndex) {
          // find where our ray intersects that row
-         ray.intersectPlane(this.webGLHaven.world.getRowPlane(rowIndex), position);
+         ray.intersectPlane(world.getRowPlane(rowIndex), position);
          
          // find what column that would be
-         var columnIndex = this.webGLHaven.world.getColumnForX(position.x);
+         var columnIndex = world.getColumnForX(position.x);
          if (columnIndex > 9 || columnIndex < 0)
             continue;
          
          // since the card origins are bottom-left, we might be in front of either
          // this column or the one to its right
-         var minRowIndex = 1 + Math.max(
-            cardLocations.getMaxOccupiedRowOnColumn(columnIndex),
-            cardLocations.getMaxOccupiedRowOnColumn(columnIndex + 1)
-            );
+         var margin = world.properties.cardWidth * world.properties.cardRelativeMargin / 3;
+         var minRowIndex = 0;
+         var leftColumnFrontRow = cardLocations.getMaxOccupiedRowOnColumn(columnIndex);
+         var leftColumnPosition = world.getColumnPosition(columnIndex, leftColumnFrontRow);
+         if (leftColumnPosition.x + world.properties.cardWidth + margin >= position.x)
+            minRowIndex = Math.max(minRowIndex, 1 + leftColumnFrontRow);
+         var rightColumnFrontRow = cardLocations.getMaxOccupiedRowOnColumn(columnIndex + 1);
+         var rightColumnPosition = world.getColumnPosition(columnIndex + 1, rightColumnFrontRow);
+         if (position.x + world.properties.cardWidth + margin >= rightColumnPosition.x)
+            minRowIndex = Math.max(minRowIndex, 1 + rightColumnFrontRow);
          
          // see if we are in front far enough of those columns that we can descend
          // in front of them; we do that by seeing if we can be one row in front of it
          if (rowIndex >= minRowIndex) {
             // since at this point we are moving the card downward we need to stop
             // it if it reaches the table
-            var minY = this.webGLHaven.world.getColumnPosition(columnIndex, rowIndex).y;
+            var minY = world.getColumnPosition(columnIndex, rowIndex).y;
             if (position.y < minY)
                position.y = minY;
             card.position.copy(position);
