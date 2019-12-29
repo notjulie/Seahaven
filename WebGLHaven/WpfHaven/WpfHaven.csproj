@@ -212,6 +212,27 @@
       <Link>WebGLHaven\tower\textures\Material.000_normal.png</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\public_html\WebGLHaven.js">
+      <Link>WebGLHaven\WebGLHaven.js</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\public_html\WorldProperties.js">
+      <Link>WebGLHaven\WorldProperties.js</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\public_html\StateMachine\DragCardState.js">
+      <Link>WebGLHaven\StateMachine\DragCardState.js</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\public_html\StateMachine\InitializingState.js">
+      <Link>WebGLHaven\StateMachine\InitializingState.js</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\public_html\Beach-With-Sunset-And-Waves-Of-The-Atlantic-Ocean-Portugal-The-Coast-C11.jpg">
+      <Link>WebGLHaven\Beach-With-Sunset-And-Waves-Of-The-Atlantic-Ocean-Portugal-The-Coast-C11.jpg</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

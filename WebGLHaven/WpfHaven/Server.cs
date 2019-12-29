@@ -99,8 +99,9 @@ namespace WpfHaven
                if (resourceStream == null)
                   throw new Exception("No such resource: " + resourceName);
             }
-            catch
+            catch (Exception x)
             {
+               Debug.WriteLine(x.Message);
                response.StatusCode = (int)HttpStatusCode.NotFound; // 404
                response.StatusDescription = response.StatusCode + " Not Found";
 
@@ -115,30 +116,6 @@ namespace WpfHaven
                return;
             }
 
-            /*byte[] entity = null;
-            try
-            {
-               entity = File.ReadAllBytes(filepath);
-            }
-            catch (Exception x)
-            {
-               Debug.WriteLine("Exception reading file: " + filepath + "\n" + x);
-
-               response.StatusCode = (int)HttpStatusCode.InternalServerError; // 500
-               response.StatusDescription = response.StatusCode + " Internal Server Error";
-
-               response.ContentType = MediaTypeNames.Text.Html;
-               response.ContentEncoding = Encoding.UTF8;
-
-               var buffer = Encoding.UTF8.GetBytes(
-                 "<html><body>500 Internal Server Error</body></html>");
-               response.ContentLength64 = buffer.Length;
-               using (var s = response.OutputStream) s.Write(buffer, 0, buffer.Length);
-
-               return;
-            }*/
-
-            //response.ContentLength64 = entity.Length;
             response.ContentLength64 = resourceStream.Length;
 
             switch (Path.GetExtension(request.Url.AbsolutePath).ToLowerInvariant())
