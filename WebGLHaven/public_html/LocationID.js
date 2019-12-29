@@ -28,7 +28,7 @@ function generateAceLocationIDs() {
    var result = {};
    for (var suit=0; suit<4; ++suit) {
       result[suit] = new Array();
-      for (var rank=1; rank<13; ++rank)
+      for (var rank=1; rank<=13; ++rank)
          result[suit][rank] = 'A' + suit + '_' + rank;
    }
    return result;
@@ -59,7 +59,7 @@ function generateAllLocationInfo() {
    
    var aces = generateAceLocationIDs();
    for (var suit=0; suit<4; ++suit) {
-      for (var rank=1; rank<13; ++rank) {
+      for (var rank=1; rank<=13; ++rank) {
          var id = aces[suit][rank];
          result[id] = {
             isAce: true,
