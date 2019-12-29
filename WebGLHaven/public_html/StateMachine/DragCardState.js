@@ -66,15 +66,19 @@ function DragCardState(mouseDownEvent) {
          // since the card origins are bottom-left, we might be in front of either
          // this column or the one to its right
          var margin = world.properties.cardWidth * world.properties.cardRelativeMargin / 3;
-         var minRowIndex = 0;
+         var minRowIndex = -1;
          var leftColumnFrontRow = cardLocations.getMaxOccupiedRowOnColumn(columnIndex);
          var leftColumnPosition = world.getColumnPosition(columnIndex, leftColumnFrontRow);
          if (leftColumnPosition.x + world.properties.cardWidth + margin >= position.x)
             minRowIndex = Math.max(minRowIndex, 1 + leftColumnFrontRow);
-         var rightColumnFrontRow = cardLocations.getMaxOccupiedRowOnColumn(columnIndex + 1);
-         var rightColumnPosition = world.getColumnPosition(columnIndex + 1, rightColumnFrontRow);
-         if (position.x + world.properties.cardWidth + margin >= rightColumnPosition.x)
-            minRowIndex = Math.max(minRowIndex, 1 + rightColumnFrontRow);
+         if (columnIndex < 9) {
+            var rightColumnFrontRow = cardLocations.getMaxOccupiedRowOnColumn(columnIndex + 1);
+            var rightColumnPosition = world.getColumnPosition(columnIndex + 1, rightColumnFrontRow);
+            if (position.x + world.properties.cardWidth + margin >= rightColumnPosition.x)
+               minRowIndex = Math.max(minRowIndex, 1 + rightColumnFrontRow);
+         }
+         if (minRowIndex < 0)
+            continue;
          
          // see if we are in front far enough of those columns that we can descend
          // in front of them; we do that by seeing if we can be one row in front of it
