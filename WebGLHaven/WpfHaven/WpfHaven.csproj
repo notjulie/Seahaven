@@ -235,6 +235,12 @@
       <Link>WebGLHaven\Beach-With-Sunset-And-Waves-Of-The-Atlantic-Ocean-Portugal-The-Coast-C11.jpg</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Solver\Solver.NET\Solver.NET.vcxproj">
+      <Project>{74c8f5a7-20e0-401c-a4a8-48d6aebf29cd}</Project>
+      <Name>Solver.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -22,18 +22,20 @@ namespace WpfHaven
    public partial class MainWindow : Window
    {
       private Server server = new Server();
-      private Solver solver = new Solver();
+      private SolverStub solver = new SolverStub();
 
       /// <summary>
       /// Test class for testing JavaScript integration
       /// </summary>
-      public class Solver
+      public class SolverStub
       {
          /// <summary>
          /// bleems
          /// </summary>
          public string solve(string s)
          {
+            Solver.NET.ManagedSolver solver = new Solver.NET.ManagedSolver();
+            solver.Solve();
             return "Solver in the house";
          }
       }
