@@ -150,7 +150,11 @@ function CardLocations() {
    this.removeCard = function(cardID) {
       cardLocations[cardID] = undefined;
    };
-   
+
+   this.toJSON = function () {
+      return JSON.stringify(cardLocations);
+   };
+
    // start by shuffling
    this.newGame();
 }

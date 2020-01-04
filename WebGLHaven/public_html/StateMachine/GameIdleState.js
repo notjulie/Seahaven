@@ -36,5 +36,5 @@ GameIdleState.prototype.onMouseDown = function(event) {
 };
 
 GameIdleState.prototype.solve = function (solver) {
-   solver.solve("Blorg in a basket");
+   solver.solve(this.webGLHaven.cardLocations.toJSON());
 };
