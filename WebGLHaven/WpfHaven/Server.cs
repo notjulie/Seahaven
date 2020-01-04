@@ -11,17 +11,18 @@ using System.Threading.Tasks;
 
 namespace WpfHaven
 {
+   /// <summary>
+   /// Internal http server that provides the content for our browser control
+   /// from embedded resources
+   /// </summary>
    public class Server
    {
       string _Html = String.Empty;
       string _BaseDirectory = String.Empty;
 
-      public void SetHtml(string html, string baseDirectory)
-      {
-         _Html = html;
-         _BaseDirectory = baseDirectory;
-      }
-
+      /// <summary>
+      /// Gets our base URL
+      /// </summary>
       public Uri Url
       {
          get
@@ -34,6 +35,9 @@ namespace WpfHaven
       HttpListener _Listener = null;
       int _Port = -1;
 
+      /// <summary>
+      /// Initializes a new instance of class Server
+      /// </summary>
       public Server()
       {
          var rnd = new Random();
@@ -62,6 +66,10 @@ namespace WpfHaven
          throw new ApplicationException("Failed to start HttpListener");
       }
 
+      /// <summary>
+      /// Callback that gets called to respond to an HTTP request
+      /// </summary>
+      /// <param name="ar"></param>
       public void ListenerCallback(IAsyncResult ar)
       {
          _Listener.BeginGetContext(ListenerCallback, null);

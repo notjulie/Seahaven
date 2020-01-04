@@ -24,24 +24,42 @@ namespace WpfHaven
       private Server server = new Server();
       private Solver solver = new Solver();
 
+      /// <summary>
+      /// Test class for testing JavaScript integration
+      /// </summary>
       public class Solver
       {
-         public void dobleem()
+         /// <summary>
+         /// bleems
+         /// </summary>
+         public string solve(string s)
          {
-
+            return "Solver in the house";
          }
       }
 
+      /// <summary>
+      /// Initializes a new instance of class MainWindow
+      /// </summary>
       public MainWindow()
       {
+         // normal component initialization
          InitializeComponent();
 
          // add event handlers
+         solveItem.Click += SolveItem_Click;
          webBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
          webBrowser.JavascriptObjectRepository.ResolveObject += JavascriptObjectRepository_ResolveObject;
 
          // navigate
          webBrowser.Address = new Uri(server.Url, "WebGLHaven/index.html").AbsoluteUri;
+      }
+
+      private void SolveItem_Click(object sender, RoutedEventArgs e)
+      {
+         var frame = WebBrowserExtensions.GetMainFrame(webBrowser);
+         if (frame != null)
+            frame.ExecuteJavaScriptAsync("game.solve(solver);");
       }
 
       private void WebBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)

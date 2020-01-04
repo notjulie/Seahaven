@@ -7,7 +7,12 @@
         xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-   <Grid>
+   <DockPanel>
+      <Menu DockPanel.Dock="Top">
+         <MenuItem Header="Game">
+            <MenuItem x:Name="solveItem" Header="Solve"/>
+         </MenuItem>
+      </Menu>
       <cef:ChromiumWebBrowser x:Name="webBrowser"/>
-   </Grid>
+   </DockPanel>
 </Window>

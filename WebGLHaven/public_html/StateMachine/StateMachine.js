@@ -84,6 +84,10 @@ function StateMachine(webGLHaven) {
       currentTime = time;
       currentState.service();
    };
+
+   this.solve = function (solver) {
+      currentState.solve(solver);
+   };
    
    // enter initializing state
    this.setState(new InitializingState());

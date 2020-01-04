@@ -76,3 +76,6 @@ State.prototype.newGame = function() {
    this.webGLHaven.stateMachine.setState(new NewGameState());
 };
 
+
+State.prototype.solve = function (solver) {
+};

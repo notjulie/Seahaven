@@ -153,3 +153,6 @@ WebGLHaven.prototype.start = function() {
    this.renderer.start();
 };
 
+WebGLHaven.prototype.solve = function (solver) {
+   this.stateMachine.solve(solver);
+};

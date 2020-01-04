@@ -34,3 +34,7 @@ GameIdleState.prototype.onMouseDown = function(event) {
          this.webGLHaven.stateMachine.setState(new DragCardState(event));
    }
 };
+
+GameIdleState.prototype.solve = function (solver) {
+   solver.solve("Blorg in a basket");
+};
