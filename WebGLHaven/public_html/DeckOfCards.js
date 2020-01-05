@@ -165,10 +165,25 @@ function DeckOfCards(attributes) {
    };
    
    // start creating our rank geometries
+   const cardRankStrings = {
+      1: 'A',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9',
+      10: '10',
+      11: 'J',
+      12: 'Q',
+      13: 'K'
+   };
    var fontLoader = new THREE.FontLoader();
    fontLoader.load(fontName, function (font) {
-      for (var rankNumber in cardRankMnemonics)
-         rankGeometries[rankNumber] = createRankGeometry(font, cardRankMnemonics[rankNumber]);
+      for (var rankNumber in cardRankStrings)
+         rankGeometries[rankNumber] = createRankGeometry(font, cardRankStrings[rankNumber]);
       for (var cardID in CardID.info)
          cards[cardID] = createCard3D(cardID);
       isLoaded = true;
