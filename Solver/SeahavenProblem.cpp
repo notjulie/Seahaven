@@ -44,6 +44,12 @@ SeahavenProblem::SeahavenProblem(const SolverState& state)
 SeahavenProblem::~SeahavenProblem() {
 }
 
+void SeahavenProblem::SetColumnCard(int column, int row, const ProblemCard& card)
+{
+   if (columns.size() <= column)
+      columns.resize((size_t)column + 1);
+   columns[column].SetCard(row, card);
+}
 
 void SeahavenProblem::Dump(FILE *f)
 {
@@ -89,12 +95,42 @@ SeahavenProblem SeahavenProblem::CreateRandom(void)
 /// </summary>
 SeahavenProblem SeahavenProblem::CreateFromJSON(const std::string &jsonCardLocations)
 {
+   SeahavenProblem result;
+
    // parse the JSON
    json::JSON cardLocations = json::JSON::Load(jsonCardLocations);
    for (auto cardInfo : cardLocations.ObjectRange())
    {
+      // the first is a CardID
       ProblemCard card(cardInfo.first.c_str());
-      ProblemCard card2(cardInfo.first.c_str());
+
+      // and the second is a LocationID, which parses thus:
+      std::string location = cardInfo.second.ToString();
+      switch (location[0])
+      {
+      case 'A':
+         // we don't care about cards that are on the ace piles... the
+         // problem class will infer that from the fact that it is not
+         // on a tower or column
+         break;
+
+      case 'C':
+         // string format:
+         //   Cn-m
+         // where n is the column, and m is the row
+         result.SetColumnCard(location[1] - '0', std::atoi(&location[3]), card);
+         break;
+
+      case 'T':
+         // string format:
+         //   Tn
+         // where n is the tower
+         result.towers.SetCard(location[1] - '0', card);
+         break;
+
+      default:
+         throw SolverException(std::string("Invalid card location ID: ") + location);
+      }
    }
    return SeahavenProblem();
 }

@@ -22,6 +22,7 @@ public:
     uint8_t       GetCount(void) const {
        return (uint8_t)cards.size();
     }
+    void SetCard(int index, const ProblemCard& card);
     
 private:
     std::vector<ProblemCard> cards;

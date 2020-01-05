@@ -159,6 +159,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="LinkID.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ProblemCard.h" />
+    <ClInclude Include="ProblemCards.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverMove.h" />
     <ClInclude Include="SolverResult.h" />

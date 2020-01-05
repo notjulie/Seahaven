@@ -41,3 +41,9 @@ void ProblemCards::Dump(FILE *f)
    fprintf(f, "\r\n");
 }
 
+void ProblemCards::SetCard(int index, const ProblemCard& card)
+{
+   if (cards.size() <= index)
+      cards.resize(index + 1);
+   cards[index] = card;
+}

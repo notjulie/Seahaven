@@ -34,6 +34,7 @@ public:
    std::vector<CompactedColumnCard> GetCompactedColumn(uint8_t columnIndex) const;
    ProblemCard GetTower(uint8_t index) const { return towers.GetCard(index); }
    CardLocation GetCardLocation(Suit suit, uint8_t rank) const;
+   void SetColumnCard(int column, int row, const ProblemCard &card);
 
    static SeahavenProblem CreateRandom(void);
    static SeahavenProblem CreateFromJSON(const std::string &jsonCardLocations);
