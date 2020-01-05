@@ -8,16 +8,14 @@
 #ifndef SOLVEREXCEPTION_H
 #define	SOLVEREXCEPTION_H
 
-class SolverException {
+#include <stdexcept>
+
+/// <summary>
+/// Solver base exception class
+/// </summary>
+class SolverException : public std::runtime_error {
 public:
     SolverException(const std::string &message);
-    SolverException(const SolverException& orig);
-    virtual ~SolverException();
-
-    const std::string &GetMessage(void) const { return message; }
-    
-private:
-    std::string message;
 };
 
 #endif	/* SOLVEREXCEPTION_H */

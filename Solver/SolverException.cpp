@@ -6,18 +6,15 @@
  */
 
 #include "SolverIncludes.h"
-
 #include "SolverException.h"
 
+
+/// <summary>
+/// Initializes a new instance of SolverException
+/// </summary>
 SolverException::SolverException(const std::string &_message)
-        :
-        message(_message)
+   :
+      std::runtime_error(_message.c_str())
 {
-}
-
-SolverException::SolverException(const SolverException& orig) {
-}
-
-SolverException::~SolverException() {
 }
 

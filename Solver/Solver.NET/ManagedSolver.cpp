@@ -19,9 +19,9 @@ namespace Solver::NET {
 
          return gcnew System::String(jsonCardLocations.c_str());
       }
-      catch (SolverException solverException) 
+      catch (std::exception exception) 
       {
-         throw gcnew System::Exception(gcnew System::String(solverException.GetMessage().c_str()));
+         throw gcnew System::Exception(gcnew System::String(exception.what()));
       }
    }
 
