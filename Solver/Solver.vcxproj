@@ -161,9 +161,12 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="ProblemCard.h" />
     <ClInclude Include="ProblemCards.h" />
+    <ClInclude Include="SeahavenProblem.h" />
     <ClInclude Include="Solver.h" />
+    <ClInclude Include="SolverHashCode.h" />
     <ClInclude Include="SolverMove.h" />
     <ClInclude Include="SolverResult.h" />
+    <ClInclude Include="SolverState.h" />
     <ClInclude Include="StackPointer.h" />
     <ClInclude Include="Suit.h" />
   </ItemGroup>

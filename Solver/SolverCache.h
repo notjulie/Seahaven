@@ -10,27 +10,30 @@
 
 #include "SolverHashCode.h"
 
+namespace solver {
 
-class SolverCache {
-public:
-   SolverCache(void);
+   class SolverCache {
+   public:
+      SolverCache(void);
 
-   void  Clear(void);
-   void  Disable(void) { disabled = true; }
-   bool  TestAndSet(const SolverHashCode &hashCode);
-   
-private:
-   struct Block {
-      std::vector<uint8_t> bitSet;
-      SolverHashCode::BlockNumber blockNumber = SolverHashCode::InvalidBlockNumber;
+      void  Clear(void);
+      void  Disable(void) { disabled = true; }
+      bool  TestAndSet(const SolverHashCode& hashCode);
+
+   private:
+      struct Block {
+         std::vector<uint8_t> bitSet;
+         SolverHashCode::BlockNumber blockNumber = SolverHashCode::InvalidBlockNumber;
+      };
+
+   private:
+      std::vector<int16_t>  blockIndexes;
+      std::vector<Block> blocks;
+      int16_t nextBlockIndex;
+      bool disabled = false;
    };
-   
-private:
-   std::vector<int16_t>  blockIndexes;
-   std::vector<Block> blocks;
-   int16_t nextBlockIndex;
-   bool disabled = false;
-};
+
+}
 
 #endif	/* SOLVERCACHE_H */
 

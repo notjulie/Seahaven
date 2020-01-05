@@ -5,20 +5,23 @@
 #include "Solution.h"
 #include "StackPointer.h"
 
-class SolverResult
-{
-public:
-   Solution CreateSolution(void) const;
+namespace solver {
 
-   void DumpToFile(FILE* file) const;
-   int GetSize(void) const { return (int)resultStack.size(); }
-   int GetNumberOfThroneToTowerMoves(void) const;
+   class SolverResult
+   {
+   public:
+      Solution CreateSolution(void) const;
 
-   void CopyFromStack(solver::StackPointer stackPointer);
+      void DumpToFile(FILE* file) const;
+      int GetSize(void) const { return (int)resultStack.size(); }
+      int GetNumberOfThroneToTowerMoves(void) const;
 
-private:
-   std::vector<SolverState> resultStack;
-};
+      void CopyFromStack(solver::StackPointer stackPointer);
 
+   private:
+      std::vector<SolverState> resultStack;
+   };
+
+}
 
 #endif

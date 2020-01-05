@@ -14,9 +14,10 @@
 #include "SolverResult.h"
 #include "StackPointer.h"
 
-class SeahavenProblem;
 
 namespace solver {
+
+   class SeahavenProblem;
 
    class Solver {
    public:
