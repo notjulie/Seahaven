@@ -4,7 +4,7 @@ namespace Solver::NET {
    public ref class ManagedSolver
    {
    public:
-      void Solve(void);
+      System::String ^Solve(System::String^ jsonCardLocations);
    };
 }
 

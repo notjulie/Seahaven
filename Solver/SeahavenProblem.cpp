@@ -6,6 +6,7 @@
  */
 
 #include "SolverIncludes.h"
+#include "json.hpp"
 
 #include "LinkedCards.h"
 #include "ProblemCards.h"
@@ -82,6 +83,21 @@ SeahavenProblem SeahavenProblem::CreateRandom(void)
    return result;
 }
 
+/// <summary>
+/// Creates an instance from a JSON object.  The object is a simple collection where
+/// each property's name is a card identifier and its value is a location identifier.
+/// </summary>
+SeahavenProblem SeahavenProblem::CreateFromJSON(const std::string &jsonCardLocations)
+{
+   // parse the JSON
+   json::JSON cardLocations = json::JSON::Load(jsonCardLocations);
+   for (auto cardInfo : cardLocations.ObjectRange())
+   {
+      ProblemCard card(cardInfo.first.c_str());
+      ProblemCard card2(cardInfo.first.c_str());
+   }
+   return SeahavenProblem();
+}
 
 void SeahavenProblem::AddCardToCollection(const SolverState& state, ProblemCards& cards, CardLocation cardLocation)
 {

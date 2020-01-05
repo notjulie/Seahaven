@@ -25,18 +25,17 @@ namespace WpfHaven
       private SolverStub solver = new SolverStub();
 
       /// <summary>
-      /// Test class for testing JavaScript integration
+      /// Stub that provides the JavaScript interface to the solver.
       /// </summary>
       public class SolverStub
       {
          /// <summary>
-         /// bleems
+         /// Solves the given problem, returns the result
          /// </summary>
-         public string solve(string s)
+         public string solve(string jsonCardLocations)
          {
             Solver.NET.ManagedSolver solver = new Solver.NET.ManagedSolver();
-            solver.Solve();
-            return "Solver in the house";
+            return solver.Solve(jsonCardLocations);
          }
       }
 

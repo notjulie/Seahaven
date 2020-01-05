@@ -36,6 +36,7 @@ public:
    CardLocation GetCardLocation(Suit suit, uint8_t rank) const;
 
    static SeahavenProblem CreateRandom(void);
+   static SeahavenProblem CreateFromJSON(const std::string &jsonCardLocations);
 
 private:
    void AddCardToCollection(const SolverState& state, ProblemCards& cards, CardLocation cardLocation);
