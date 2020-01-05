@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <string>
 #include "SeahavenProblem.h"
 #include "Solver.h"
