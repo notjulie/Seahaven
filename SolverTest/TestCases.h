@@ -26,5 +26,7 @@ extern const Solution singleColumnToColumnSolution;
 extern const ProblemDefinition singleColumnToTowerProblem;
 extern const Solution singleColumnToTowerSolution;
 
+extern const ProblemDefinition problemIRanInto;
+
 #endif	/* TESTCASES_H */
 

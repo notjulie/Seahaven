@@ -16,10 +16,9 @@ int main()
    tester.testSingleColumnToColumnProblem();
 
    {
-      extern ProblemDefinition scott2;
-      SeahavenProblem s2(scott2);
+      SeahavenProblem problem(problemIRanInto);
       solver::Solver solver;
-      solver.Solve(s2).Dump(stdout);
+      solver.Solve(problem).Dump(stdout);
       return 0;
    }
 

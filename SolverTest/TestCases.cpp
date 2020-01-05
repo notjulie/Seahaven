@@ -189,3 +189,27 @@ const ProblemDefinition slowTestProblem2 =
       "KH", "TH"
    }
 };
+
+/// <summary>
+/// a test case that takes longer than some (initially 18s on release build)
+/// </summary>
+const ProblemDefinition problemIRanInto =
+{
+   // columns
+   {
+      {"2C","KH","JS","8H","9D"},
+      {"QH","JH","3D","7C","5D"},
+      {"JC","TD","AH","JD","TC"},
+      {"KS","QC","6H","4S","2H"},
+      {"4H","KD","9H","TS","8S"},
+      {"6S","8C","5C","TH","5H"},
+      {"AS","3S","7D","3H","7H"},
+      {"8D","6C","6D","QS","QD"},
+      {"2S","5S","KC","9S","2D"},
+      {"9C","AD","4D","7S","3C"},
+   },
+   // towers
+   {
+      "4C"
+   }
+};
