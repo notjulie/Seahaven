@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace WpfHaven
 {
    /// <summary>
@@ -34,7 +35,7 @@ namespace WpfHaven
          /// </summary>
          public string solve(string jsonCardLocations)
          {
-            Solver.NET.ManagedSolver solver = new Solver.NET.ManagedSolver();
+            ManagedSolver.ManagedSolver solver = new ManagedSolver.ManagedSolver();
             return solver.Solve(jsonCardLocations);
          }
       }

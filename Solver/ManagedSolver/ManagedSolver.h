@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Solver::NET {
+namespace ManagedSolver {
    public ref class ManagedSolver
    {
    public:

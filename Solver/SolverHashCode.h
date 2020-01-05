@@ -8,6 +8,7 @@
 #ifndef SOLVERHASHCODE_H
 #define	SOLVERHASHCODE_H
 
+#include <limits>
 #include "LinkedCards.h"
 
 

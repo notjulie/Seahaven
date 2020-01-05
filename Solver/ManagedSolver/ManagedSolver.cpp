@@ -5,7 +5,7 @@
 #include "SolverException.h"
 #include "ManagedSolver.h"
 
-namespace Solver::NET {
+namespace ManagedSolver {
 
    System::String ^ManagedSolver::Solve(System::String ^_jsonCardLocations)
    {

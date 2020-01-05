@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfHaven", "WpfHaven.csproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solver", "..\..\Solver\Solver.vcxproj", "{106C5E5D-626F-486C-A21A-24F44D69CC99}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solver.NET", "..\..\Solver\Solver.NET\Solver.NET.vcxproj", "{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManagedSolver", "..\..\Solver\ManagedSolver\ManagedSolver.vcxproj", "{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

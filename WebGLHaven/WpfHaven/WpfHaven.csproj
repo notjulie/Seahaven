@@ -236,9 +236,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Solver\Solver.NET\Solver.NET.vcxproj">
+    <ProjectReference Include="..\..\Solver\ManagedSolver\ManagedSolver.vcxproj">
       <Project>{74c8f5a7-20e0-401c-a4a8-48d6aebf29cd}</Project>
-      <Name>Solver.NET</Name>
+      <Name>ManagedSolver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
