@@ -6,7 +6,6 @@
  */
 
 #include "SolverIncludes.h"
-
 #include "SolverException.h"
 
 #include "ProblemCard.h"
@@ -80,13 +79,18 @@ bool ProblemCard::operator==(const ProblemCard &that) const
       suit == that.suit;
 }
 
-void ProblemCard::Dump(FILE *f) const
+std::string ProblemCard::ToString(void) const
 {
-   static const char ranks[] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J','Q', 'K'};
-   
+   static const char ranks[] = { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J','Q', 'K' };
+
    char s[3];
    s[0] = ranks[rank - 1];
    s[1] = suit.GetMnemonic();
    s[2] = 0;
-   fprintf(f, "%s", s);
+   return s;
+}
+
+void ProblemCard::Dump(FILE *f) const
+{
+   fputs(ToString().c_str(), f);
 }

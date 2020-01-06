@@ -158,10 +158,10 @@
     <ClInclude Include="ColumnCounts.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="LinkID.h" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="ProblemCard.h" />
     <ClInclude Include="ProblemCards.h" />
     <ClInclude Include="SeahavenProblem.h" />
+    <ClInclude Include="Solution.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverHashCode.h" />
     <ClInclude Include="SolverMove.h" />
@@ -173,6 +173,10 @@
   <ItemGroup>
     <ClCompile Include="CardLocation.cpp" />
     <ClCompile Include="ColumnCounts.cpp" />
+    <ClCompile Include="json.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="LinkedCards.cpp" />
     <ClCompile Include="ProblemCard.cpp" />
     <ClCompile Include="ProblemCards.cpp" />

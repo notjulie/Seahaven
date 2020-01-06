@@ -10,29 +10,34 @@
 
 #include "SolutionStep.h"
 
-class Solution {
-public:
-    Solution(
-       const SolutionStep &step1 = SolutionStep()
-       );
+namespace solver {
 
-    void AddStep(const SolutionStep &step);
-    void Dump(FILE *f) const;
-    SolutionStep GetStep(int i) const { return steps[i]; }
-    int GetStepCount(void) const { return (int)steps.size(); }
-    bool IsFailure(void) const { return !success; }
+   class Solution {
+   public:
+      Solution(
+         const SolutionStep& step1 = SolutionStep()
+      );
 
-public:
-   bool operator==(const Solution&) const;
-   bool operator!=(const Solution&s) const { return !operator==(s); }
+      void AddStep(const SolutionStep& step);
+      void Dump(FILE* f) const;
+      SolutionStep GetStep(int i) const { return steps[i]; }
+      int GetStepCount(void) const { return (int)steps.size(); }
+      bool IsFailure(void) const { return !success; }
+      std::string ToJSONString(void) const;
 
-public:
-   static Solution Fail(void);
-   
-private:
-   bool  success;
-   std::vector<SolutionStep>  steps;
-};
+   public:
+      bool operator==(const Solution&) const;
+      bool operator!=(const Solution& s) const { return !operator==(s); }
+
+   public:
+      static Solution Fail(void);
+
+   private:
+      bool  success;
+      std::vector<SolutionStep>  steps;
+   };
+
+}
 
 #endif	/* SOLUTION_H */
 

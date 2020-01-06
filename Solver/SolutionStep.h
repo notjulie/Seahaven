@@ -20,7 +20,9 @@ public:
    
    bool operator==(const SolutionStep &that) const;
    bool operator!=(const SolutionStep &that) const;
-   
+
+   std::string ToString(void) const;
+
 private:
    ProblemCard card;
 };

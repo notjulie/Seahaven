@@ -20,6 +20,8 @@ public:
     Suit       GetSuit(void) const { return suit; }
     uint8_t    GetRank(void) const { return rank; }
 
+    std::string ToString(void) const;
+
     bool operator==(const ProblemCard &that) const;
     
 private:

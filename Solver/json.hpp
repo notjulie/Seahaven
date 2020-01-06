@@ -260,7 +260,7 @@ class JSON
 
         int length() const {
             if( Type == Class::Array )
-                return Internal.List->size();
+                return (int)Internal.List->size();
             else
                 return -1;
         }
@@ -273,9 +273,9 @@ class JSON
 
         int size() const {
             if( Type == Class::Object )
-                return Internal.Map->size();
+                return (int)Internal.Map->size();
             else if( Type == Class::Array )
-                return Internal.List->size();
+                return (int)Internal.List->size();
             else
                 return -1;
         }
@@ -418,10 +418,6 @@ class JSON
         Class Type = Class::Null;
 };
 
-JSON Array() {
-    return std::move( JSON::Make( JSON::Class::Array ) );
-}
-
 template <typename... T>
 JSON Array( T... args ) {
     JSON arr = JSON::Make( JSON::Class::Array );
@@ -429,14 +425,6 @@ JSON Array( T... args ) {
     return std::move( arr );
 }
 
-JSON Object() {
-    return std::move( JSON::Make( JSON::Class::Object ) );
-}
-
-std::ostream& operator<<( std::ostream &os, const JSON &json ) {
-    os << json.dump();
-    return os;
-}
 
 namespace {
     JSON parse_next( const string &, size_t & );
@@ -641,9 +629,5 @@ namespace {
     }
 }
 
-JSON JSON::Load( const string &str ) {
-    size_t offset = 0;
-    return std::move( parse_next( str, offset ) );
-}
 
 } // End Namespace json

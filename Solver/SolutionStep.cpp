@@ -6,7 +6,6 @@
  */
 
 #include "SolverIncludes.h"
-
 #include "SolutionStep.h"
 
 SolutionStep::SolutionStep(const char *s)
@@ -30,6 +29,11 @@ bool SolutionStep::operator==(const SolutionStep &that) const
 bool SolutionStep::operator!=(const SolutionStep &that) const
 {
    return !operator==(that);
+}
+
+std::string SolutionStep::ToString(void) const
+{
+   return card.ToString();
 }
 
 void SolutionStep::Dump(FILE *f) const

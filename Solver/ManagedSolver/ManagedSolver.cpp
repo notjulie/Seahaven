@@ -15,9 +15,16 @@ namespace ManagedSolver {
          for (int i = 0; i < _jsonCardLocations->Length; ++i)
             jsonCardLocations += (char)_jsonCardLocations[i];
 
+         // create our problem object from the JSON
          solver::SeahavenProblem problem = solver::SeahavenProblem::CreateFromJSON(jsonCardLocations);
 
-         return gcnew System::String(jsonCardLocations.c_str());
+         // solve
+         solver::Solver solver;
+         solver::Solution solution = solver.Solve(problem);
+
+         // return JSON version of the solution 
+         std::string jsonString = solution.ToJSONString();
+         return gcnew System::String(jsonString.c_str());
       }
       catch (std::exception exception) 
       {
