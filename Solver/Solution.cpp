@@ -50,7 +50,7 @@ namespace solver {
       for (int i = 0; i < steps.size(); ++i)
          result["steps"][i] = steps[i].ToString();
 
-      return result.ToString();
+      return result.dump();
    }
 
 
