@@ -3,15 +3,23 @@
 #include "CardLocation.h"
 
 
-CardLocation CardLocation::FromLinkID(LinkID linkID)
+constexpr CardLocation::CardLocation(void)
+   :
+      linkID(LinkID::NO_LINK),
+      onColumn(false),
+      isThrone(false),
+      isTower(false),
+      isAce(false),
+      row(0),
+      suit(Suit::Clubs)
+{
+}
+
+
+constexpr CardLocation CardLocation::FromLinkID(LinkID linkID)
 {
    CardLocation result;
    result.linkID = linkID;
-   result.onColumn = false;
-   result.isThrone = false;
-   result.isTower = false;
-   result.isAce = false;
-   result.row = 0;
 
    if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_COLUMN_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK < 50)
    {
@@ -37,7 +45,7 @@ CardLocation CardLocation::FromLinkID(LinkID linkID)
    return result;
 }
 
-const CardLocation CardLocation::Null = CardLocation::FromLinkID(LinkID::NO_LINK);
+constexpr CardLocation CardLocation::Null = CardLocation::FromLinkID(LinkID::NO_LINK);
 
 const CardLocation CardLocation::Aces[4] = {
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 0)),

@@ -20,6 +20,9 @@
 /// </summary>
 struct alignas(1) CardLocation {
 public:
+   constexpr CardLocation(void);
+
+public:
    LinkID linkID;
    bool onColumn : 1;
    bool isThrone : 1;
@@ -46,7 +49,7 @@ public:
    static const CardLocation Links[(uint8_t)LinkID::LINK_COUNT_INCLUDING_NO_LINK];
 
 private:
-   static CardLocation FromLinkID(LinkID linkID);
+   static constexpr CardLocation FromLinkID(LinkID linkID);
 };
 static_assert(sizeof(CardLocation)<=3, "CardLocation is getting chubby");
 
