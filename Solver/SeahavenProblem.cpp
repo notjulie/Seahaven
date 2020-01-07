@@ -134,7 +134,8 @@ namespace solver {
             throw SolverException(std::string("Invalid card location ID: ") + location);
          }
       }
-      return SeahavenProblem();
+
+      return result;
    }
 
    void SeahavenProblem::AddCardToCollection(const SolverState& state, ProblemCards& cards, CardLocation cardLocation)
