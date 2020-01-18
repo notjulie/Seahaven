@@ -12,7 +12,7 @@
  * the game when it is idle.
  * 
  * @augments State
- * @returns {GameIdleState}
+ * @constructor {GameIdleState}
  */
 function GameIdleState() {
    // inherit State
@@ -35,6 +35,10 @@ GameIdleState.prototype.onMouseDown = function(event) {
    }
 };
 
+/**
+ * Attempts to solve
+ * @param {any} solver The object in charge of solving
+ */
 GameIdleState.prototype.solve = function (solver) {
-   solver.solve(this.webGLHaven.cardLocations.toJSON());
+   this.webGLHaven.stateMachine.setState(new SolveState(solver));
 };

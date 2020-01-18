@@ -38,7 +38,7 @@
       <script type="text/javascript" src="WorldProperties.js"></script>
 
       <!-- WebHaven Animation js includes -->
-      <script type="text/javascript" src="Animation/AnimateToAce.js"></script>      
+      <script type="text/javascript" src="Animation/AnimateToAce.js"></script>
 
       <!-- WebHaven StateMachine js includes -->
       <script type="text/javascript" src="StateMachine/StateMachine.js"></script>
@@ -48,7 +48,8 @@
       <script type="text/javascript" src="StateMachine/InitializingState.js"></script>
       <script type="text/javascript" src="StateMachine/MoveToAcesState.js"></script>
       <script type="text/javascript" src="StateMachine/NewGameState.js"></script>
-      
+      <script type="text/javascript" src="StateMachine/SolveState.js"></script>
+
       <!-- our main -->
       <script type="text/javascript">
          /**
@@ -56,14 +57,14 @@
           * @type WebGLHaven
           */
          var game = new WebGLHaven(document.querySelector('#c'));
-         
+
          // add our handler to deal with resizing the window, and give it
          // an initial call
          body.onresize = function () {
             game.renderer.resizeCanvas(body.clientWidth, body.clientHeight);
          };
          body.onresize();
-         
+
          // start our loop
          game.start();
       </script>
