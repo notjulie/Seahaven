@@ -68,6 +68,10 @@ ProblemCard::ProblemCard(const char *_s)
 
 ProblemCard::ProblemCard(Suit _suit, int _rank)
 {
+   if (_rank < 1 || _rank>13)
+      throw SolverException("ProblemCard: invalid rank");
+   if (suit.GetIndex() < suit.First.GetIndex() || suit.GetIndex() > suit.Last.GetIndex())
+      throw SolverException("ProblemCard: invalid suit");
    suit = _suit;
    rank = _rank;
 }

@@ -13,7 +13,7 @@
 #include "LinkedCards.h"
 
 
-const LinkedCard LinkedCard::Null = { CardLocation::Null, CardLocation::Null, 0 };
+const LinkedCard LinkedCard::Null = { CardLocation::Null(), CardLocation::Null(), 0 };
 
 
 /// <summary>
@@ -61,7 +61,7 @@ ProblemCard LinkedCards::GetCardDetails(CardLocation cardLocation) const
       LinkedCard  card(links[(int)cardLocation.linkID]);
       rank += card.size;
       
-      if (card.toLower == CardLocation::Null)
+      if (card.toLower == CardLocation::Null())
          return ProblemCard(
             cardLocation.suit,
             rank
@@ -132,7 +132,7 @@ void LinkedCards::MoveToLower(CardLocation link)
    LinkedCard card(links[(int)link.linkID]);
    
    // link the higher to the lower
-   if (card.toHigher != CardLocation::Null)
+   if (card.toHigher != CardLocation::Null())
    {
       LinkedCard higher(links[(int)card.toHigher.linkID]);
       higher.toLower = card.toLower;
@@ -190,7 +190,7 @@ void LinkedCards::SetAceSizes(void)
       
       int totalCards = 0;
       LinkedCard  card = ace;
-      while (card.toHigher != CardLocation::Null)
+      while (card.toHigher != CardLocation::Null())
       {
          card = links[(int)card.toHigher.linkID];
          totalCards += card.size;
@@ -211,27 +211,27 @@ void LinkedCards::SetCard(CardLocation cardLocation, LinkedCard card)
 {
    // update the card in question
    LinkedCard  linkedCard = links[(int)cardLocation.linkID];
-   if (linkedCard.toLower!=CardLocation::Null && linkedCard.toLower !=card.toLower)
+   if (linkedCard.toLower!=CardLocation::Null() && linkedCard.toLower !=card.toLower)
       throw SolverException("LinkedCards::SetCard: rewriting link to lower");
-   if (linkedCard.toHigher != CardLocation::Null && linkedCard.toHigher !=card.toHigher)
+   if (linkedCard.toHigher != CardLocation::Null() && linkedCard.toHigher !=card.toHigher)
       throw SolverException("LinkedCards::SetCard: rewriting link to higher");
    links[(int)cardLocation.linkID] = card;
 
    // update the lower
-   if (card.toLower != CardLocation::Null)
+   if (card.toLower != CardLocation::Null())
    {
       LinkedCard  lowerCard(links[(int)card.toLower.linkID]);
-      if (lowerCard.toHigher!=CardLocation::Null && lowerCard.toHigher !=cardLocation)
+      if (lowerCard.toHigher!=CardLocation::Null() && lowerCard.toHigher !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from lower");
       lowerCard.toHigher = cardLocation;
       links[(int)card.toLower.linkID] = lowerCard;
    }
    
    // update the higher
-   if (card.toHigher != CardLocation::Null)
+   if (card.toHigher != CardLocation::Null())
    {
       LinkedCard  higherCard(links[(int)card.toHigher.linkID]);
-      if (higherCard.toLower != CardLocation::Null && higherCard.toLower !=cardLocation)
+      if (higherCard.toLower != CardLocation::Null() && higherCard.toLower !=cardLocation)
          throw SolverException("LinkedCards::SetCard: rewriting link from higher");
       higherCard.toLower = cardLocation;
       links[(int)card.toHigher.linkID] = higherCard;

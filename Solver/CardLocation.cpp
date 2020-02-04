@@ -16,37 +16,6 @@ constexpr CardLocation::CardLocation(void)
 }
 
 
-constexpr CardLocation CardLocation::FromLinkID(LinkID linkID)
-{
-   CardLocation result;
-   result.linkID = linkID;
-
-   if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_COLUMN_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK < 50)
-   {
-      result.onColumn = true;
-      result.row = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
-      result.column = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
-   }
-   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_THRONE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK <= 3)
-   {
-      result.isThrone = true;
-      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK);
-   }
-   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_ACE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK <= 3)
-   {
-      result.isAce = true;
-      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK);
-   }
-   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_TOWER_LINK <= 3)
-   {
-      result.isTower = true;
-   }
-
-   return result;
-}
-
-constexpr CardLocation CardLocation::Null = CardLocation::FromLinkID(LinkID::NO_LINK);
-
 const CardLocation CardLocation::Aces[4] = {
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 0)),
    CardLocation::FromLinkID((LinkID)((uint8_t)LinkID::FIRST_ACE_LINK + 1)),

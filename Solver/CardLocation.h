@@ -41,7 +41,7 @@ public:
    inline bool operator!=(CardLocation card) const { return card.linkID != linkID; }
 
 public:
-   static const CardLocation Null;
+   static constexpr CardLocation Null(void);
    static const CardLocation Aces[4];
    static const CardLocation Columns[10][5];
    static const CardLocation Thrones[4];
@@ -52,5 +52,40 @@ private:
    static constexpr CardLocation FromLinkID(LinkID linkID);
 };
 static_assert(sizeof(CardLocation)<=3, "CardLocation is getting chubby");
+
+
+constexpr CardLocation CardLocation::FromLinkID(LinkID linkID)
+{
+   CardLocation result;
+   result.linkID = linkID;
+
+   if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_COLUMN_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK < 50)
+   {
+      result.onColumn = true;
+      result.row = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) % 5;
+      result.column = ((uint8_t)linkID - (uint8_t)LinkID::FIRST_COLUMN_LINK) / 5;
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_THRONE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK <= 3)
+   {
+      result.isThrone = true;
+      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_THRONE_LINK);
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_ACE_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK <= 3)
+   {
+      result.isAce = true;
+      result.suit = Suit::FromIndex((uint8_t)linkID - (uint8_t)LinkID::FIRST_ACE_LINK);
+   }
+   else if ((uint8_t)linkID >= (uint8_t)LinkID::FIRST_TOWER_LINK && (uint8_t)linkID - (uint8_t)LinkID::FIRST_TOWER_LINK <= 3)
+   {
+      result.isTower = true;
+   }
+
+   return result;
+}
+
+constexpr CardLocation CardLocation::Null(void)
+{
+   return CardLocation::FromLinkID(LinkID::NO_LINK);
+}
 
 #endif

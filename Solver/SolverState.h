@@ -26,7 +26,7 @@ namespace solver {
 
       bool  CanMoveColumnToTower(int columnIndex) const;
       bool  DoFreeMoves(void);
-      CardLocation EndOfColumn(int column) const { return CardLocation::Columns[column][columnCounts.Get(column) - 1]; }
+      CardLocation EndOfColumn(int column) const;
       uint8_t GetColumnCardCount(uint8_t column) const { return columnCounts.Get(column); }
       int GetEmptyColumnCount(void) const;
       int GetFreeTowers(void) const { return cards.GetEmptyTowers(); }

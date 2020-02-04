@@ -25,8 +25,8 @@ public:
     bool operator==(const ProblemCard &that) const;
     
 private:
-    uint8_t     rank;
-    Suit        suit;
+    uint8_t     rank = 0;
+    Suit        suit = Suit::Clubs;
 };
 
 #endif	/* PROBLEMCARD_H */

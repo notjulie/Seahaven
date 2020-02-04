@@ -289,6 +289,13 @@ namespace solver {
       cards.Clear();
    }
 
+   CardLocation SolverState::EndOfColumn(int column) const
+   {
+      int count = columnCounts.Get(column);
+      if (count < 1)
+         throw SolverException("SolverState::EndOfColumn: column is empty");
+      return CardLocation::Columns[column][count - 1]; 
+   }
 
    int SolverState::GetEmptyColumnCount(void) const
    {
