@@ -1,0 +1,29 @@
+﻿<Window x:Class="SolverGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SolverGUI"
+        mc:Ignorable="d"
+        Title="Solver GUI" Height="450" Width="800">
+   <StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+         <local:Card/>
+         <local:Card/>
+         <local:Card/>
+         <local:Card/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+         <local:CardStack/>
+      </StackPanel>
+   </StackPanel>
+</Window>
