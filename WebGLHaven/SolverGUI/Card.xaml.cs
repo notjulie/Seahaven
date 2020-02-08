@@ -25,8 +25,24 @@ namespace SolverGUI
          // normal component initialization
          InitializeComponent();
 
+         // get rid of the focus visual style... the automatic focus highlight has weird
+         // rules so that it doesn't show unless it is focused in response to a key event
+         FocusVisualStyle = null;
+
          // add event handlers
          KeyUp += Card_KeyUp;
+         MouseUp += Card_MouseUp;
+         IsKeyboardFocusedChanged += Card_IsKeyboardFocusedChanged;
+      }
+
+      private void Card_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+      {
+         border.BorderThickness = new Thickness(IsKeyboardFocused ? 4 : 1);
+      }
+
+      private void Card_MouseUp(object sender, MouseButtonEventArgs e)
+      {
+         TakeFocus();
       }
 
       public event EventHandler Tab;
@@ -68,6 +84,7 @@ namespace SolverGUI
       {
          Visibility = Visibility.Visible;
          Keyboard.Focus(this);
+         Focus();
       }
    }
 }
