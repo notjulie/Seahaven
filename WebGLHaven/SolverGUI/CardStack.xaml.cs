@@ -22,6 +22,9 @@ namespace SolverGUI
    {
       private List<Card> cards = new List<Card>();
 
+      /// <summary>
+      /// Initializes a new instance of class CardStack.
+      /// </summary>
       public CardStack()
       {
          // normal component initialization
@@ -39,6 +42,9 @@ namespace SolverGUI
          }
       }
 
+      /// <summary>
+      /// Event fired when the user tabs out of the column
+      /// </summary>
       public event EventHandler Tab;
 
       /// <summary>

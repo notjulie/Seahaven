@@ -22,6 +22,9 @@ namespace SolverGUI
    {
       #region Constructor
 
+      /// <summary>
+      /// Initializes a new instance of class Card
+      /// </summary>
       public Card()
       {
          // normal component initialization
@@ -41,8 +44,14 @@ namespace SolverGUI
 
       #region Events / Properties
 
+      /// <summary>
+      /// Event fired when tab key is pressed
+      /// </summary>
       public event EventHandler Tab;
 
+      /// <summary>
+      /// Gets the rank
+      /// </summary>
       public string Rank
       {
          get
@@ -54,6 +63,9 @@ namespace SolverGUI
          }
       }
 
+      /// <summary>
+      /// Gets the suit
+      /// </summary>
       public string Suit
       {
          get
@@ -65,6 +77,9 @@ namespace SolverGUI
          }
       }
 
+      /// <summary>
+      /// Gets a value indicating whether the card's user input fields are empty
+      /// </summary>
       public bool IsEmpty
       {
          get
@@ -77,6 +92,9 @@ namespace SolverGUI
 
       #region Public Methods
 
+      /// <summary>
+      /// Focuses the card
+      /// </summary>
       public void TakeFocus()
       {
          Visibility = Visibility.Visible;

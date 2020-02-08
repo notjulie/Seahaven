@@ -22,6 +22,9 @@ namespace SolverGUI
    {
       private List<CardStack> columns = new List<CardStack>();
 
+      /// <summary>
+      /// Initializes a new instance of class MainWindow.
+      /// </summary>
       public MainWindow()
       {
          // normal component initialization
