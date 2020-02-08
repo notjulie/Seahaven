@@ -21,6 +21,7 @@ namespace SolverGUI
    public partial class CardStack : UserControl
    {
       private List<Card> cards = new List<Card>();
+      private int activeCardCount = 0;
 
       public CardStack()
       {
@@ -29,14 +30,25 @@ namespace SolverGUI
 
          // make a handy list of our columns
          foreach (var child in cardsStack.Children)
-            if (child is Card)
+         {
+            Card card = child as Card;
+            if (card != null)
+            {
                cards.Add((Card)child);
+               card.Tab += Card_Tab;
+            }
+         }
+      }
 
+      private void Card_Tab(object sender, EventArgs e)
+      {
+         ++activeCardCount;
+         TakeFocus();
       }
 
       public void TakeFocus()
       {
-         cards[0].Visibility = Visibility.Visible;
+         cards[activeCardCount].TakeFocus();
       }
    }
 }
