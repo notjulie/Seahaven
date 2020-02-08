@@ -13,17 +13,17 @@
          <local:Card/>
          <local:Card/>
       </StackPanel>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
-         <local:CardStack/>
+      <StackPanel x:Name="columnsStack" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+         <local:CardStack x:Name="column0"/>
+         <local:CardStack x:Name="column1"/>
+         <local:CardStack x:Name="column2"/>
+         <local:CardStack x:Name="column3"/>
+         <local:CardStack x:Name="column4"/>
+         <local:CardStack x:Name="column5"/>
+         <local:CardStack x:Name="column6"/>
+         <local:CardStack x:Name="column7"/>
+         <local:CardStack x:Name="column8"/>
+         <local:CardStack x:Name="column9"/>
       </StackPanel>
    </StackPanel>
 </Window>

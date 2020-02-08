@@ -20,9 +20,23 @@ namespace SolverGUI
    /// </summary>
    public partial class CardStack : UserControl
    {
+      private List<Card> cards = new List<Card>();
+
       public CardStack()
       {
+         // normal component initialization
          InitializeComponent();
+
+         // make a handy list of our columns
+         foreach (var child in cardsStack.Children)
+            if (child is Card)
+               cards.Add((Card)child);
+
+      }
+
+      public void TakeFocus()
+      {
+         cards[0].Visibility = Visibility.Visible;
       }
    }
 }

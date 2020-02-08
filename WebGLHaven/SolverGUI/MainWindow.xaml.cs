@@ -20,9 +20,25 @@ namespace SolverGUI
    /// </summary>
    public partial class MainWindow : Window
    {
+      private List<CardStack> columns = new List<CardStack>();
+
       public MainWindow()
       {
+         // normal component initialization
          InitializeComponent();
+
+         // make a handy list of our columns
+         foreach (var child in columnsStack.Children)
+            if (child is CardStack)
+               columns.Add((CardStack)child);
+
+         // add event handlers
+         Loaded += MainWindow_Loaded;
+      }
+
+      private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+      {
+         columns[0].TakeFocus();
       }
    }
 }

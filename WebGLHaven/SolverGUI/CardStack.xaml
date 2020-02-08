@@ -6,22 +6,24 @@
              xmlns:local="clr-namespace:SolverGUI"
              mc:Ignorable="d" 
              >
-   <StackPanel>
-      <local:Card/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-      <local:Card Margin="0,-75,0,0"/>
-   </StackPanel>
+   <Border Background="LightGray" Margin="4" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
+      <StackPanel x:Name="cardsStack">
+         <local:Card Visibility="Hidden"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+         <local:Card Visibility="Hidden" Margin="0,-75,0,0"/>
+      </StackPanel>
+   </Border>
 </UserControl>
