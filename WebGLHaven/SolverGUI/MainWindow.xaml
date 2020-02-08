@@ -8,10 +8,10 @@
         Title="Solver GUI" Height="450" Width="800">
    <StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-         <local:Card/>
-         <local:Card/>
-         <local:Card/>
-         <local:Card/>
+         <local:Card x:Name="tower0"/>
+         <local:Card x:Name="tower1"/>
+         <local:Card x:Name="tower2"/>
+         <local:Card x:Name="tower3"/>
       </StackPanel>
       <StackPanel x:Name="columnsStack" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
          <local:CardStack x:Name="column0"/>

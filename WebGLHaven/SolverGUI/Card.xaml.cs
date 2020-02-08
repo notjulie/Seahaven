@@ -20,6 +20,8 @@ namespace SolverGUI
    /// </summary>
    public partial class Card : UserControl
    {
+      #region Constructor
+
       public Card()
       {
          // normal component initialization
@@ -35,6 +37,57 @@ namespace SolverGUI
          IsKeyboardFocusedChanged += Card_IsKeyboardFocusedChanged;
       }
 
+      #endregion
+
+      #region Events / Properties
+
+      public event EventHandler Tab;
+
+      public string Rank
+      {
+         get
+         {
+            if (rank.Content == null)
+               return string.Empty;
+            else
+               return rank.Content.ToString();
+         }
+      }
+
+      public string Suit
+      {
+         get
+         {
+            if (suit.Content == null)
+               return string.Empty;
+            else
+               return suit.Content.ToString();
+         }
+      }
+
+      public bool IsEmpty
+      {
+         get
+         {
+            return Rank.Length == 0 && Suit.Length == 0;
+         }
+      }
+
+      #endregion
+
+      #region Public Methods
+
+      public void TakeFocus()
+      {
+         Visibility = Visibility.Visible;
+         Keyboard.Focus(this);
+         Focus();
+      }
+
+      #endregion
+
+      #region Event Handlers
+
       private void Card_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
       {
          borderHighlight.Visibility = IsKeyboardFocused ? Visibility.Visible : Visibility.Hidden;
@@ -44,8 +97,6 @@ namespace SolverGUI
       {
          TakeFocus();
       }
-
-      public event EventHandler Tab;
 
       private void Card_KeyUp(object sender, KeyEventArgs e)
       {
@@ -80,11 +131,6 @@ namespace SolverGUI
          }
       }
 
-      public void TakeFocus()
-      {
-         Visibility = Visibility.Visible;
-         Keyboard.Focus(this);
-         Focus();
-      }
+      #endregion
    }
 }

@@ -21,7 +21,6 @@ namespace SolverGUI
    public partial class CardStack : UserControl
    {
       private List<Card> cards = new List<Card>();
-      private int activeCardCount = 0;
 
       public CardStack()
       {
@@ -40,15 +39,47 @@ namespace SolverGUI
          }
       }
 
+      public event EventHandler Tab;
+
+      /// <summary>
+      /// Responds to a tab when a card is selected
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void Card_Tab(object sender, EventArgs e)
       {
-         ++activeCardCount;
-         TakeFocus();
+         // get the card
+         Card card = (Card)sender;
+
+         // get its index
+         int index = cards.IndexOf(card);
+
+         // if the card is empty, we hide it and move to the next column
+         if (card.IsEmpty)
+         {
+            card.Visibility = Visibility.Hidden;
+            Tab?.Invoke(this, EventArgs.Empty);
+            return;
+         }
+
+         // if it's the last card then we tab to the next column
+         if (index == cards.Count - 1)
+         {
+            Tab?.Invoke(this, EventArgs.Empty);
+            return;
+         }
+
+         // else we just focus the next card
+         cards[index + 1].TakeFocus();
       }
 
+      /// <summary>
+      /// Sets the focus to this control
+      /// </summary>
       public void TakeFocus()
       {
-         cards[activeCardCount].TakeFocus();
+         // set the focus to the first card
+         cards[0].TakeFocus();
       }
    }
 }
