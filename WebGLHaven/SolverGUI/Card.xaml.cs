@@ -37,7 +37,7 @@ namespace SolverGUI
 
       private void Card_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
       {
-         border.BorderThickness = new Thickness(IsKeyboardFocused ? 4 : 1);
+         borderHighlight.Visibility = IsKeyboardFocused ? Visibility.Visible : Visibility.Hidden;
       }
 
       private void Card_MouseUp(object sender, MouseButtonEventArgs e)
