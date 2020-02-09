@@ -41,9 +41,34 @@ namespace SolverGUI
             }
          }
 
+
          // add event handlers
          Loaded += MainWindow_Loaded;
          solveItem.Click += SolveItem_Click;
+         tower0.Tab += Tower0_Tab;
+         tower1.Tab += Tower1_Tab;
+         tower2.Tab += Tower2_Tab;
+         tower3.Tab += Tower3_Tab;
+      }
+
+      private void Tower0_Tab(object sender, EventArgs e)
+      {
+         tower1.TakeFocus();
+      }
+
+      private void Tower1_Tab(object sender, EventArgs e)
+      {
+         tower2.TakeFocus();
+      }
+
+      private void Tower2_Tab(object sender, EventArgs e)
+      {
+         tower3.TakeFocus();
+      }
+
+      private void Tower3_Tab(object sender, EventArgs e)
+      {
+         column0.TakeFocus();
       }
 
       private void SolveItem_Click(object sender, RoutedEventArgs e)

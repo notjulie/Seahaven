@@ -35,6 +35,8 @@ namespace SolverGUI
          FocusVisualStyle = null;
 
          // add event handlers
+         PreviewKeyDown += Card_PreviewKeyDown;
+         PreviewKeyUp += Card_PreviewKeyUp;
          KeyUp += Card_KeyUp;
          MouseUp += Card_MouseUp;
          IsKeyboardFocusedChanged += Card_IsKeyboardFocusedChanged;
@@ -157,6 +159,7 @@ namespace SolverGUI
             case Key.Q:
             case Key.K:
                rank.Content = (char)KeyInterop.VirtualKeyFromKey(e.Key);
+               e.Handled = true;
                break;
 
             case Key.C:
@@ -164,10 +167,34 @@ namespace SolverGUI
             case Key.H:
             case Key.S:
                suit.Content = e.Key.ToString().ToUpper();
+               e.Handled = true;
                break;
+         }
+      }
 
+      private void Card_PreviewKeyDown(object sender, KeyEventArgs e)
+      {
+         switch (e.Key)
+         {
+            case Key.Tab:
+               e.Handled = true;
+               break;
+         }
+      }
+
+      /// <summary>
+      /// Handles key events that we need to make sure nobody else tries
+      /// to intercept; yes, I mean tab
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void Card_PreviewKeyUp(object sender, KeyEventArgs e)
+      {
+         switch (e.Key)
+         {
             case Key.Tab:
                Tab?.Invoke(this, EventArgs.Empty);
+               e.Handled = true;
                break;
          }
       }
