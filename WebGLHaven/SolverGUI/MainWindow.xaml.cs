@@ -43,6 +43,41 @@ namespace SolverGUI
 
          // add event handlers
          Loaded += MainWindow_Loaded;
+         solveItem.Click += SolveItem_Click;
+      }
+
+      private void SolveItem_Click(object sender, RoutedEventArgs e)
+      {
+         // turn the cards into JSON; it's just a simple format that relates
+         // cards to locations, such as:
+         //   "JS" : "C2-1",
+         // etc
+         // start with the list...
+         List<CardAndLocation> cardLocations = new List<CardAndLocation>();
+         if (!tower0.IsEmpty)
+            cardLocations.Add(tower0.CardAndLocation);
+         if (!tower1.IsEmpty)
+            cardLocations.Add(tower1.CardAndLocation);
+         if (!tower2.IsEmpty)
+            cardLocations.Add(tower2.CardAndLocation);
+         if (!tower3.IsEmpty)
+            cardLocations.Add(tower3.CardAndLocation);
+         for (int i = 0; i < columns.Count; ++i)
+            cardLocations.AddRange(columns[i].CardsAndLocations);
+
+         StringBuilder s = new StringBuilder();
+         s.Append("{");
+         for (int i= 0; i < cardLocations.Count; ++i)
+         {
+            if (i != 0)
+               s.Append(",");
+            s.Append(cardLocations[i]);
+         }
+         s.Append("}");
+
+         var solver = new ManagedSolver.ManagedSolver();
+         string result = solver.Solve(s.ToString());
+         MessageBox.Show(result);
       }
 
       private void Column_Tab(object sender, EventArgs e)

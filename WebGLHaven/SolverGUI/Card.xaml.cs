@@ -50,6 +50,29 @@ namespace SolverGUI
       public event EventHandler Tab;
 
       /// <summary>
+      /// Gets or sets the location associated with this card
+      /// </summary>
+      public string Location
+      {
+         get;
+         set;
+      }
+
+      /// <summary>
+      /// Gets the card and location string
+      /// </summary>
+      public CardAndLocation CardAndLocation
+      {
+         get
+         {
+            CardAndLocation result = new CardAndLocation();
+            result.card = Rank + Suit;
+            result.location = Location;
+            return result;
+         }
+      }
+
+      /// <summary>
       /// Gets the rank
       /// </summary>
       public string Rank

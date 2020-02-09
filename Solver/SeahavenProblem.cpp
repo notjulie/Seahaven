@@ -165,6 +165,8 @@ namespace solver {
    {
       // declare the result
       std::vector<CompactedColumnCard> result;
+      if (columnIndex >= columns.size())
+         return result;
 
       // get the cards in the column
       ProblemCards cards = columns[columnIndex];
@@ -218,7 +220,7 @@ namespace solver {
          return CardLocation::Thrones[suit.GetIndex()];
 
       // see if it's on a column
-      for (int columnIndex = 0; columnIndex < 10; ++columnIndex)
+      for (int columnIndex = 0; columnIndex < columns.size(); ++columnIndex)
       {
          std::vector<CompactedColumnCard> compactedCards = GetCompactedColumn(columnIndex);
 

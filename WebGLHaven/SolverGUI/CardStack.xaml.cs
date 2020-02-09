@@ -21,6 +21,7 @@ namespace SolverGUI
    public partial class CardStack : UserControl
    {
       private List<Card> cards = new List<Card>();
+      private int column = 0;
 
       /// <summary>
       /// Initializes a new instance of class CardStack.
@@ -40,12 +41,46 @@ namespace SolverGUI
                card.Tab += Card_Tab;
             }
          }
+
+         // initial state
+         UpdateCardLocations();
       }
 
       /// <summary>
       /// Event fired when the user tabs out of the column
       /// </summary>
       public event EventHandler Tab;
+
+      /// <summary>
+      /// Gets or sets the column number
+      /// </summary>
+      public int Column
+      {
+         get
+         {
+            return column;
+         }
+         set
+         {
+            column = value;
+            UpdateCardLocations();
+         }
+      }
+
+      /// <summary>
+      /// Gets the cards and locations
+      /// </summary>
+      public CardAndLocation[] CardsAndLocations
+      {
+         get
+         {
+            List<CardAndLocation> result = new List<CardAndLocation>();
+            foreach (var card in cards)
+               if (!card.IsEmpty)
+                  result.Add(card.CardAndLocation);
+            return result.ToArray();
+         }
+      }
 
       /// <summary>
       /// Responds to a tab when a card is selected
@@ -86,6 +121,12 @@ namespace SolverGUI
       {
          // set the focus to the first card
          cards[0].TakeFocus();
+      }
+
+      private void UpdateCardLocations()
+      {
+         for (int i = 0; i < cards.Count; ++i)
+            cards[i].Location = "C" + Column + "-" + i;
       }
    }
 }

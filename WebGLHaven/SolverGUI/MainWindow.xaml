@@ -7,23 +7,28 @@
         mc:Ignorable="d"
         Title="Solver GUI" Height="450" Width="800">
    <StackPanel>
+      <Menu HorizontalAlignment="Stretch">
+         <MenuItem Header="Game">
+            <MenuItem Name="solveItem" Header="Solve"/>
+         </MenuItem>
+      </Menu>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-         <local:Card x:Name="tower0"/>
-         <local:Card x:Name="tower1"/>
-         <local:Card x:Name="tower2"/>
-         <local:Card x:Name="tower3"/>
+         <local:Card x:Name="tower0" Location="T0" />
+         <local:Card x:Name="tower1" Location="T1"/>
+         <local:Card x:Name="tower2" Location="T2"/>
+         <local:Card x:Name="tower3" Location="T3"/>
       </StackPanel>
       <StackPanel x:Name="columnsStack" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-         <local:CardStack x:Name="column0"/>
-         <local:CardStack x:Name="column1"/>
-         <local:CardStack x:Name="column2"/>
-         <local:CardStack x:Name="column3"/>
-         <local:CardStack x:Name="column4"/>
-         <local:CardStack x:Name="column5"/>
-         <local:CardStack x:Name="column6"/>
-         <local:CardStack x:Name="column7"/>
-         <local:CardStack x:Name="column8"/>
-         <local:CardStack x:Name="column9"/>
+         <local:CardStack x:Name="column0" Column="0"/>
+         <local:CardStack x:Name="column1" Column="1"/>
+         <local:CardStack x:Name="column2" Column="2"/>
+         <local:CardStack x:Name="column3" Column="3"/>
+         <local:CardStack x:Name="column4" Column="4"/>
+         <local:CardStack x:Name="column5" Column="5"/>
+         <local:CardStack x:Name="column6" Column="6"/>
+         <local:CardStack x:Name="column7" Column="7"/>
+         <local:CardStack x:Name="column8" Column="8"/>
+         <local:CardStack x:Name="column9" Column="9"/>
       </StackPanel>
    </StackPanel>
 </Window>
