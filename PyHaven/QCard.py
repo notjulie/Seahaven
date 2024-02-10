@@ -2,25 +2,32 @@ import typing
 
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QPainterPath, QBrush, QColor
-from PyQt5.QtWidgets import QWidget, QGraphicsView, QGraphicsPathItem, QGraphicsItemGroup, QGraphicsTextItem
+from PyQt5.QtWidgets import QGraphicsPathItem, QGraphicsItemGroup, QGraphicsTextItem
 
 
-# class QCard; our basic graphic card
 class QCard(QGraphicsItemGroup):
+    """ represents a card on the screen """
+
+    # class variables
+    _background = QBrush(QColor(255, 0, 0))
+
     def __init__(self):
+        """ initializer """
         QGraphicsItemGroup.__init__(self)
 
+        # add our rounded rectangle background
         self.painterPath = QPainterPath()
         self.painterPath.addRoundedRect(QRectF(0, 0, 50, 50), 5, 5)
-
         self.path = QGraphicsPathItem(self.painterPath)
-        self.path.setBrush(QBrush(QColor(255, 0, 0)))
+        self.path.setBrush(self._background)
         self.addToGroup(self.path)
 
+        # add our text item
         self.addToGroup(QGraphicsTextItem("bleem"))
 
-        self.cardMousePress = lambda : 42
+        # initialize our event handlers
+        self.cardMousePress = lambda *args: None
 
     def mousePressEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
-        #self.setX(self.x() + 1)
+        """ mouse press event; dispatches to our cardMousePress handler """
         self.cardMousePress(event)
