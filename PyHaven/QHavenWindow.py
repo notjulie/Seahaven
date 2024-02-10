@@ -1,6 +1,7 @@
 
-from PyQt5.QtWidgets import QWidget, QGraphicsView, QGraphicsScene
+from PyQt5.QtWidgets import QWidget, QGraphicsView, QGraphicsScene, QGraphicsTextItem
 from PyQt5.QtCore import QTimer
+from QCard import QCard
 
 class QHavenWindow(QGraphicsView):
 
@@ -9,11 +10,8 @@ class QHavenWindow(QGraphicsView):
 
         self.scene = QGraphicsScene(0, 0, 100, 100)
         self.setScene(self.scene)
-        self.text = self.scene.addText("bleem")
-        self.text.setX(10)
-        self.text.setY(0)
-
-        self.moreText = self.scene.addText("blerg")
+        self.card = QCard()
+        self.scene.addItem(self.card)
 
         self.resize(320, 240)  # The resize() method resizes the widget.
         self.setWindowTitle("Hello, Couch!")  # Here we set the title for our window.
@@ -25,6 +23,5 @@ class QHavenWindow(QGraphicsView):
 
 
     def processOneThing(self):
-        #self.setWindowTitle("Hello, table!")  # Here we set the title for our window.
-        self.text.setX(self.text.x() + 1)
+        self.card.setX(self.card.x() + 1)
 
