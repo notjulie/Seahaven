@@ -1,3 +1,5 @@
+import typing
+
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QPainterPath, QBrush, QColor
 from PyQt5.QtWidgets import QWidget, QGraphicsView, QGraphicsPathItem, QGraphicsItemGroup, QGraphicsTextItem
@@ -16,3 +18,9 @@ class QCard(QGraphicsItemGroup):
         self.addToGroup(self.path)
 
         self.addToGroup(QGraphicsTextItem("bleem"))
+
+        self.cardMousePress = lambda : 42
+
+    def mousePressEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
+        #self.setX(self.x() + 1)
+        self.cardMousePress(event)
