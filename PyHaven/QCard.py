@@ -27,7 +27,17 @@ class QCard(QGraphicsItemGroup):
 
         # initialize our event handlers
         self.cardMousePress = lambda *args: None
+        self.cardMouseMove = lambda *args: None
+        self.cardMouseRelease = lambda *args: None
 
     def mousePressEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
         """ mouse press event; dispatches to our cardMousePress handler """
         self.cardMousePress(event)
+
+    def mouseMoveEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
+        """ mouse press event; dispatches to our cardMouseMove handler """
+        self.cardMouseMove(event)
+
+    def mouseReleaseEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
+        """ mouse press event; dispatches to our cardMouseRelease handler """
+        self.cardMouseRelease(event)
