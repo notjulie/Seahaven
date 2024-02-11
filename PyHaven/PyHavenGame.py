@@ -33,6 +33,7 @@ class PyHavenGame:
 
         # deal
         self._towers = [None, cards[50], cards[51], None]
+        self._aces = [0, 0, 0, 0]
         self._columns = []
         for column in range(10):
             self._columns.append(
