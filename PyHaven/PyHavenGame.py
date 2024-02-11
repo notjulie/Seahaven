@@ -1,6 +1,8 @@
 
 import random
 
+from PyHavenCard import get_pyhaven_card
+
 
 class PyHavenGame:
     """
@@ -20,7 +22,7 @@ class PyHavenGame:
         # create a new deck
         cards = []
         for i in range(52):
-            cards.append(i)
+            cards.append(get_pyhaven_card(i))
 
         # shuffle
         for i in range(52):
