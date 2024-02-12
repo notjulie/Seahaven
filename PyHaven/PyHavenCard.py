@@ -1,14 +1,28 @@
 import math
+from abc import abstractmethod
 
 
-def get_pyhaven_card(i):
+class PyHavenCard:
+    """ abstract definition of PyHavenCard; implementation is private """
+    @abstractmethod
+    def get_rank(self):
+        """ gets the rank of the card """
+        pass
+
+    @abstractmethod
+    def get_suit(self):
+        """ gets the suit of the card """
+        return math.floor(self._index / 13)
+
+
+def get_pyhaven_card(i) -> PyHavenCard:
     """
     Returns the global instance of PyHavenCard associated with the
     given numeric index in the range 0..51.  This is implemented such
     that there are only 52 immutable PyHavenCard instances that can
     be compared using 'is'.
     """
-    class PyHavenCard:
+    class PyHavenCardImplementation:
         """
         abstract representation of a card; scope is limited to the
         get_pyhaven_card function so that we control the instance creation
@@ -22,11 +36,11 @@ def get_pyhaven_card(i):
         @staticmethod
         def get_cards():
             """ gets (creating if necessary) the global list of cards """
-            if PyHavenCard._cards is None:
-                PyHavenCard._cards = []
+            if PyHavenCardImplementation._cards is None:
+                PyHavenCardImplementation._cards = []
                 for cardIndex in range(52):
-                    PyHavenCard._cards.append(PyHavenCard(cardIndex))
-            return PyHavenCard._cards
+                    PyHavenCardImplementation._cards.append(PyHavenCardImplementation(cardIndex))
+            return PyHavenCardImplementation._cards
 
         def get_rank(self):
             return self._index % 13
@@ -35,4 +49,4 @@ def get_pyhaven_card(i):
             return math.floor(self._index / 13)
 
     # return the card from the static list
-    return PyHavenCard.get_cards()[i]
+    return PyHavenCardImplementation.get_cards()[i]
