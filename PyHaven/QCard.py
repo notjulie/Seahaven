@@ -4,6 +4,8 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QPainterPath, QBrush, QColor
 from PyQt5.QtWidgets import QGraphicsPathItem, QGraphicsItemGroup, QGraphicsTextItem
 
+from PyHavenCard import PyHavenCard
+
 
 class QCard(QGraphicsItemGroup):
     """ represents a card on the screen """
@@ -11,9 +13,14 @@ class QCard(QGraphicsItemGroup):
     # class variables
     _background = QBrush(QColor(255, 0, 0))
 
-    def __init__(self):
+    def __init__(self, card_id: PyHavenCard):
         """ initializer """
+
+        # call the base class
         QGraphicsItemGroup.__init__(self)
+
+        # save parameters
+        self._cardID = card_id
 
         # add our rounded rectangle background
         self.painterPath = QPainterPath()

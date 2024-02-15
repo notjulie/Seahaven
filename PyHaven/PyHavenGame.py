@@ -1,7 +1,7 @@
 
 import random
-
-from PyHavenCard import get_pyhaven_card
+from typing import List, Optional
+from PyHavenCard import get_pyhaven_card, PyHavenCard
 
 
 class PyHavenGame:
@@ -13,7 +13,7 @@ class PyHavenGame:
     def __init__(self):
         """ initializer; starts empty"""
         self._columns = None
-        self._towers = [None, None, None, None]
+        self._towers: List[Optional[PyHavenCard]] = [None, None, None, None]
         self._aces = [0, 0, 0, 0]
 
     def new_game(self):
@@ -45,3 +45,6 @@ class PyHavenGame:
                     cards[column * 5 + 4],
                 ]
             )
+
+    def get_tower_card(self, tower_index) -> PyHavenCard:
+        return self._towers[tower_index]

@@ -12,7 +12,7 @@ class PyHavenCard:
     @abstractmethod
     def get_suit(self):
         """ gets the suit of the card """
-        return math.floor(self._index / 13)
+        pass
 
 
 def get_pyhaven_card(i) -> PyHavenCard:
