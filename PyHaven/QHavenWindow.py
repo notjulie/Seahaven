@@ -1,4 +1,5 @@
 
+from typing import Dict
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsSceneMouseEvent
 
 from PyHavenCard import PyHavenCard
@@ -19,7 +20,7 @@ class QHavenWindow(QGraphicsView):
 
         # clear
         self._game = None
-        self._cardDictionary = dict()
+        self._cardDictionary: Dict[PyHavenCard, QCard] = dict()
 
         # create our scene
         self._scene = QGraphicsScene(0, 0, 100, 100)
