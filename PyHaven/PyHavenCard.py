@@ -3,10 +3,6 @@ from abc import abstractmethod
 
 
 class PyHavenCard:
-    _rankStrings = ["", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-    _suitStrings = ["", "", "", ""]
-    _uniStrings = ["\u1F0A1"]
-
     """ abstract definition of PyHavenCard; implementation is private """
 
     @abstractmethod
@@ -18,12 +14,6 @@ class PyHavenCard:
     def get_suit(self):
         """ gets the suit of the card """
         pass
-
-    def get_rank_string(self):
-        return PyHavenCard._rankStrings[self.get_rank()]
-
-    def get_suit_string(self):
-        return PyHavenCard._suitStrings[self.get_suit()]
 
 
 def get_pyhaven_card(i) -> PyHavenCard:
