@@ -3,7 +3,12 @@ from abc import abstractmethod
 
 
 class PyHavenCard:
+    _rankStrings = ["", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+    _suitStrings = ["", "", "", ""]
+    _uniStrings = ["\u1F0A1"]
+
     """ abstract definition of PyHavenCard; implementation is private """
+
     @abstractmethod
     def get_rank(self):
         """ gets the rank of the card """
@@ -14,6 +19,12 @@ class PyHavenCard:
         """ gets the suit of the card """
         pass
 
+    def get_rank_string(self):
+        return PyHavenCard._rankStrings[self.get_rank()]
+
+    def get_suit_string(self):
+        return PyHavenCard._suitStrings[self.get_suit()]
+
 
 def get_pyhaven_card(i) -> PyHavenCard:
     """
@@ -22,7 +33,8 @@ def get_pyhaven_card(i) -> PyHavenCard:
     that there are only 52 immutable PyHavenCard instances that can
     be compared using 'is'.
     """
-    class PyHavenCardImplementation:
+
+    class PyHavenCardImplementation(PyHavenCard):
         """
         abstract representation of a card; scope is limited to the
         get_pyhaven_card function so that we control the instance creation
@@ -43,7 +55,7 @@ def get_pyhaven_card(i) -> PyHavenCard:
             return PyHavenCardImplementation._cards
 
         def get_rank(self):
-            return self._index % 13
+            return 1 + self._index % 13
 
         def get_suit(self):
             return math.floor(self._index / 13)
