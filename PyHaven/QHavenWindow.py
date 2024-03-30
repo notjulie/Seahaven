@@ -92,9 +92,9 @@ class QHavenWindow(QGraphicsView):
         card = QCard(card_id)
 
         # hook in our event handlers
-        card.cardMousePress = lambda event: self._card_mouse_press(card, event)
-        card.cardMouseMove = lambda event: self._card_mouse_move(card, event)
-        card.cardMouseRelease = lambda event: self._card_mouse_release(card, event)
+        card.mousePressEvent = lambda event: self._card_mouse_press(card, event)
+        card.mouseMoveEvent = lambda event: self._card_mouse_move(card, event)
+        card.mouseReleaseEvent = lambda event: self._card_mouse_release(card, event)
 
         # hide it before we add it to our scene
         card.setVisible(False)

@@ -66,15 +66,3 @@ class QCard(QGraphicsItem):
 
         painter.setPen(self._cardColor)
         painter.drawText(self._textOffset, self._text)
-
-    def mousePressEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
-        """ mouse press event; dispatches to our cardMousePress handler """
-        self.cardMousePress(event)
-
-    def mouseMoveEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
-        """ mouse press event; dispatches to our cardMouseMove handler """
-        self.cardMouseMove(event)
-
-    def mouseReleaseEvent(self, event: typing.Optional['QGraphicsSceneMouseEvent']):
-        """ mouse press event; dispatches to our cardMouseRelease handler """
-        self.cardMouseRelease(event)
