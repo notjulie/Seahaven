@@ -28,16 +28,11 @@ class QCard(QGraphicsItem):
     def __init__(self, card_id: PyHavenCard):
         """ initializer """
 
-        # call the base class
+        # call and initialize the base class
         QGraphicsItem.__init__(self)
 
         # save parameters
         self._cardID = card_id
-
-        # initialize our event handlers
-        self.cardMousePress = lambda *args: None
-        self.cardMouseMove = lambda *args: None
-        self.cardMouseRelease = lambda *args: None
 
         # figure out what character we draw and what color we draw it
         suit = self._cardID.get_suit()

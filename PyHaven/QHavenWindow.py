@@ -3,8 +3,8 @@ from typing import Dict
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsSceneMouseEvent
 
 from PyHavenCard import PyHavenCard
-from PyHavenGame import PyHavenGame
 from QCard import QCard
+from QHavenView import QHavenView
 
 
 class QHavenWindow(QGraphicsView):
@@ -26,9 +26,13 @@ class QHavenWindow(QGraphicsView):
         self._scene = QGraphicsScene(0, 0, 100, 100)
         self.setScene(self._scene)
 
+        # add our QHavenView
+        self._qhaven_view = QHavenView()
+        self._scene.addItem(self._qhaven_view)
+
         # set our size and title
         self.resize(320, 240)  # The resize() method resizes the widget.
-        self.setWindowTitle("Hello, Couch!")  # Here we set the title for our window.
+        self.setWindowTitle("PyHaven Towers")  # Here we set the title for our window.
 
     # endregion
 
@@ -36,9 +40,7 @@ class QHavenWindow(QGraphicsView):
 
     def new_game(self):
         """ shuffles and deals a new game """
-        self._game = PyHavenGame()
-        self._game.new_game()
-        self._draw_game()
+        self._qhaven_view.new_game()
 
     # endregion
 
@@ -65,43 +67,4 @@ class QHavenWindow(QGraphicsView):
 
     # endregion
 
-    # region Private Methods
-
-    def _draw_game(self):
-        """ redraws the current game """
-
-        # start with a dumbed down version of drawing the towers
-        for tower_index in range(4):
-            tower_card_id = self._game.get_tower_card(tower_index)
-            if tower_card_id is not None:
-                screen_card = self._get_card(tower_card_id)
-                screen_card.setX(20 * tower_index)
-                screen_card.setY(20)
-                screen_card.setVisible(True)
-
-    def _get_card(self, card_id: PyHavenCard) -> QCard:
-        """ gets the card associated with the given ID; creates it if needed """
-        result = self._cardDictionary.get(card_id)
-        if result is None:
-            self._create_card(card_id)
-            result = self._cardDictionary[card_id]
-        return result
-
-    def _create_card(self, card_id: PyHavenCard):
-        """ creates a QCard instance for the given card_id """
-        card = QCard(card_id)
-
-        # hook in our event handlers
-        card.mousePressEvent = lambda event: self._card_mouse_press(card, event)
-        card.mouseMoveEvent = lambda event: self._card_mouse_move(card, event)
-        card.mouseReleaseEvent = lambda event: self._card_mouse_release(card, event)
-
-        # hide it before we add it to our scene
-        card.setVisible(False)
-        self._scene.addItem(card)
-
-        # and drop it into our card dictionary
-        self._cardDictionary[card_id] = card
-
-    # endregion
 
