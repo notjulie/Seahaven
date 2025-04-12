@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfHaven", "WpfHaven.csproj", "{CE80DF93-DBEF-4ACA-AB82-3E20FDCF086B}"
 EndProject
@@ -34,6 +34,7 @@ Global
 		{CE80DF93-DBEF-4ACA-AB82-3E20FDCF086B}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE80DF93-DBEF-4ACA-AB82-3E20FDCF086B}.Release|x86.Build.0 = Release|Any CPU
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Debug|Any CPU.Build.0 = Debug|Win32
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Debug|x64.ActiveCfg = Debug|x64
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Debug|x64.Build.0 = Debug|x64
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Debug|x86.ActiveCfg = Debug|Win32
@@ -44,6 +45,7 @@ Global
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Release|x86.ActiveCfg = Release|Win32
 		{106C5E5D-626F-486C-A21A-24F44D69CC99}.Release|x86.Build.0 = Release|Win32
 		{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}.Debug|Any CPU.Build.0 = Debug|Win32
 		{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}.Debug|x64.ActiveCfg = Debug|x64
 		{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}.Debug|x64.Build.0 = Debug|x64
 		{74C8F5A7-20E0-401C-A4A8-48D6AEBF29CD}.Debug|x86.ActiveCfg = Debug|Win32
