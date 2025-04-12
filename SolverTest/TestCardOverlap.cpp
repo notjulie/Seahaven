@@ -3,6 +3,8 @@
 #include "SeahavenProblem.h"
 #include "SolverState.h"
 
+using solver::ProblemDefinition;
+using solver::SolverState;
 
 // This was part of a solution I ran into... from this point it tried to
 // move the 7-6-5D on to the 8D, even though the 8 is covered by the 9.

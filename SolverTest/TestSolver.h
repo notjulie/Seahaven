@@ -10,6 +10,8 @@
 
 #include "TestCases.h"
 
+using solver::SeahavenProblem;
+
 class TestSolver {
 public:
    TestSolver();

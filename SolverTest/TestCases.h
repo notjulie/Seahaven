@@ -11,6 +11,9 @@
 #include "SeahavenProblem.h"
 #include "Solution.h"
 
+using solver::ProblemDefinition;
+using solver::Solution;
+
 extern const ProblemDefinition cacheTestProblem;
 extern const ProblemDefinition slowTestProblem;
 extern const ProblemDefinition slowTestProblem2;
